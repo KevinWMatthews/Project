@@ -1,3 +1,8 @@
+# Set this to @ to keep the makefile quiet
+ifndef SILENCE
+	SILENCE =
+endif
+
 ### User config ###
 #Add all tests to this list!
 #To run specific test, execute
@@ -17,7 +22,9 @@ lib/BitManip lib/ChipFunctions:
 
 ### Makefile targets ###
 .DEFAULT_GOAL:=all
-.PHONY: all test production clean
+.PHONY: all clean
+.PHONY: test compile run
+.PHONY: production
 .PHONY: dirlist info
 .PHONY: $(MODULES)
 

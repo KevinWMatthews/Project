@@ -45,17 +45,16 @@ endif
 .PHONY: all test production
 .PHONY: dirlist
 
-all:
-	@echo all
+all clean:
+	$(LAUNCH_MAKE) MakefileCppUTest.make
+	$(LAUNCH_MAKE) MakefileProduction.make
 
 test:
-	@echo test
+	$(LAUNCH_MAKE) MakefileCppUTest.make
 
 production:
-	@echo production
+	$(LAUNCH_MAKE) MakefileProduction.make
 
-clean:
-	@echo clean
 
 dirlist:
 	@echo "~~~ Directory structure ~~~"
@@ -84,3 +83,7 @@ dirlist:
 	@echo CPPUTEST_LIB_LIST: $(CPPUTEST_LIB_LIST)
 	@echo CPPUTEST_LIB_DIR: $(CPPUTEST_LIB_DIR)
 	@echo
+
+
+### Helpers ###
+LAUNCH_MAKE=make $(MAKECMDGOALS) --file
