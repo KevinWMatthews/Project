@@ -4,39 +4,33 @@
 #  make test TEST=<name> from the terminal
 #This will override all instances of TEST in this makefile (only?)
 #Slick!
-ALL_MODULES= \
+MODULES= \
   lib/BitManip \
   lib/ChipFunctions \
 
-lib/BitManip:
-	$(MAKE_DIRECTORIES)
-#	@echo $(MAKE_PRODUCTION) $@
-#	@echo $(MAKE_LIBRARY) $@
+lib/BitManip lib/ChipFunctions:
+	$(MAKE_LAUNCHER)
 
-lib/ChipFunctions:
-	@echo $(MAKE_PRODUCTION) $@
-	@echo $(MAKE_LIBRARY) $@
-	@echo $(MAKE_TESTS) $@
 
 
 
 
 ### Makefile targets ###
 .DEFAULT_GOAL:=all
-.PHONY: all
-.PHONY: dirlist
-.PHONY: $(ALL_MODULES)
+.PHONY: all test production clean
+.PHONY: dirlist info
+.PHONY: $(MODULES)
 
-all: $(ALL_MODULES)
+all: $(MODULES)
 
-dirlist: $(ALL_MODULES)
+dirlist test production: $(MODULES)
+
+clean: $(MODULES)
+
 
 
 ### Helpers ###
-MAKE_DIRECTORIES=make $(MAKECMDGOALS) --file $@/make_directories.make MODULE_DIR=$@ TARGET_NAME=$(@F)
-MAKE_PRODUCTION=make --file ProductionMakefile.make -C
-MAKE_LIBRARY=make --file LibraryMakefile.make -C
-MAKE_TESTS=make --file MakefileCppUTest.make
+MAKE_LAUNCHER=make $(MAKECMDGOALS) --file make_launcher.make MODULE_DIR=$@ TARGET_NAME=$(@F)
 
 
 ### Documentation ###

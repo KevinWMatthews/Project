@@ -1,7 +1,8 @@
-###########################
-### Directory structure ###
-###########################
-#Ok, I lied. This makefile does not actually create the directory structure. It defines it.
+#This makefile defines the directory structure and then launches the appropriate sub-makefile
+
+##################################
+### Define directory structure ###
+##################################
 ROOT_DIR=.
 
 
@@ -41,9 +42,20 @@ endif
 
 
 ### Targets ###
-.phony: all dirlist
+.PHONY: all test production
+.PHONY: dirlist
+
 all:
-	@echo in all
+	@echo all
+
+test:
+	@echo test
+
+production:
+	@echo production
+
+clean:
+	@echo clean
 
 dirlist:
 	@echo "~~~ Directory structure ~~~"
@@ -72,5 +84,3 @@ dirlist:
 	@echo CPPUTEST_LIB_LIST: $(CPPUTEST_LIB_LIST)
 	@echo CPPUTEST_LIB_DIR: $(CPPUTEST_LIB_DIR)
 	@echo
-
-
