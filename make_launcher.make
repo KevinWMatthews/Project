@@ -18,6 +18,7 @@ include $(MODULE_DIR)/make_module_config.make
 .PHONY: all test production
 .PHONY: dirlist
 
+export
 all clean:
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 	$(LAUNCH_MAKE) MakefileProduction.make
