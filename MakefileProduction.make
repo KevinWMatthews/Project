@@ -16,6 +16,8 @@ CPP_LINKER=
 .PHONY: all production clean
 .PHONY: dirlist
 
+include make_helper_functions
+
 all:
 	@echo MakefileProduction all
 
@@ -26,7 +28,7 @@ clean:
 	@echo MakefileProduction clean
 
 dirlist:
-	@echo OBJ_DIR: $(OBJ_DIR)
-	@echo TARGET_DIR: $(TARGET_DIR)
-	@echo TARGET_NAME: $(TARGET_NAME)
+	$(call echo_with_header,OBJ_DIR)
+	$(call echo_with_header,TARGET_DIR)
+	$(call echo_with_header,TARGET_NAME)
 	@echo

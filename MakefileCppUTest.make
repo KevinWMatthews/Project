@@ -81,6 +81,8 @@ CPPUTEST_LIB_DIR=/usr/local/lib
 endif
 
 
+include make_helper_functions
+
 #########################################################
 ### Auto-detect source code and generate object files ###
 #########################################################
@@ -128,10 +130,6 @@ src_to_d=$(call src_to,.d,$1)
 
 
 
-#"test" echo; used for checking makefile parameters
-ECHO=@echo -e
-echo_with_header=$(ECHO) "${BoldPurple}  $1:${NoColor}"; echo $2; echo;
-
 
 ######################
 ### Compiler tools ###
@@ -162,67 +160,48 @@ filelist:
 	$(call echo_with_header,TARGET,$(TARGET))
 
 	$(ECHO) "\n${BoldCyan}All Dependencies:${NoColor}"
-	$(call echo_with_header,DEP_FILES,$(DEP_FILES))
+	$(call echo_with_header,DEP_FILES)
 
 	$(ECHO) "\n${BoldCyan}Production code:${NoColor}"
-	$(call echo_with_header,SRC,$(SRC))
-	$(call echo_with_header,SRC_OBJ,$(SRC_OBJ))
-	$(call echo_with_header,SRC_DEP,$(SRC_DEP))
-	$(call echo_with_header,INC,$(INC))
-	$(call echo_with_header,LIBS,$(LIBS))
+	$(call echo_with_header,SRC)
+	$(call echo_with_header,SRC_OBJ)
+	$(call echo_with_header,SRC_DEP)
+	$(call echo_with_header,INC)
+	$(call echo_with_header,LIBS)
 
 	$(ECHO) "\n${BoldCyan}Test code:${NoColor}"
-	$(call echo_with_header,PRODUCTION_LIB,$(PRODUCTION_LIB))
-	$(call echo_with_header,TEST_TARGET,$(TEST_TARGET))
-	$(call echo_with_header,TEST_SRC,$(TEST_SRC))
-	$(call echo_with_header,TEST_OBJ,$(TEST_OBJ))
-	$(call echo_with_header,TEST_DEP,$(TEST_DEP))
-	$(call echo_with_header,TEST_INC,$(TEST_INC))
-	$(call echo_with_header,TEST_LIBS,$(TEST_LIBS))
+	$(call echo_with_header,PRODUCTION_LIB)
+	$(call echo_with_header,TEST_TARGET)
+	$(call echo_with_header,TEST_SRC)
+	$(call echo_with_header,TEST_OBJ)
+	$(call echo_with_header,TEST_DEP)
+	$(call echo_with_header,TEST_INC)
+	$(call echo_with_header,TEST_LIBS)
 
 	$(ECHO) "\n${BoldCyan}CppUTest code:${NoColor}"
 	$(call echo_with_header,CPPUTEST_LIBS,$(CPPUTEST_LIBS))
+	@echo
 
 dirlist:
-	@echo TEST_DIR: $(TEST_DIR)
-	@echo TEST_SRC_DIRS: $(TEST_SRC_DIRS)
-	@echo TEST_INC_DIRS: $(TEST_INC_DIRS)
-	@echo TEST_LIB_DIRS: $(TEST_LIB_DIRS)
-	@echo TEST_LIB_LIST: $(TEST_LIB_LIST)
-	@echo TEST_OBJ_DIR: $(TEST_OBJ_DIR)
-	@echo TEST_TARGET_DIR: $(TEST_TARGET_DIR)
-	@echo TEST_TARGET_NAME: $(TEST_TARGET_NAME)
-	@echo
-	@echo CPPUTEST_LIB_LIST: $(CPPUTEST_LIB_LIST)
-	@echo CPPUTEST_LIB_DIR: $(CPPUTEST_LIB_DIR)
+	$(call echo_with_header,TEST_DIR)
+	$(call echo_with_header,TEST_SRC_DIRS)
+	$(call echo_with_header,TEST_INC_DIRS)
+	$(call echo_with_header,TEST_LIB_DIRS)
+	$(call echo_with_header,TEST_LIB_LIST)
+	$(call echo_with_header,TEST_OBJ_DIR)
+	$(call echo_with_header,TEST_TARGET_DIR)
+	$(call echo_with_header,TEST_TARGET_NAME)
+	$(call echo_with_header,CPPUTEST_LIB_LIST)
+	$(call echo_with_header,CPPUTEST_LIB_DIR)
 	@echo
 
 flags:
-	@echo COMPILER_FLAGS: $(COMPILER_FLAGS)
-	@echo INCLUDE_FLAGS: $(INCLUDE_FLAGS)
-	@echo LINKER_FLAGS: $(LINKER_FLAGS)
-	@echo TEST_COMPILER_FLAGS: $(TEST_COMPILER_FLAGS)
-	@echo TEST_INCLUDE_FLAGS: $(TEST_INCLUDE_FLAGS)
-	@echo TEST_LINKER_FLAGS: $(TEST_LINKER_FLAGS)
-	@echo CPPUTEST_LINKER_FLAGS: $(CPPUTEST_LINKER_FLAGS)
-	@echo ARCHIVER_FLAGS: $(ARCHIVER_FLAGS)
-
-
-### Color codes ###
-Blue       =\033[0;34m
-BoldBlue   =\033[1;34m
-Gray       =\033[0;37m
-DarkGray   =\033[1;30m
-Green      =\033[0;32m
-BoldGreen  =\033[1;32m
-Cyan       =\033[0;36m
-BoldCyan   =\033[1;36m
-Red        =\033[0;31m
-BoldRed    =\033[1;31m
-Purple     =\033[0;35m
-BoldPurple =\033[1;35m
-Yellow     =\033[0;33m
-BoldYellow =\033[1;33m
-BoldWhite  =\033[1;37m
-NoColor    =\033[0;0m
-NC         =\033[0;0m
+	$(call echo_with_header,COMPILER_FLAGS)
+	$(call echo_with_header,INCLUDE_FLAGS)
+	$(call echo_with_header,LINKER_FLAGS)
+	$(call echo_with_header,TEST_COMPILER_FLAGS)
+	$(call echo_with_header,TEST_INCLUDE_FLAGS)
+	$(call echo_with_header,TEST_LINKER_FLAGS)
+	$(call echo_with_header,CPPUTEST_LINKER_FLAGS)
+	$(call echo_with_header,ARCHIVER_FLAGS)
+	@echo

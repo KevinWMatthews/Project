@@ -27,6 +27,8 @@ LINKER_FLAGS=
 .PHONY: filelist dirlist flags
 
 export
+include make_helper_functions
+
 all clean:
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 	$(LAUNCH_MAKE) MakefileProduction.make
@@ -48,12 +50,12 @@ flags:
 dirlist:
 	@echo "~~~ $(MODULE_DIR) Directory structure ~~~"
 	@echo "  $(MODULE_DIR) Common folders:"
-	@echo ROOT_DIR: $(ROOT_DIR)
-	@echo MODULE_DIR: $(MODULE_DIR)
-	@echo SRC_DIRS: $(SRC_DIRS)
-	@echo INC_DIRS: $(INC_DIRS)
-	@echo LIB_DIRS: $(LIB_DIRS)
-	@echo LIB_LIST: $(LIB_LIST)
+	$(call echo_with_header,ROOT_DIR)
+	$(call echo_with_header,MODULE_DIR)
+	$(call echo_with_header,SRC_DIRS)
+	$(call echo_with_header,INC_DIRS)
+	$(call echo_with_header,LIB_DIRS)
+	$(call echo_with_header,LIB_LIST)
 	@echo
 	@echo "  $(MODULE_DIR) Production code:"
 	$(LAUNCH_MAKE) MakefileProduction.make
