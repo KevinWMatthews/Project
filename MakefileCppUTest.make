@@ -70,7 +70,6 @@ TEST_SRC_DIRS=$(TEST_DIR)/src
 TEST_INC_DIRS=$(TEST_DIR)/inc
 TEST_OBJ_DIR=$(TEST_DIR)/obj
 TEST_TARGET_DIR=$(TEST_DIR)/build
-#PRODUCTION_LIB_DIR=$(TEST_ROOT_DIR)/build
 
 # CppUTest test harness source code
 CPPUTEST_LIB_LIST=CppUTest CppUTestExt
@@ -98,7 +97,7 @@ LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 # User unit tests
 TEST_TARGET=$(TEST_TARGET_DIR)/$(TEST_TARGET_NAME)_test
 #Production code is compiled into a library
-PRODUCTION_LIB=$(PRODUCTION_LIB_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME)))
+PRODUCTION_LIB=$(TEST_TARGET_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME)))
 
 TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
