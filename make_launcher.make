@@ -1,5 +1,10 @@
 #This makefile defines the directory structure and then launches the appropriate sub-makefile
 
+# Set this to @ to keep the makefiles quiet
+ifndef SILENCE
+	SILENCE =
+endif
+
 #########################################
 ### Define common directory structure ###
 #########################################
@@ -12,11 +17,14 @@ include $(MODULE_DIR)/make_module_config.make
 #LIB_DIRS    User-configured in make_module_conig
 #LIB_LIST    User-configured in make_module_conig
 
-
+COMPILER_FLAGS=-Wall
+INCLUDE_FLAGS=
+#Linker flags for libraries will be handled automatically if make_module_config is set
+LINKER_FLAGS=
 
 ### Targets ###
 .PHONY: all test production
-.PHONY: dirlist
+.PHONY: filelist dirlist flags
 
 export
 all clean:
@@ -28,6 +36,14 @@ test:
 
 production:
 	$(LAUNCH_MAKE) MakefileProduction.make
+
+filelist:
+	@echo "~~~ $(MODULE_DIR) $@"
+	$(LAUNCH_MAKE) MakefileCppUTest.make
+
+flags:
+	@echo "~~~ $(MODULE_DIR) Flags ~~~"
+	$(LAUNCH_MAKE) MakefileCppUTest.make
 
 dirlist:
 	@echo "~~~ $(MODULE_DIR) Directory structure ~~~"
