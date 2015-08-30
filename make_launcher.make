@@ -48,8 +48,8 @@ flags:
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 
 dirlist:
-	@echo "~~~ $(MODULE_DIR) Directory structure ~~~"
-	@echo "  $(MODULE_DIR) Common folders:"
+	$(call color_echo,"~~~ $(MODULE_DIR) Directory structure ~~~",BoldCyan)
+	$(call color_echo,"  $(MODULE_DIR) Common folders:",BoldPurple)
 	$(call echo_with_header,ROOT_DIR)
 	$(call echo_with_header,MODULE_DIR)
 	$(call echo_with_header,SRC_DIRS)
@@ -57,9 +57,9 @@ dirlist:
 	$(call echo_with_header,LIB_DIRS)
 	$(call echo_with_header,LIB_LIST)
 	@echo
-	@echo "  $(MODULE_DIR) Production code:"
+	$(call color_echo,"  $(MODULE_DIR) Production code:",BoldCyan)
 	$(LAUNCH_MAKE) MakefileProduction.make
-	@echo "  $(MODULE_DIR) Test code:"
+	$(call color_echo,"  $(MODULE_DIR) Test code:",BoldCyan)
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 	@echo
 

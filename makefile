@@ -14,7 +14,6 @@ lib/BitManip lib/ChipFunctions:
 
 
 
-
 ### Makefile targets ###
 .DEFAULT_GOAL:=all
 .PHONY: all clean
