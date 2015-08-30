@@ -37,7 +37,7 @@ clean: $(MODULES)
 
 
 ### Helpers ###
-MAKE_LAUNCHER=make $(MAKECMDGOALS) --file make_launcher.make MODULE_DIR=$@ TARGET_NAME=$(@F)
+MAKE_LAUNCHER=make $(MAKECMDGOALS) --file make_launcher.make MODULE_DIR=$@
 
 
 ### Documentation ###
