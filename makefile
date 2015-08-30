@@ -30,7 +30,7 @@ clean: $(MODULES)
 
 
 ### Helpers ###
-MAKE_LAUNCHER=make $(MAKECMDGOALS) --file make_launcher.make MODULE_DIR=$@
+MAKE_LAUNCHER=make $(MAKECMDGOALS) --file make_launcher.make MODULE=$@
 
 
 ### Documentation ###

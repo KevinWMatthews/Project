@@ -1,8 +1,4 @@
 #Production code
-### Production-specific directory structure ###
-TARGET_NAME=$(notdir $(MODULE_DIR))
-OBJ_DIR=$(MODULE_DIR)/obj
-TARGET_DIR=$(MODULE_DIR)/build
 
 
 ### Compiler tools ###

@@ -9,8 +9,11 @@ endif
 ### Define common directory structure ###
 #########################################
 ROOT_DIR=.
-#MODULE_DIR  Passed into this makefile
-
+MODULE_DIR=$(MODULE)
+### Production-specific directory structure ###
+TARGET_NAME=$(notdir $(MODULE_DIR))
+OBJ_DIR=$(MODULE_DIR)/obj
+TARGET_DIR=$(MODULE_DIR)/build
 include $(MODULE_DIR)/make_module_config.make
 #SRC_DIRS    User-configured in make_module_conig
 #INC_DIRS    User-configured in make_module_conig

@@ -140,17 +140,88 @@ CPP_COMPILER=g++
 CPP_LINKER=g++
 
 .DEFAULT_GOAL:=all
-.PHONY: all test clean
-.PHONY: dirlist flags
+#These make not all exist...
+.PHONY: all rebuild run compile clean cleanp
+.PHONY: test rtest cleant
+.PHONY: dirlist filelist flags vars colortest help
 
-all:
-	@echo MakefileCppUTest all
 
-test:
-	@echo MakefileCppUTest test
+all: test
+
+rebuild: clean all
+
+### Production code rules ###
+run: $(TARGET)
+	echo $(TARGET)
+	$(ECHO) "\n${BoldYellow}Executing $(notdir $<)...${NoColor}"
+	$(ECHO) "${DarkGray}Production${NoColor}"
+	$(ECHO)
+	@$(SILENCE)$(TARGET)
+	$(ECHO) "\n\n${Green}...Execution finished!${NoColor}\n"
+
+compile: $(TARGET)
+
+$(TARGET): $(SRC_OBJ) $(MCU_OBJ)
+	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
+	$(ECHO) "${DarkGray}Production${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(C_LINKER) $^ -o $@ $(LINKER_FLAGS)
+	$(ECHO) "${Green}...Executable created!\n${NoColor}"
+
+$(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
+	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
+	$(ECHO) "${DarkGray}Production${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< $(INCLUDE_FLAGS) $(MCU_INCLUDE_FLAGS) -o $@
 
 clean:
-	@echo MakefileCppUTest clean
+	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
+	$(SILENCE)rm -rf $(TARGET_DIR)
+	$(SILENCE)rm -rf $(OBJ_DIR)
+	$(SILENCE)rm -rf $(PRODUCTION_LIB_DIR)
+	$(SILENCE)rm -rf $(TEST_OBJ_DIR)
+	$(SILENCE)rm -rf $(TEST_TARGET_DIR)
+	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
+
+
+### Test code rules ###
+test: $(TEST_TARGET)
+	$(ECHO) "\n${BoldRed}Executing $(notdir $<)...${BoldBlue}"
+	$(ECHO)
+	$(SILENCE)$(TEST_TARGET)
+	$(ECHO) "\n${BoldGreen}...Tests executed!${NoColor}\n"
+
+rtest: clean test
+
+# Be SURE to link the test objects before the source code library!!
+# This is what enables link-time substitution
+$(TEST_TARGET): $(TEST_OBJ) $(PRODUCTION_LIB)
+	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
+	$(ECHO) "${DarkGray}test${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(CPP_LINKER) -o $@ $^ $(LINKER_FLAGS) $(TEST_LINKER_FLAGS) $(CPPUTEST_LINKER_FLAGS)
+
+#Target source code library is placed in the test folder because the production build doesn't use it
+$(PRODUCTION_LIB): $(SRC_OBJ)
+	$(ECHO) "\n${Yellow}Archiving all production code into $(notdir $@)... ${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
+
+$(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c
+	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+
+$(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
+	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(ECHO) "${DarkGray}test${NoColor}"
+	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+
+# MAKECMDGOALS is a special variable that is set by Make
+ifneq "$(MAKECMDGOALS)" "clean"
+-include $(DEP_FILES)
+endif
 
 filelist:
 	$(ECHO) "\n${BoldCyan}Directory of MakefileWorker.make:${NoColor}"
@@ -163,6 +234,7 @@ filelist:
 
 	$(ECHO) "\n${BoldCyan}Production code:${NoColor}"
 	$(call echo_with_header,SRC)
+	$(call echo_with_header,CLEAN_SRC)
 	$(call echo_with_header,SRC_OBJ)
 	$(call echo_with_header,SRC_DEP)
 	$(call echo_with_header,INC)
