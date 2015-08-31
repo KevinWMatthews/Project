@@ -1,6 +1,12 @@
 #This file does not make anything!
 #It contains helper functions for the various makefiles.
 
+#Must remove dotdot first because ./ produces a false positive when compared to ../
+clean_path=$(call remove_leading_dot,$(call remove_leading_dotdot,$1))
+remove_leading_dot=$(subst ./,,$1)
+remove_leading_dotdot=$(subst ../,,$1)
+
+
 #"test" echo; used for checking makefile parameters
 # $1 = text, $2 = text color
 color_echo=$(ECHO) "${$2}$1${NoColor}"

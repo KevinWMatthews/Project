@@ -9,16 +9,16 @@ endif
 ### Define common directory structure ###
 #########################################
 ROOT_DIR=.
-MODULE_DIR=$(MODULE)
+MODULE_DIR=$(ROOT_DIR)/$(MODULE)
 ### Production-specific directory structure ###
 TARGET_NAME=$(notdir $(MODULE_DIR))
 OBJ_DIR=$(MODULE_DIR)/obj
 TARGET_DIR=$(MODULE_DIR)/build
 include $(MODULE_DIR)/make_module_config.make
-#SRC_DIRS    User-configured in make_module_conig
-#INC_DIRS    User-configured in make_module_conig
-#LIB_DIRS    User-configured in make_module_conig
-#LIB_LIST    User-configured in make_module_conig
+#SRC_DIRS    User-configured in make_module_config
+#INC_DIRS    User-configured in make_module_config
+#LIB_DIRS    User-configured in make_module_config
+#LIB_LIST    User-configured in make_module_config
 
 COMPILER_FLAGS=-Wall
 INCLUDE_FLAGS=

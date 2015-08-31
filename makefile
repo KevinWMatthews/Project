@@ -6,7 +6,6 @@
 #Slick!
 MODULES= \
   lib/BitManip \
-  lib/ChipFunctions \
 
 lib/BitManip lib/ChipFunctions:
 	$(MAKE_LAUNCHER)
@@ -21,6 +20,7 @@ lib/BitManip lib/ChipFunctions:
 .PHONY: production
 .PHONY: filelist dirlist flags info
 .PHONY: $(MODULES)
+
 
 all: $(MODULES)
 
