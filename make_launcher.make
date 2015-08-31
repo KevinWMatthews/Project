@@ -5,19 +5,22 @@ ifndef SILENCE
 	SILENCE =
 endif
 
+include make_helper_functions
+
+
 #########################################
 ### Define common directory structure ###
 #########################################
 ROOT_DIR=.
-MODULE_DIR=$(ROOT_DIR)/$(MODULE)
+MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 ### Production-specific directory structure ###
 TARGET_NAME=$(notdir $(MODULE_DIR))
 OBJ_DIR=$(MODULE_DIR)/obj
 TARGET_DIR=$(MODULE_DIR)/build
 include $(MODULE_DIR)/make_module_config.make
-#SRC_DIRS    User-configured in make_module_config
-#INC_DIRS    User-configured in make_module_config
-#LIB_DIRS    User-configured in make_module_config
+SRC_DIRS=$(call clean_path,$(src_dirs))
+INC_DIRS=$(call clean_path,$(inc_dirs))
+LIB_DIRS=$(call clean_path,$(lib_dirs))
 #LIB_LIST    User-configured in make_module_config
 
 COMPILER_FLAGS=-Wall
@@ -25,12 +28,11 @@ INCLUDE_FLAGS=
 #Linker flags for libraries will be handled automatically if make_module_config is set
 LINKER_FLAGS=
 
+export
+
 ### Targets ###
 .PHONY: all test production
 .PHONY: filelist dirlist flags
-
-export
-include make_helper_functions
 
 all clean:
 	$(LAUNCH_MAKE) MakefileCppUTest.make

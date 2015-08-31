@@ -65,7 +65,7 @@ TEST_LIB_DIRS=
 #Static library names without lib prefix and .a suffix
 TEST_LIB_LIST=
 TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
-TEST_DIR=$(MODULE_DIR)/test
+TEST_DIR=$(call clean_path,$(MODULE_DIR)/test)
 TEST_SRC_DIRS=$(TEST_DIR)/src
 TEST_INC_DIRS=$(TEST_DIR)/inc
 TEST_OBJ_DIR=$(TEST_DIR)/obj
@@ -112,21 +112,10 @@ CPPUTEST_LIBS=$(addprefix lib,$(addsuffix .a,$(CPPUTEST_LIB_LIST)))
 DEP_FILES=$(SRC_DEP) $(TEST_DEP)
 
 ### Helper functions ###
-get_subdirs = $(patsubst %/,%,$(sort $(dir $(wildcard $1*/))))
 get_src_from_dir = $(wildcard $1/*.c) $(wildcard $1/*.cpp)
 get_src_from_dir_list = $(foreach dir, $1, $(call get_src_from_dir,$(dir)))
 get_inc_from_dir = $(wildcard $1/*.h)
 get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_from_dir,$(dir)))
-remove_dotdot=$(patsubst ../%,%,$1)
-remove_dot=$(patsubst ./%,%,$1)
-#Hahaha, need to loop this for as many subdirectories as we're going to support
-#There must be a better way ;)
-clean_path=$(call remove_dot,$(call remove_dotdot,$(call remove_dotdot,$(call remove_dotdot,$1))))
-#nest calls so we don't get a repetition of .c and .cpp files
-src_to=$(patsubst %.c,%$1,$(patsubst %.cpp,%$1,$2))
-src_to_o=$(call src_to,.o,$1)
-src_to_d=$(call src_to,.d,$1)
-
 
 
 
@@ -224,10 +213,10 @@ ifneq "$(MAKECMDGOALS)" "clean"
 endif
 
 filelist:
-	$(ECHO) "\n${BoldCyan}Directory of MakefileWorker.make:${NoColor}"
+	$(ECHO) "\n${BoldCyan}Directory of MakefileCppUTest.make:${NoColor}"
 	$(ECHO) "$(shell pwd)\n"
 
-	$(call echo_with_header,TARGET,$(TARGET))
+	$(call echo_with_header,TARGET)
 
 	$(ECHO) "\n${BoldCyan}All Dependencies:${NoColor}"
 	$(call echo_with_header,DEP_FILES)
@@ -254,6 +243,7 @@ filelist:
 	@echo
 
 dirlist:
+	$(ECHO) "\n${BoldCyan}Test code:${NoColor}"
 	$(call echo_with_header,TEST_DIR)
 	$(call echo_with_header,TEST_SRC_DIRS)
 	$(call echo_with_header,TEST_INC_DIRS)
