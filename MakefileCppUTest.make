@@ -80,12 +80,14 @@ CPPUTEST_LIB_DIR=/usr/local/lib
 endif
 
 
+
 include make_helper_functions
 
 #########################################################
 ### Auto-detect source code and generate object files ###
 #########################################################
 # Production source code
+TARGET=$(TEST_TARGET_DIR)/$(TARGET_NAME)
 SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
 CLEAN_SRC=$(call clean_path,$(SRC))
 SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
@@ -95,7 +97,7 @@ LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 
 # Test code using CppUTest test harness
 # User unit tests
-TEST_TARGET=$(TEST_TARGET_DIR)/$(TEST_TARGET_NAME)_test
+TEST_TARGET=$(TEST_TARGET_DIR)/$(TEST_TARGET_NAME)
 #Production code is compiled into a library
 PRODUCTION_LIB=$(TEST_TARGET_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME)))
 
