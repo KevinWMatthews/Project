@@ -12,14 +12,17 @@ include make_helper_functions
 ### Define common directory structure ###
 #########################################
 ROOT_DIR=.
+LIB_DIR=lib
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 ### Production-specific directory structure ###
 TARGET_NAME=$(notdir $(MODULE_DIR))
 OBJ_DIR=$(MODULE_DIR)/obj
 TARGET_DIR=$(MODULE_DIR)/build
 include $(MODULE_DIR)/make_module_config.make
-SRC_DIRS=$(call clean_path,$(src_dirs))
-INC_DIRS=$(call clean_path,$(inc_dirs))
+SRC_DIRS=$(MODULE_DIR)/src
+SRC_DIRS+=$(call clean_path,$(src_dirs))
+INC_DIRS=$(MODULE_DIR)/inc
+INC_DIRS+=$(call clean_path,$(inc_dirs))
 LIB_DIRS=$(call clean_path,$(lib_dirs))
 #LIB_LIST    User-configured in make_module_config
 

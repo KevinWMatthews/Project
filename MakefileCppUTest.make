@@ -19,43 +19,6 @@ TEST_LINKER_FLAGS=
 CPPUTEST_LINKER_FLAGS=
 
 
-##Auto-generated flags
-# Production code
-COMPILER_FLAGS+=-c -MMD -MP
-ifeq ($(DEBUG),Y)
-	COMPILER_FLAGS+=-g
-endif
-INCLUDE_FLAGS=$(addprefix -I,$(INC_DIRS))
-LINKER_FLAGS=$(addprefix -L,$(LIB_DIRS))
-LINKER_FLAGS+=$(addprefix -l,$(LIB_LIST))
-
-#Flags for user's unit tests written under CppUTest framework
-ifeq ($DEBUG,Y)
-	TEST_COMPILER_FLAGS+=-g
-endif
-TEST_INCLUDE_FLAGS+=$(addprefix -I,$(TEST_INC_DIR))
-#Link to any other libraries utilized by user tests
-TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_LIB_DIR))
-TEST_LINKER_FLAGS+=$(addprefix -l,$(TEST_LIB_LIST))
-#Link to production source code library is included as a prerequisite in rule for building TEST_TARGET
-# TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_TARGET_DIR))
-# TEST_LINKER_FLAGS+=$(addprefix -l,$(TARGET_NAME))
-
-#Flags for CppUTest framework's source code
-#(not the user's unit tests; the test framework itself)
-CPPUTEST_LINKER_FLAGS+=$(addprefix -l,$(CPPUTEST_LIB_LIST))
-ifeq ("$(OSTYPE)","Cygwin")
-CPPUTEST_LINKER_FLAGS+=$(addprefix -L,$(CPPUTEST_LIB_DIR))
-endif
-
-#Flags for archive tool
-ifdef SILENCE
-	ARCHIVER_FLAGS=rcs
-else
-	ARCHIVER_FLAGS=rcvs
-endif
-
-
 
 ################################
 ### Test directory structure ###
@@ -103,15 +66,55 @@ PRODUCTION_LIB=$(TEST_TARGET_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME))
 
 TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
-TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
-TEST_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(CLEAN_TEST_SRC)))
-TEST_INC=$(call get_inc_from_dir,$(TEST_INC_DIR))
+# TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
+TEST_OBJ=$(call src_to_o,$(CLEAN_TEST_SRC))
+TEST_DEP=$(call src_to_d,$(CLEAN_TEST_SRC))
+TEST_INC=$(call get_inc_from_dir_list,$(TEST_INC_DIRS))
 TEST_LIBS=$(addprefix lib,$(addsuffix .a,$(TEST_LIB_LIST)))
 
 # CppUTest test harness source code
 CPPUTEST_LIBS=$(addprefix lib,$(addsuffix .a,$(CPPUTEST_LIB_LIST)))
 
 DEP_FILES=$(SRC_DEP) $(TEST_DEP)
+
+############################
+### Auto-generated flags ###
+############################
+# Production code
+COMPILER_FLAGS+=-c -MMD -MP
+ifeq ($(DEBUG),Y)
+	COMPILER_FLAGS+=-g
+endif
+INCLUDE_FLAGS=$(addprefix -I,$(INC_DIRS))
+LINKER_FLAGS=$(addprefix -L,$(LIB_DIRS))
+LINKER_FLAGS+=$(addprefix -l,$(LIB_LIST))
+
+#Flags for user's unit tests written under CppUTest framework
+ifeq ($DEBUG,Y)
+	TEST_COMPILER_FLAGS+=-g
+endif
+TEST_INCLUDE_FLAGS+=$(addprefix -I,$(TEST_INC_DIRS))
+#Link to any other libraries utilized by user tests
+TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_LIB_DIR))
+TEST_LINKER_FLAGS+=$(addprefix -l,$(TEST_LIB_LIST))
+#Link to production source code library is included as a prerequisite in rule for building TEST_TARGET
+# TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_TARGET_DIR))
+# TEST_LINKER_FLAGS+=$(addprefix -l,$(TARGET_NAME))
+
+#Flags for CppUTest framework's source code
+#(not the user's unit tests; the test framework itself)
+CPPUTEST_LINKER_FLAGS+=$(addprefix -l,$(CPPUTEST_LIB_LIST))
+ifeq ("$(OSTYPE)","Cygwin")
+CPPUTEST_LINKER_FLAGS+=$(addprefix -L,$(CPPUTEST_LIB_DIR))
+endif
+
+#Flags for archive tool
+ifdef SILENCE
+	ARCHIVER_FLAGS=rcs
+else
+	ARCHIVER_FLAGS=rcvs
+endif
+
 
 ### Helper functions ###
 get_src_from_dir = $(wildcard $1/*.c) $(wildcard $1/*.cpp)
@@ -198,16 +201,16 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $@)
 	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
 
-$(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c
+%.o: $(TEST_DIR)/%.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
-$(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
+%.o: %.cpp
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
-	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
 	$(ECHO) "${DarkGray}test${NoColor}"
-	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $(TEST_OBJ_DIR)/$@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 # MAKECMDGOALS is a special variable that is set by Make
 ifneq "$(MAKECMDGOALS)" "clean"

@@ -1,0 +1,6 @@
+#Ignore build results
+**/build/
+**/obj/
+
+#Sublime Text editor files
+*.sublime-workspace
