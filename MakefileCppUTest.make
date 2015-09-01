@@ -145,28 +145,28 @@ all: test
 rebuild: clean all
 
 ### Production code rules ###
-run: $(TARGET)
-	echo $(TARGET)
-	$(ECHO) "\n${BoldYellow}Executing $(notdir $<)...${NoColor}"
-	$(ECHO) "${DarkGray}Production${NoColor}"
-	$(ECHO)
-	@$(SILENCE)$(TARGET)
-	$(ECHO) "\n\n${Green}...Execution finished!${NoColor}\n"
-
-compile: $(TARGET)
-
-$(TARGET): $(SRC_OBJ) $(MCU_OBJ)
-	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
-	$(ECHO) "${DarkGray}Production${NoColor}"
-	$(SILENCE)mkdir -p $(dir $@)
-	$(SILENCE)$(C_LINKER) $^ -o $@ $(LINKER_FLAGS)
-	$(ECHO) "${Green}...Executable created!\n${NoColor}"
-
-$(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
-	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
-	$(ECHO) "${DarkGray}Production${NoColor}"
-	$(SILENCE)mkdir -p $(dir $@)
-	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< $(INCLUDE_FLAGS) $(MCU_INCLUDE_FLAGS) -o $@
+#run: $(TARGET)
+#	echo $(TARGET)
+#	$(ECHO) "\n${BoldYellow}Executing $(notdir $<)...${NoColor}"
+#	$(ECHO) "${DarkGray}Production${NoColor}"
+#	$(ECHO)
+#	@$(SILENCE)$(TARGET)
+#	$(ECHO) "\n\n${Green}...Execution finished!${NoColor}\n"
+#
+#compile: $(TARGET)
+#
+#$(TARGET): $(SRC_OBJ) $(MCU_OBJ)
+#	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
+#	$(ECHO) "${DarkGray}Production${NoColor}"
+#	$(SILENCE)mkdir -p $(dir $@)
+#	$(SILENCE)$(C_LINKER) $^ -o $@ $(LINKER_FLAGS)
+#	$(ECHO) "${Green}...Executable created!\n${NoColor}"
+#
+#$(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
+#	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
+#	$(ECHO) "${DarkGray}Production${NoColor}"
+#	$(SILENCE)mkdir -p $(dir $@)
+#	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< $(INCLUDE_FLAGS) $(MCU_INCLUDE_FLAGS) -o $@
 
 clean:
 	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
@@ -185,15 +185,20 @@ test: $(TEST_TARGET)
 	$(SILENCE)$(TEST_TARGET)
 	$(ECHO) "\n${BoldGreen}...Tests executed!${NoColor}\n"
 
-rtest: clean test
+#rtest: clean test
 
 # Be SURE to link the test objects before the source code library!!
 # This is what enables link-time substitution
+
+
+#Sigh... the prefix isn't working. Need to rethink this.
 $(TEST_TARGET): $(TEST_OBJ) $(PRODUCTION_LIB)
 	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
-	$(ECHO) "${DarkGray}test${NoColor}"
+	$(ECHO) "${DarkGray}Module test code${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
-	$(SILENCE)$(CPP_LINKER) -o $@ $^ $(LINKER_FLAGS) $(TEST_LINKER_FLAGS) $(CPPUTEST_LINKER_FLAGS)
+	@echo $^
+	@echo $(addprefix $(TEST_OBJ_DIR)/,$^)
+	$(SILENCE)$(CPP_LINKER) -o $@ $(addprefix $(TEST_OBJ_DIR)/,$^) $(LINKER_FLAGS) $(TEST_LINKER_FLAGS) $(CPPUTEST_LINKER_FLAGS)
 
 #Target source code library is placed in the test folder because the production build doesn't use it
 $(PRODUCTION_LIB): $(SRC_OBJ)
@@ -201,21 +206,23 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $@)
 	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
 
-%.o: $(TEST_DIR)/%.c
+$(OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
+	$(ECHO) "${DarkGray}Module production code${NoColor}"
 	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 %.o: %.cpp
+	@echo
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
-	$(ECHO) "${DarkGray}test${NoColor}"
-	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(ECHO) "${DarkGray}Module test code${NoColor}"
+	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $(TEST_OBJ_DIR)/$@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 # MAKECMDGOALS is a special variable that is set by Make
-ifneq "$(MAKECMDGOALS)" "clean"
--include $(DEP_FILES)
-endif
+#ifneq "$(MAKECMDGOALS)" "clean"
+#-include $(DEP_FILES)
+#endif
 
 filelist:
 	$(ECHO) "\n${BoldCyan}Directory of MakefileCppUTest.make:${NoColor}"
