@@ -210,7 +210,7 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
 	$(ECHO) "${DarkGray}test${NoColor}"
-	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $(TEST_OBJ_DIR)/$@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 # MAKECMDGOALS is a special variable that is set by Make
 ifneq "$(MAKECMDGOALS)" "clean"
