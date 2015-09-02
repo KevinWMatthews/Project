@@ -77,6 +77,8 @@ CPPUTEST_LIBS=$(addprefix lib,$(addsuffix .a,$(CPPUTEST_LIB_LIST)))
 
 DEP_FILES=$(SRC_DEP) $(TEST_DEP)
 
+
+
 ############################
 ### Auto-generated flags ###
 ############################
@@ -126,40 +128,20 @@ ARCHIVER=ar
 CPP_COMPILER=g++
 CPP_LINKER=g++
 
+
+
+###############
+### Targets ###
+###############
 .DEFAULT_GOAL:=all
-#These make not all exist...
-.PHONY: all rebuild run compile clean cleanp
-.PHONY: test rtest cleant
-.PHONY: dirlist filelist flags vars colortest help
+.PHONY: all rebuild run compile clean
+.PHONY: test
+.PHONY: dirlist filelist flags
 
 
 all: test
 
 rebuild: clean all
-
-### Production code rules ###
-#run: $(TARGET)
-#	echo $(TARGET)
-#	$(ECHO) "\n${BoldYellow}Executing $(notdir $<)...${NoColor}"
-#	$(ECHO) "${DarkGray}Production${NoColor}"
-#	$(ECHO)
-#	@$(SILENCE)$(TARGET)
-#	$(ECHO) "\n\n${Green}...Execution finished!${NoColor}\n"
-#
-#compile: $(TARGET)
-#
-#$(TARGET): $(SRC_OBJ) $(MCU_OBJ)
-#	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
-#	$(ECHO) "${DarkGray}Production${NoColor}"
-#	$(SILENCE)mkdir -p $(dir $@)
-#	$(SILENCE)$(C_LINKER) $^ -o $@ $(LINKER_FLAGS)
-#	$(ECHO) "${Green}...Executable created!\n${NoColor}"
-#
-#$(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
-#	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
-#	$(ECHO) "${DarkGray}Production${NoColor}"
-#	$(SILENCE)mkdir -p $(dir $@)
-#	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< $(INCLUDE_FLAGS) $(MCU_INCLUDE_FLAGS) -o $@
 
 clean:
 	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
@@ -178,13 +160,8 @@ test: $(TEST_TARGET)
 	$(SILENCE)$(TEST_TARGET)
 	$(ECHO) "\n${BoldGreen}...Tests executed!${NoColor}\n"
 
-#rtest: clean test
-
 # Be SURE to link the test objects before the source code library!!
 # This is what enables link-time substitution
-
-
-#Sigh... the prefix isn't working. Need to rethink this.
 $(TEST_TARGET): $(TEST_OBJ) $(PRODUCTION_LIB)
 	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
@@ -199,7 +176,7 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
 	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $(TEST_OBJ_DIR)/$@ $^
 
-$(OBJ_DIR)/%.o: %.c
+%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module production code${NoColor}"
@@ -212,10 +189,6 @@ $(OBJ_DIR)/%.o: %.c
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
 	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $(TEST_OBJ_DIR)/$@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
-# MAKECMDGOALS is a special variable that is set by Make
-#ifneq "$(MAKECMDGOALS)" "clean"
-#-include $(DEP_FILES)
-#endif
 
 filelist:
 	$(ECHO) "\n${BoldCyan}Directory of MakefileCppUTest.make:${NoColor}"
