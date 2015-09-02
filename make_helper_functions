@@ -19,7 +19,13 @@ src_to=$(call convert_extension,$1,.$2)
 convert_extension=$(patsubst %.c,%$2,$(patsubst %.cpp,%$2,$1))
 
 
-get_subdirs = $(patsubst %/,%,$(sort $(dir $(wildcard $1*/))))
+#Auto-detect source code in folders
+get_src_from_dir = $(wildcard $1/*.c) $(wildcard $1/*.cpp)
+get_src_from_dir_list = $(foreach dir, $1, $(call get_src_from_dir,$(dir)))
+get_inc_from_dir = $(wildcard $1/*.h)
+get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_from_dir,$(dir)))
+
+
 
 #"test" echo; used for checking makefile parameters
 # $1 = text, $2 = text color

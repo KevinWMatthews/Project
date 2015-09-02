@@ -116,13 +116,6 @@ else
 endif
 
 
-### Helper functions ###
-get_src_from_dir = $(wildcard $1/*.c) $(wildcard $1/*.cpp)
-get_src_from_dir_list = $(foreach dir, $1, $(call get_src_from_dir,$(dir)))
-get_inc_from_dir = $(wildcard $1/*.h)
-get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_from_dir,$(dir)))
-
-
 
 ######################
 ### Compiler tools ###
