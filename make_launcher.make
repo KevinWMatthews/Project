@@ -19,9 +19,9 @@ TARGET_NAME=$(notdir $(MODULE_DIR))
 OBJ_DIR=$(MODULE_DIR)/obj
 TARGET_DIR=$(MODULE_DIR)/build
 include $(MODULE_DIR)/make_module_config.make
-SRC_DIRS=$(MODULE_DIR)/src
+SRC_DIRS=$(LIB_DIR)/src
 SRC_DIRS+=$(call clean_path,$(src_dirs))
-INC_DIRS=$(MODULE_DIR)/inc
+INC_DIRS=$(LIB_DIR)/inc
 INC_DIRS+=$(call clean_path,$(inc_dirs))
 LIB_DIRS=$(call clean_path,$(lib_dirs))
 #LIB_LIST    User-configured in make_module_config

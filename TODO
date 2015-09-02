@@ -1,0 +1,5 @@
+TODO
+
+Move obj directory to be in the library. This way it won't be reubuilt by each test.
+
+Rethink each test's build folder. What should be in here? The production code library should be shared....

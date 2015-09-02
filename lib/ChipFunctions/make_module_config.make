@@ -2,7 +2,7 @@
 #Define library dependenies and the location of this module's source code
 
 src_dirs=$(ROOT_DIR)/mockHw/avr
-inc_dirs=$(ROOT_DIR)/mockHw $(LIB_DIR)/inc lib/BitManip/inc
+inc_dirs=$(ROOT_DIR)/mockHw
 
 #List any libraries that this module depends on
 lib_dirs=
