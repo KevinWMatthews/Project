@@ -203,8 +203,8 @@ $(TEST_TARGET): $(TEST_OBJ) $(PRODUCTION_LIB)
 #Target source code library is placed in the test folder because the production build doesn't use it
 $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(ECHO) "\n${Yellow}Archiving all production code into $(notdir $@)... ${NoColor}"
-	$(SILENCE)mkdir -p $(dir $@)
-	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
+	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
+	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $(TEST_OBJ_DIR)/$@ $^
 
 $(OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
