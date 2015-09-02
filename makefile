@@ -6,6 +6,7 @@
 #Slick!
 MODULES= \
   lib/BitManip \
+  lib/ChipFunctions \
 
 lib/BitManip lib/ChipFunctions:
 	$(MAKE_LAUNCHER)

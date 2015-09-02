@@ -176,7 +176,7 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
 	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $(TEST_OBJ_DIR)/$@ $^
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module production code${NoColor}"

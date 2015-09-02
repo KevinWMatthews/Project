@@ -1,0 +1,3 @@
+todo
+
+What to do with enable/disable, set_input, set_output and out-of-bounds bit number? Don't know how to test failure. Could convert to using bitmask instead of bit number? Hmmmm, I'd rather not because of io.h....
