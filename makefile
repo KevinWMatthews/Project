@@ -1,8 +1,7 @@
 ### User config ###
 #Add all tests to this list!
 #To run specific test, execute
-#  make test TEST=<name> from the terminal
-#This will override all instances of TEST in this makefile (only?)
+#  make test MODULES=<name> from the terminal
 #Slick!
 MODULES= \
   lib/BitManip \
