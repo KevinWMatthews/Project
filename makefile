@@ -7,8 +7,9 @@
 MODULES= \
   lib/BitManip \
   lib/ChipFunctions \
+  lib/Timer0 \
 
-lib/BitManip lib/ChipFunctions:
+lib/BitManip lib/ChipFunctions lib/Timer0:
 	$(MAKE_LAUNCHER)
 
 
