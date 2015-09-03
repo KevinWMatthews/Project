@@ -84,8 +84,8 @@ ifeq ($(DEBUG),Y)
 	COMPILER_FLAGS+=-g
 endif
 #This may move up to the launcher
-INCLUDE_FLAGS=$(addprefix -I,$(INC_DIRS))
-LINKER_FLAGS=$(addprefix -L,$(LIB_DIRS))
+INCLUDE_FLAGS+=$(addprefix -I,$(INC_DIRS))
+LINKER_FLAGS+=$(addprefix -L,$(LIB_DIRS))
 LINKER_FLAGS+=$(addprefix -l,$(LIB_LIST))
 
 #Flags for user's unit tests written under CppUTest framework
