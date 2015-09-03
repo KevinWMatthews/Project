@@ -15,10 +15,12 @@ ROOT_DIR=.
 LIB_DIR=lib
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 ### Production-specific directory structure ###
-TARGET_NAME=$(notdir $(MODULE_DIR))
-OBJ_DIR=$(MODULE_DIR)/obj
-TARGET_DIR=$(MODULE_DIR)/build
+TARGET_NAME=TheProject
+TARGET=$(BUILD_DIR)/$(TARGET_NAME)
+OBJ_DIR=$(call clean_path,$(ROOT_DIR)/obj)
+BUILD_DIR=$(call clean_path,$(ROOT_DIR)/build)
 include $(MODULE_DIR)/make_module_config.make
+#src_dirs, inc_dirs, and lib_dirs are user configured in make_module_config
 SRC_DIRS=$(LIB_DIR)/src
 SRC_DIRS+=$(call clean_path,$(src_dirs))
 INC_DIRS=$(LIB_DIR)/inc
@@ -37,9 +39,17 @@ export
 .PHONY: all test production
 .PHONY: filelist dirlist flags
 
-all clean:
+all:
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 	$(LAUNCH_MAKE) MakefileProduction.make
+
+clean:
+	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
+	$(SILENCE)rm -rf $(OBJ_DIR)
+	$(SILENCE)rm -rf $(BUILD_DIR)
+	$(LAUNCH_MAKE) MakefileCppUTest.make
+	$(LAUNCH_MAKE) MakefileProduction.make
+	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
 
 test:
 	$(LAUNCH_MAKE) MakefileCppUTest.make
@@ -48,7 +58,13 @@ production:
 	$(LAUNCH_MAKE) MakefileProduction.make
 
 filelist:
-	@echo "~~~ $(MODULE_DIR) $@"
+	$(ECHO) "${BoldGreen}~~~ $(MODULE_DIR) $@ ~~~${NoColor}"
+	$(ECHO) "\n${BoldCyan}Directory of makefile_launcher.make:${NoColor}"
+	$(ECHO) "$(shell pwd)\n"
+	@echo
+	$(call echo_with_header,TARGET_NAME)
+	$(call echo_with_header,TARGET)
+	@echo
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 
 flags:
@@ -62,6 +78,8 @@ dirlist:
 	$(call echo_with_header,MODULE_DIR)
 	$(call echo_with_header,SRC_DIRS)
 	$(call echo_with_header,INC_DIRS)
+	$(call echo_with_header,OBJ_DIR)
+	$(call echo_with_header,BUILD_DIR)
 	$(call echo_with_header,LIB_DIRS)
 	$(call echo_with_header,LIB_LIST)
 	@echo

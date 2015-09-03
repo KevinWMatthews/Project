@@ -16,15 +16,16 @@ include make_helper_functions
 
 all:
 	@echo MakefileProduction all
+	@echo
 
 production:
 	@echo MakefileProduction production
+	@echo
 
 clean:
 	@echo MakefileProduction clean
+	@echo
 
 dirlist:
-	$(call echo_with_header,OBJ_DIR)
-	$(call echo_with_header,TARGET_DIR)
-	$(call echo_with_header,TARGET_NAME)
+	@echo MakefileProduction dirlist
 	@echo

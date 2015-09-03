@@ -23,16 +23,19 @@ CPPUTEST_LINKER_FLAGS=
 ################################
 ### Test directory structure ###
 ################################
+TEST_DIR=$(call clean_path,$(MODULE_DIR)/test)
+TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
+TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
+TEST_SRC_DIRS=$(TEST_DIR)/src
+TEST_INC_DIRS=$(TEST_DIR)/inc
 #If for some reason your tests have a library dependency, list it here
 TEST_LIB_DIRS=
 #Static library names without lib prefix and .a suffix
 TEST_LIB_LIST=
-TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
-TEST_DIR=$(call clean_path,$(MODULE_DIR)/test)
-TEST_SRC_DIRS=$(TEST_DIR)/src
-TEST_INC_DIRS=$(TEST_DIR)/inc
-TEST_OBJ_DIR=$(TEST_DIR)/obj
-TEST_TARGET_DIR=$(TEST_DIR)/build
+#TEST_OBJ_DIR=$(OBJ_DIR)
+#TEST_BUILD_DIR=$(BUILD_DIR)
+#Production code is compiled into a library
+PRODUCTION_LIB=$(BUILD_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME)))
 
 # CppUTest test harness source code
 CPPUTEST_LIB_LIST=CppUTest CppUTestExt
@@ -50,7 +53,6 @@ include make_helper_functions
 ### Auto-detect source code and generate object files ###
 #########################################################
 # Production source code
-TARGET=$(TEST_TARGET_DIR)/$(TARGET_NAME)
 SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
 CLEAN_SRC=$(call clean_path,$(SRC))
 SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
@@ -59,16 +61,10 @@ INC=$(call get_inc_from_dir_list,$(INC_DIRS))
 LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 
 # Test code using CppUTest test harness
-# User unit tests
-TEST_TARGET=$(TEST_TARGET_DIR)/$(TEST_TARGET_NAME)
-#Production code is compiled into a library
-PRODUCTION_LIB=$(TEST_TARGET_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME)))
-
 TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
-# TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
-TEST_OBJ=$(call src_to_o,$(CLEAN_TEST_SRC))
-TEST_DEP=$(call src_to_d,$(CLEAN_TEST_SRC))
+TEST_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
+TEST_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_TEST_SRC)))
 TEST_INC=$(call get_inc_from_dir_list,$(TEST_INC_DIRS))
 TEST_LIBS=$(addprefix lib,$(addsuffix .a,$(TEST_LIB_LIST)))
 
@@ -100,7 +96,7 @@ TEST_INCLUDE_FLAGS+=$(addprefix -I,$(TEST_INC_DIRS))
 TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_LIB_DIR))
 TEST_LINKER_FLAGS+=$(addprefix -l,$(TEST_LIB_LIST))
 #Link to production source code library is included as a prerequisite in rule for building TEST_TARGET
-# TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_TARGET_DIR))
+# TEST_LINKER_FLAGS+=$(addprefix -L,$(TEST_BUILD_DIR))
 # TEST_LINKER_FLAGS+=$(addprefix -l,$(TARGET_NAME))
 
 #Flags for CppUTest framework's source code
@@ -144,13 +140,8 @@ all: test
 rebuild: clean all
 
 clean:
-	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
-	$(SILENCE)rm -rf $(TARGET_DIR)
-	$(SILENCE)rm -rf $(OBJ_DIR)
-	$(SILENCE)rm -rf $(PRODUCTION_LIB_DIR)
-	$(SILENCE)rm -rf $(TEST_OBJ_DIR)
-	$(SILENCE)rm -rf $(TEST_TARGET_DIR)
-	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
+#	$(SILENCE)rm -rf $(TEST_OBJ_DIR)
+#	$(SILENCE)rm -rf $(TEST_BUILD_DIR)
 
 
 ### Test code rules ###
@@ -166,15 +157,13 @@ $(TEST_TARGET): $(TEST_OBJ) $(PRODUCTION_LIB)
 	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
-	@echo $^
-	@echo $(addprefix $(TEST_OBJ_DIR)/,$^)
-	$(SILENCE)$(CPP_LINKER) -o $@ $(addprefix $(TEST_OBJ_DIR)/,$^) $(LINKER_FLAGS) $(TEST_LINKER_FLAGS) $(CPPUTEST_LINKER_FLAGS)
+	$(SILENCE)$(CPP_LINKER) -o $@ $^ $(LINKER_FLAGS) $(TEST_LINKER_FLAGS) $(CPPUTEST_LINKER_FLAGS)
 
 #Target source code library is placed in the test folder because the production build doesn't use it
 $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(ECHO) "\n${Yellow}Archiving all production code into $(notdir $@)... ${NoColor}"
-	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
-	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $(TEST_OBJ_DIR)/$@ $^
+	$(SILENCE)mkdir -p $(dir $@)
+	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
 
 $(OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
@@ -182,19 +171,17 @@ $(OBJ_DIR)/%.o: %.c
 	$(ECHO) "${DarkGray}Module production code${NoColor}"
 	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
-%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp
 	@echo
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
-	$(SILENCE)mkdir -p $(dir $(TEST_OBJ_DIR)/$@)
+	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
-	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $(TEST_OBJ_DIR)/$@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 
 filelist:
 	$(ECHO) "\n${BoldCyan}Directory of MakefileCppUTest.make:${NoColor}"
 	$(ECHO) "$(shell pwd)\n"
-
-	$(call echo_with_header,TARGET)
 
 	$(ECHO) "\n${BoldCyan}All Dependencies:${NoColor}"
 	$(call echo_with_header,DEP_FILES)
@@ -209,6 +196,7 @@ filelist:
 
 	$(ECHO) "\n${BoldCyan}Test code:${NoColor}"
 	$(call echo_with_header,PRODUCTION_LIB)
+	$(call echo_with_header,TEST_TARGET_NAME)
 	$(call echo_with_header,TEST_TARGET)
 	$(call echo_with_header,TEST_SRC)
 	$(call echo_with_header,TEST_OBJ)
@@ -227,9 +215,8 @@ dirlist:
 	$(call echo_with_header,TEST_INC_DIRS)
 	$(call echo_with_header,TEST_LIB_DIRS)
 	$(call echo_with_header,TEST_LIB_LIST)
-	$(call echo_with_header,TEST_OBJ_DIR)
-	$(call echo_with_header,TEST_TARGET_DIR)
-	$(call echo_with_header,TEST_TARGET_NAME)
+#	$(call echo_with_header,TEST_OBJ_DIR)
+#	$(call echo_with_header,TEST_BUILD_DIR)
 	$(call echo_with_header,CPPUTEST_LIB_LIST)
 	$(call echo_with_header,CPPUTEST_LIB_DIR)
 	@echo
