@@ -1,0 +1,24 @@
+TODO_Spi
+
+Support slave device.
+
+Implement Usi Overflow interrupt for slave.
+
+Test sending to multiple slaves
+
+Start transmission needs a data collision flag.
+Think about a multi-threaded collision flag.
+
+The Spi Overflow handler interrupt needs to save data. The only way I can think of is to use a global variable. Correct?
+
+Disable interrupts when usi overflow is saving data?
+
+Add reset function? We could clear out the counter, clear the flag, and re-load data to USIDR.
+
+Port demo code for ATtiny861 and compile it to see how its size compares to mine.
+
+Add Slave Destroy
+
+Should interrupt be in HW layer or interface layer?
+
+Should slave select be in HW layer or interface layer?

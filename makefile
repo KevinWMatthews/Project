@@ -7,10 +7,11 @@
 MODULES= \
   lib/BitManip \
   lib/ChipFunctions \
+  lib/Spi \
   lib/SpiHw \
   lib/Timer0 \
 
-lib/BitManip lib/ChipFunctions lib/SpiHw lib/Timer0:
+lib/BitManip lib/ChipFunctions lib/Spi lib/SpiHw lib/Timer0:
 	$(MAKE_LAUNCHER)
 
 
