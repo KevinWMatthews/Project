@@ -1,0 +1,114 @@
+USIDR – USI Data Register (Serial Register)
+  This is an 8-bit serial in, serial out shift register
+  DO is connected to bit 7
+  DI is connected to bit 0
+  Data is sent/shifted out from bit 7 along MOSI and simultaneously received/shifted into bit 0 from MISO.
+
+
+
+USIBR – USI Buffer Register
+  After a transfer is completed, the contents of the USIDR will be automatically copied here.
+  This allows you to read the input data while processing the next transmission.
+
+
+
+USISR – USI Status Register
+• Bit 7 – USISIF: Start Condition Interrupt Flag
+  In some conditions (look these up), any clock pulse sets this flag.
+  Clear only by writing a logical one.
+  Will wake up the processor from sleep mode.
+
+• Bit 6 – USIOIF: Counter Overflow Interrupt Flag
+  Essentially an end transmission flag.
+  This flag is set when the 4-bit counter overflows.
+  Clear only by writing a logical one.
+
+• Bit 5 – USIPF: Stop Condition Flag
+  Two-wire mode only.
+
+• Bit 4 – USIDC: Data Output Collision
+  Two-wire mode only.
+
+• Bits 3:0 – USICNT3:0: Counter Value
+  Counts each USI clock edge.
+  The counter is incremented by
+    the external clock edge detector OR
+    a Timer/Counter0 Compare Match OR
+    by software using the USICLK or (?) USITC strobe bits.
+  There are 8 bits per transmission, or 16 clock edges, hence a 4-bit counter.
+
+
+
+USICR – USI Control Register
+• Bit 7 – USISIE: Start Condition Interrupt Enable
+  Set to enable
+
+• Bit 6 – USIOIE: Counter Overflow Interrupt Enable
+  Set to 1 to enable
+
+• Bits 5:4 – USIWM1:0: Wire Mode
+  These only affect data and clock outputs (not data and clock inputs).
+  00  Port pins operate as normal
+  01  Three-wire mode
+  10  Two-wire mode
+  11  Two-wire mode
+
+• Bits 3:2 – USICS1:0: Clock Source Select
+  Set to 00 to disable external clock, allowing a software strobe to be used (use the USICLK bit to do this)
+    You have to set the USITC and USICLK bits accordingly, i.e.
+      Set the clock port bit, which toggles the clock port pin.
+      Toggle clock port pin as above AND set the strobe clock bit, increments the counter and shift bit
+      (Needs verification)
+    When USICS0 = 0,
+      DI is sampled at positive edges
+      DO is shifted at negative edges
+    When USICS0 = 1,
+      DI is sampled at negative edges
+      DO is shifted at positive edges
+    The slave should be behave similarly.
+
+
+
+  Set to USICS1 to enable external clock.
+    Clear/set USICS0 to select positive/negative edge, respectively (spi mode 0 or 1 [verify])
+    Treats SCLK as the clock line but allows YOU to toggle it.
+    Bit shift/latch and counter increment are handled automatically each time that you set the USITC bit.
+
+• Bit 1 – USICLK: Clock Strobe
+  The function of this pin varies
+  When external clock is selected (USICS1 is set to 1),
+    set to 1 to enable a software strobe for the clock.
+
+• Bit 0 – USITC: Toggle Clock Port Pin
+  The function of this pin varies
+  Toggles the USCK value
+  DDB2 must be set to toggle the output line (otherwise clocking is only done internally)
+  If external clock with software strobe (UCICS 3:2 to 1:0 and USICLK to 1), this automatically:
+    increments the clock counter by 1
+    shifts the data in the data register (when appropriate)
+
+
+
+USIPP – USI Pin Position
+• Bits 7:1 – Res: Reserved Bits
+  Always read 0
+
+• Bit 0 – USIPOS: USI Pin Position
+  The USI pins (DO, DI, and SCK) can be placed either on PORTA or PORTB!
+  Default to PB2:PB0
+  Set to 1 to use PA2:PA0
+
+
+
+For three-wire mode and a software-controlled clock pulse,
+  Set USIWM1:0 (USICR 5:4) to 01   three-wire mode
+  Set USICS1:0 (USICR 3:2) to 10   external clock
+  Set USICLK1  (USICR 1)   to 1    external clock with software strobe
+  Set USIOIE   (USICR 6)   to 1    enable counter overflow interrupt
+  Set USIPOS   (USIPP 0)   to 0/1  SPI pins on PORTB or PORTA, respectively
+  Place output data in USIDR.
+  Toggle USITC to toggle the clock. Doing this:
+    shifts the data in USIDR
+    increments the counter
+    toggles the clock (you don't need to toggle USITC)
+  Read input data from USIBR.
