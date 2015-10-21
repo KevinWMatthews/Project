@@ -23,7 +23,7 @@ CPPUTEST_LINKER_FLAGS=
 ################################
 ### Test directory structure ###
 ################################
-TEST_DIR=$(call clean_path,$(MODULE_DIR)/test)
+TEST_DIR=$(call clean_path,$(MODULE_DIR))
 TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
 TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
 TEST_SRC_DIRS=$(TEST_DIR)/src

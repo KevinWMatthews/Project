@@ -4,13 +4,13 @@
 #  make test MODULES=<name> from the terminal
 #Slick!
 MODULES= \
-  lib/BitManip \
-  lib/ChipFunctions \
-  lib/Spi \
-  lib/SpiHw \
-  lib/Timer0 \
+  lib/test/BitManip \
+  lib/test/ChipFunctions \
+  lib/test/Spi \
+  lib/test/SpiHw \
+  lib/test/Timer0 \
 
-lib/BitManip lib/ChipFunctions lib/Spi lib/SpiHw lib/Timer0:
+lib/test/BitManip lib/test/ChipFunctions lib/test/Spi lib/test/SpiHw lib/test/Timer0:
 	$(MAKE_LAUNCHER)
 
 
