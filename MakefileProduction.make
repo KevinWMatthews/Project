@@ -1,12 +1,6 @@
 #Production code
 
 
-### Compiler tools ###
-C_COMPILER=avr-gcc
-C_LINKER=avr-gcc
-ARCHIVER=ar
-CPP_COMPILER=
-CPP_LINKER=
 
 .DEFAULT_GOAL:=all
 .PHONY: all production clean
@@ -19,8 +13,7 @@ all:
 	@echo
 
 production:
-	@echo MakefileProduction production
-	@echo
+	$(LAUNCH_MAKE) makefile_avr.make all
 
 clean:
 	@echo MakefileProduction clean
@@ -29,3 +22,5 @@ clean:
 dirlist:
 	@echo MakefileProduction dirlist
 	@echo
+
+LAUNCH_MAKE=make --file

@@ -36,7 +36,8 @@ LINKER_FLAGS=
 export
 
 ### Targets ###
-.PHONY: all test production
+.PHONY: all test
+.PHONY: production
 .PHONY: filelist dirlist flags
 
 all:

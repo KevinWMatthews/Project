@@ -13,8 +13,12 @@ MODULES= \
 lib/test/BitManip lib/test/ChipFunctions lib/test/Spi lib/test/SpiHw lib/test/Timer0:
 	$(MAKE_LAUNCHER)
 
+PROJECTS= \
+  master \
+  # slave
 
-
+master slave:
+	$(MAKE_LAUNCHER)
 
 ### Makefile targets ###
 .DEFAULT_GOAL:=all
@@ -23,11 +27,14 @@ lib/test/BitManip lib/test/ChipFunctions lib/test/Spi lib/test/SpiHw lib/test/Ti
 .PHONY: production
 .PHONY: filelist dirlist flags info
 .PHONY: $(MODULES)
+.PHONY: $(PROJECTS)
 
 
 all: $(MODULES)
 
-filelist dirlist flags test production: $(MODULES)
+filelist dirlist flags test: $(MODULES)
+
+production: $(PROJECTS)
 
 clean: $(MODULES)
 
