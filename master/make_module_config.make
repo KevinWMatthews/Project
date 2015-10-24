@@ -16,8 +16,6 @@ INC_DIRS=$(MODULE_DIR)/inc lib/inc
 #TODO LIB_DIRS=
 #Static lirary names without 'lib' prefix and .a suffix
 #TODO LIBS_LIST=
-OBJ_DIR=obj
-TARGET_DIR=build
 
 #Specify specific source files that aren't in the above directories (hopefully a very temporary situation)
 SRC_FILES=

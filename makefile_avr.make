@@ -6,6 +6,9 @@ endif
 
 include $(MODULE_DIR)/make_module_config.make
 
+OBJ_DIR=obj/avr
+TARGET_DIR=build
+
 
 ########################
 ### AVR Dude options ###

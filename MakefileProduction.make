@@ -16,8 +16,8 @@ production:
 	$(LAUNCH_MAKE) makefile_avr.make all
 
 clean:
-	@echo MakefileProduction clean
-	@echo
+	$(SILENCE)rm -rf $(OBJ_DIR)
+	$(SILENCE)rm -rf $(BUILD_DIR)
 
 dirlist:
 	@echo MakefileProduction dirlist

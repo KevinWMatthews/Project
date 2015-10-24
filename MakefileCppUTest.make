@@ -141,8 +141,8 @@ all: test
 rebuild: clean all
 
 clean:
-#	$(SILENCE)rm -rf $(TEST_OBJ_DIR)
-#	$(SILENCE)rm -rf $(TEST_BUILD_DIR)
+	$(SILENCE)rm -rf $(OBJ_DIR)
+	$(SILENCE)rm -rf $(BUILD_DIR)
 
 
 ### Test code rules ###

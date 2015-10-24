@@ -11,13 +11,17 @@ include make_helper_functions
 #########################################
 ### Define common directory structure ###
 #########################################
+#TODO some of this needs to move to the CppUTest makefile
 ROOT_DIR=.
 LIB_DIR=lib
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 ### Production-specific directory structure ###
 TARGET_NAME=TheProject
 TARGET=$(BUILD_DIR)/$(TARGET_NAME)
-OBJ_DIR=$(call clean_path,$(ROOT_DIR)/obj)
+#TODO move this to CPpUTest, make sure that clean gets the correct directories
+#Don't launch the production build for every clean...
+OBJ_DIR=$(call clean_path,$(ROOT_DIR)/obj/CppUTest)
+#TODO
 BUILD_DIR=$(call clean_path,$(ROOT_DIR)/build)
 include $(MODULE_DIR)/make_module_config.make
 #src_dirs, inc_dirs, and lib_dirs are user configured in make_module_config
@@ -46,8 +50,8 @@ all:
 
 clean:
 	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
-	$(SILENCE)rm -rf $(OBJ_DIR)
-	$(SILENCE)rm -rf $(BUILD_DIR)
+#	$(SILENCE)rm -rf $(OBJ_DIR)
+#	$(SILENCE)rm -rf $(BUILD_DIR)
 	$(LAUNCH_MAKE) MakefileCppUTest.make
 	$(LAUNCH_MAKE) MakefileProduction.make
 	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
