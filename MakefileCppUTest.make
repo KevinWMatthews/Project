@@ -47,7 +47,7 @@ endif
 
 
 
-include make_helper_functions
+include make_helper_functions.make
 
 #########################################################
 ### Auto-detect source code and generate object files ###

@@ -6,7 +6,7 @@
 .PHONY: all production clean
 .PHONY: dirlist
 
-include make_helper_functions
+include make_helper_functions.make
 
 all:
 	@echo MakefileProduction all

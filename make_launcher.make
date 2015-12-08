@@ -5,32 +5,42 @@ ifndef SILENCE
 	SILENCE =
 endif
 
-include make_helper_functions
+include make_helper_functions.make
 
-
-#########################################
-### Define common directory structure ###
-#########################################
-#TODO some of this needs to move to the CppUTest makefile
-ROOT_DIR=.
-LIB_DIR=lib
-MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
-### Production-specific directory structure ###
+####################################################
+###                                              ###
+### Configure your project's directory structure ###
+###                                              ###
+####################################################
 TARGET_NAME=TheProject
+ROOT_DIR=.
+scr_dirs=
+inc_dirs=
+lib_dirs=lib
+obj_dir=obj/CppUTest
+build_dir=build
+
+
+
 TARGET=$(BUILD_DIR)/$(TARGET_NAME)
-#TODO move this to CPpUTest, make sure that clean gets the correct directories
-#Don't launch the production build for every clean...
-OBJ_DIR=$(call clean_path,$(ROOT_DIR)/obj/CppUTest)
-#TODO
-BUILD_DIR=$(call clean_path,$(ROOT_DIR)/build)
+MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 include $(MODULE_DIR)/make_module_config.make
-#src_dirs, inc_dirs, and lib_dirs are user configured in make_module_config
-SRC_DIRS=$(LIB_DIR)/src
-SRC_DIRS+=$(call clean_path,$(src_dirs))
-INC_DIRS=$(LIB_DIR)/inc
-INC_DIRS+=$(call clean_path,$(inc_dirs))
-LIB_DIRS=$(call clean_path,$(lib_dirs))
+
+#module_src_dirs, module_inc_dirs, and module_lib_dirs are user configured in make_module_config
+SRC_DIRS=$(src_dirs)
+SRC_DIRS+=$(lib_dirs)/src
+SRC_DIRS+=$(call clean_path,$(module_src_dirs))
+INC_DIRS=$(inc_dirs)
+INC_DIRS=$(lib_dirs)/inc
+INC_DIRS+=$(call clean_path,$(module_inc_dirs))
+LIB_DIRS=$(lib_dirs)
+#Wait, do we want to do this?
+LIB_DIRS=$(call clean_path,$(module_lib_dirs))
 #LIB_LIST    User-configured in make_module_config
+OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(obj_dir))
+BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(build_dir))
+
+
 
 COMPILER_FLAGS=-Wall
 INCLUDE_FLAGS=

@@ -5,20 +5,18 @@
 #Slick!
 MODULES= \
   lib/test/BitManip \
-  lib/test/ChipFunctions \
-  lib/test/Spi \
-  lib/test/SpiHw \
-  lib/test/Timer0 \
+  # lib/test/ChipFunctions \
+  # lib/test/Spi \
+  # lib/test/SpiHw \
+  # lib/test/Timer0 \
 
-lib/test/BitManip lib/test/ChipFunctions lib/test/Spi lib/test/SpiHw lib/test/Timer0:
-	$(MAKE_LAUNCHER)
 
-PROJECTS= \
-  master \
+# PROJECTS= \
+#   master \
   # slave
 
-master slave:
-	$(MAKE_LAUNCHER)
+# master slave:
+# 	$(MAKE_LAUNCHER)
 
 ### Makefile targets ###
 .DEFAULT_GOAL:=all
@@ -27,19 +25,23 @@ master slave:
 .PHONY: production
 .PHONY: filelist dirlist flags info
 .PHONY: $(MODULES)
-.PHONY: $(PROJECTS)
+# .PHONY: $(PROJECTS)
 
 
 all: $(MODULES)
 
 filelist dirlist flags test: $(MODULES)
 
-production: $(PROJECTS)
+# production: $(PROJECTS)
 
 clean: $(MODULES)
 
+$(MODULES):
+	$(MAKE_LAUNCHER)
+
 
 ### Helpers ###
+# MODULE is defined here and is passed into all other makefiles
 MAKE_LAUNCHER=make $(MAKECMDGOALS) --file make_launcher.make MODULE=$@
 
 
