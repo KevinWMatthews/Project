@@ -16,7 +16,7 @@ TARGET_NAME=TheProject
 ROOT_DIR=.
 scr_dirs=
 inc_dirs=
-lib_dirs=lib
+lib_dirs=lib lib/ATtiny861
 obj_dir=obj/CppUTest
 build_dir=build
 
@@ -28,10 +28,10 @@ include $(MODULE_DIR)/make_module_config.make
 
 #module_src_dirs, module_inc_dirs, and module_lib_dirs are user configured in make_module_config
 SRC_DIRS=$(src_dirs)
-SRC_DIRS+=$(lib_dirs)/src
+SRC_DIRS+=$(call append_src_to_dir,$(lib_dirs))
 SRC_DIRS+=$(call clean_path,$(module_src_dirs))
 INC_DIRS=$(inc_dirs)
-INC_DIRS=$(lib_dirs)/inc
+INC_DIRS+=$(call append_inc_to_dir,$(lib_dirs))
 INC_DIRS+=$(call clean_path,$(module_inc_dirs))
 LIB_DIRS=$(lib_dirs)
 #Wait, do we want to do this?

@@ -4,8 +4,8 @@
 #  make test MODULES=<name> from the terminal
 #Slick!
 MODULES= \
-  lib/test/BitManip \
-  # lib/test/ChipFunctions \
+  lib/ATtiny861/test/ChipFunctions \
+  # lib/test/BitManip \
   # lib/test/Spi \
   # lib/test/SpiHw \
   # lib/test/Timer0 \

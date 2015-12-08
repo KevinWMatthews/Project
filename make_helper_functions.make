@@ -25,7 +25,8 @@ get_src_from_dir_list = $(foreach dir, $1, $(call get_src_from_dir,$(dir)))
 get_inc_from_dir = $(wildcard $1/*.h)
 get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_from_dir,$(dir)))
 
-
+append_src_to_dir = $(foreach dir, $1, $(wildcard $(dir)/src))
+append_inc_to_dir = $(foreach dir, $1, $(wildcard $(dir)/inc))
 
 #"test" echo; used for checking makefile parameters
 # $1 = text, $2 = text color
