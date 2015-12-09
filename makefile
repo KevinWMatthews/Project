@@ -5,9 +5,9 @@
 #Slick!
 MODULES= \
   lib/ATtiny861/test/ChipFunctions \
+  lib/Spi/test/SpiApi \
+  lib/Spi/test/SpiHw \
   # lib/test/BitManip \
-  # lib/test/Spi \
-  # lib/test/SpiHw \
   # lib/test/Timer0 \
 
 

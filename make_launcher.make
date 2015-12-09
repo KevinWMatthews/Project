@@ -16,7 +16,7 @@ TARGET_NAME=TheProject
 ROOT_DIR=.
 scr_dirs=
 inc_dirs=
-lib_dirs=lib lib/ATtiny861
+lib_dirs=lib lib/ATtiny861 lib/Spi
 obj_dir=obj/CppUTest
 build_dir=build
 
