@@ -1,5 +1,5 @@
 # Set this to @ to keep the makefiles quiet
-SILENCE = @
+SILENCE =
 
 #Set to 'Y' to suppress makefile messages when entering and leaving sub-makes
 SUPPRESS_ENTERING_DIRECTORY_MESSAGE=Y
@@ -13,7 +13,7 @@ endif
 #  make test MODULES=<name> from the terminal
 #Slick!
 MODULES= \
-  lib/test/BitManip \
+  lib/Global/test/BitManip \
   lib/ATtiny861/test/ChipFunctions \
   lib/Spi/test/SpiApi \
   lib/Spi/test/SpiHw \

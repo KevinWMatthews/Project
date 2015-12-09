@@ -12,7 +12,7 @@ TARGET_NAME=TheProject
 ROOT_DIR=.
 scr_dirs=
 inc_dirs=
-lib_dirs=lib lib/ATtiny861 lib/Spi
+lib_dirs=lib lib/Global lib/ATtiny861 lib/Spi
 obj_dir=obj/CppUTest
 build_dir=build
 
@@ -29,8 +29,8 @@ SRC_DIRS+=$(call clean_path,$(module_src_dirs))
 INC_DIRS=$(inc_dirs)
 INC_DIRS+=$(call append_inc_to_dir,$(lib_dirs))
 INC_DIRS+=$(call clean_path,$(module_inc_dirs))
-LIB_DIRS=$(lib_dirs)
 #Wait, do we want to do this?
+LIB_DIRS=$(lib_dirs)
 LIB_DIRS=$(call clean_path,$(module_lib_dirs))
 #LIB_LIST    User-configured in make_module_config
 OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(obj_dir))
