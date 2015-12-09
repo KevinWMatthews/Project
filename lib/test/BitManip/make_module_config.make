@@ -5,6 +5,6 @@ module_src_dirs=$(ROOT_DIR)/mockHw/avr
 module_inc_dirs=$(ROOT_DIR)/mockHw
 
 #List any libraries that this module depends on
-modulel_ib_dirs=
+module_lib_dirs=
 #Static library names without lib prefix and .a suffix
 LIB_LIST=

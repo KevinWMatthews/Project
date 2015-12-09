@@ -1,10 +1,6 @@
 #This makefile defines the directory structure and then launches the appropriate sub-makefile
 
-# Set this to @ to keep the makefiles quiet
-ifndef SILENCE
-	SILENCE =
-endif
-
+include make_colors.make
 include make_helper_functions.make
 
 ####################################################
@@ -56,7 +52,7 @@ export
 
 all:
 	$(LAUNCH_MAKE) MakefileCppUTest.make
-	$(LAUNCH_MAKE) MakefileProduction.make
+#	$(LAUNCH_MAKE) MakefileProduction.make
 
 clean:
 	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
