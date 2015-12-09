@@ -6,7 +6,7 @@
 .PHONY: all production clean
 .PHONY: dirlist
 
-include make_helper_functions.make
+include make_helper_functions
 
 all:
 	@echo MakefileProduction all
@@ -20,7 +20,7 @@ clean:
 	$(SILENCE)rm -rf $(BUILD_DIR)
 
 dirlist:
-	@echo MakefileProduction dirlist
+	@echo makefile_production dirlist
 	@echo
 
 LAUNCH_MAKE=make --file

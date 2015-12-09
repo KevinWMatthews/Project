@@ -36,7 +36,7 @@ MODULES= \
 .PHONY: $(MODULES)
 # .PHONY: $(PROJECTS)
 
-include make_colors.make
+include make_colors
 
 all: $(MODULES)
 
@@ -53,7 +53,7 @@ $(MODULES):
 
 ### Helpers ###
 # MODULE is defined here and is passed into all other makefiles
-MAKE_LAUNCHER=make $(MAKECMDGOALS) $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file make_launcher.make MODULE=$@
+MAKE_LAUNCHER=make $(MAKECMDGOALS) $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file makefile_launcher.make MODULE=$@
 
 
 ### Documentation ###
