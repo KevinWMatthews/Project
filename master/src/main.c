@@ -18,7 +18,7 @@ int main(void)
 
   _delay_ms(2000);
 
-  Spi_HwSetupMaster();
+  Spi_SetupHwMaster();
   slave = Spi_SlaveSetup(&DDRA, &PORTA, PORTA3);
 
   //Enable status LEDS

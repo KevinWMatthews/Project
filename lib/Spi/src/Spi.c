@@ -24,7 +24,7 @@ void setSpiMode(void)
   SpiHw_SetClockSource(USI_EXTERNAL_POSITIVE_EDGE_SOFTWARE_STROBE);
 }
 
-void Spi_HwSetupMaster(void)
+void Spi_SetupHwMaster(void)
 {
   setSpiMode();
   SpiHw_ConfigureUsiPins(SPI_MASTER, SPI_PORTA_PINS);
@@ -40,7 +40,7 @@ void Spi_HwSetupMaster(void)
   Spi_SetIsMaster(TRUE);
 }
 
-void Spi_HwSetupSlave(void)
+void Spi_SetupHwSlave(void)
 {
   setSpiMode();
   SpiHw_ConfigureUsiPins(SPI_SLAVE, SPI_PORTA_PINS);

@@ -11,8 +11,8 @@ typedef struct SpiSlaveSelectPinStruct * SpiSlaveSelectPin;
 //************************//
 //*** Public Functions ***//
 //************************//
-void Spi_HwSetupMaster(void);
-void Spi_HwSetupSlave(void);
+void Spi_SetupHwMaster(void);
+void Spi_SetupHwSlave(void);
 
 //Setup up each slave device individually.
 //Returns a handle to the slave that is can be used to send data to that slave

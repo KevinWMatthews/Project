@@ -1,5 +1,9 @@
 TODO_Spi
 
+Should we create a destroy() function?
+
+Rename SPI_SLAVE_SELECTED?
+
 Support slave device.
 
 Implement Usi Overflow interrupt for slave.

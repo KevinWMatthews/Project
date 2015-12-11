@@ -21,9 +21,9 @@ TEST_GROUP(Spi)
   void setup()
   {
     slave = NULL; //Until we have destroy()
-    ddr  = &DDRA;
-    port = &PORTA;
-    bit  = PINA1;
+    ddr   = &DDRA;
+    port  = &PORTA;
+    bit   = PINA1;
     DDRA  = 0;
     PORTA = 0;
     mock().strictOrder();
@@ -75,7 +75,7 @@ TEST(Spi, HwSetupMasterOnPortA)
   mock().expectOneCall("Timer0_SetTimerCompareInterrupt0A")
         .withParameter("enableInterrupt", FALSE);
 
-  Spi_HwSetupMaster();
+  Spi_SetupHwMaster();
   CHECK(Spi_GetIsMaster());
 }
 
@@ -95,7 +95,7 @@ TEST(Spi, HwSetupSlave)
         .withParameter("isTransmitting", FALSE);
 
   //Timer is not needed
-  Spi_HwSetupSlave();
+  Spi_SetupHwSlave();
   CHECK(!Spi_GetIsMaster());
 }
 
