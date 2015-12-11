@@ -9,6 +9,7 @@
 
 //Check if a single bit is set, given by a bitmask.
 //To check multiple bits, use IF_BITMASK.
+//Evaluates to 1 if true and 0 if false.
 #define IF_BIT(variable, bit) (1 && BITWISE_AND(variable, bit))
 
 //Check if a signel bit is set, given by a bit number.

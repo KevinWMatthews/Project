@@ -22,75 +22,10 @@ TEST_GROUP(BitManip)
   }
 };
 
-TEST(BitManip, SetLeastSignificantBitNumber)
+TEST(BitManip, IfBit_True)
 {
-  SET_BIT_NUMBER(eightBit, 0);
-
-  BYTES_EQUAL(0x01, eightBit);
-}
-
-TEST(BitManip, SetMostSignificantBitNumber)
-{
-  SET_BIT_NUMBER(eightBit, 7);
-
-  BYTES_EQUAL(0x80, eightBit);
-}
-
-TEST(BitManip, ClearLeastSignificantBitNumber)
-{
-  eightBit = 0xff;
-  CLEAR_BIT_NUMBER(eightBit, 0);
-
-  BYTES_EQUAL(0xfe, eightBit);
-}
-
-TEST(BitManip, ClearMostSignificantBitNumber)
-{
-  eightBit = 0xff;
-  CLEAR_BIT_NUMBER(eightBit, 7);
-
-  BYTES_EQUAL(0x7f, eightBit);
-}
-
-TEST(BitManip, IfBitNumber_False)
-{
-  eightBit = 0xff;
-  eightBit &= ~(1<<4);
-
-  CHECK_FALSE(IF_BIT_NUMBER(eightBit, 4));
-}
-
-TEST(BitManip, IfBitNumber_True)
-{
-  eightBit |= (1<<4);
-
-  CHECK_TRUE(IF_BIT_NUMBER(eightBit, 4));
-}
-
-TEST(BitManip, SetLeastSignificantBit)
-{
-  SET_BITS(eightBit, (1<<0));
-  BYTES_EQUAL(0x01, eightBit);
-}
-
-TEST(BitManip, SetMostSignificantBit)
-{
-  SET_BITS(eightBit, (1<<7));
-  BYTES_EQUAL(0x80, eightBit);
-}
-
-TEST(BitManip, ClearLeastSignificantBit)
-{
-  eightBit = 0xff;
-  CLEAR_BITS(eightBit, (1<<0));
-  BYTES_EQUAL(0xfe, eightBit);
-}
-
-TEST(BitManip, ClearMostSignificantBit)
-{
-  eightBit = 0xff;
-  CLEAR_BITS(eightBit, (1<<7));
-  BYTES_EQUAL(0x7f, eightBit);
+  eightBit |= (1<<5);
+  CHECK_TRUE(IF_BIT(eightBit, (1<<5)));
 }
 
 TEST(BitManip, IfBit_False)
@@ -100,16 +35,19 @@ TEST(BitManip, IfBit_False)
   CHECK_FALSE(IF_BIT(eightBit, (1<<5)));
 }
 
-TEST(BitManip, IfBit_True)
+TEST(BitManip, IfBitNumber_True)
 {
-  eightBit |= (1<<5);
-  CHECK_TRUE(IF_BIT(eightBit, (1<<5)));
+  eightBit |= (1<<4);
+
+  CHECK_TRUE(IF_BIT_NUMBER(eightBit, 4));
 }
 
-TEST(BitManip, IfBit_True2)
+TEST(BitManip, IfBitNumber_False)
 {
-  eightBit |= (1<<5);
-  CHECK_TRUE(IF_BIT(eightBit, (1<<5)));
+  eightBit = 0xff;
+  eightBit &= ~(1<<4);
+
+  CHECK_FALSE(IF_BIT_NUMBER(eightBit, 4));
 }
 
 TEST(BitManip, IfBitmask_NoBitsToCheck)
@@ -147,13 +85,69 @@ TEST(BitManip, IfBitmask_CheckAllBits_BitsVary_False)
   CHECK_FALSE(IF_BITMASK(0xaa, 0xab, 0xff));
 }
 
-TEST(BitManip, SetBitmask_BitsToSetLimitsValueActuallySet)
+TEST(BitManip, SetBitNumber_LeastSignificantBit)
+{
+  SET_BIT_NUMBER(eightBit, 0);
+
+  BYTES_EQUAL(0x01, eightBit);
+}
+
+TEST(BitManip, SetBitNumber_MostSignificantBit)
+{
+  SET_BIT_NUMBER(eightBit, 7);
+
+  BYTES_EQUAL(0x80, eightBit);
+}
+
+TEST(BitManip, ClearBitNumber_LeastSignificantBit)
+{
+  eightBit = 0xff;
+  CLEAR_BIT_NUMBER(eightBit, 0);
+
+  BYTES_EQUAL(0xfe, eightBit);
+}
+
+TEST(BitManip, ClearBitNumber_MostSignificantBit)
+{
+  eightBit = 0xff;
+  CLEAR_BIT_NUMBER(eightBit, 7);
+
+  BYTES_EQUAL(0x7f, eightBit);
+}
+
+TEST(BitManip, SetBits_LeastSignificantBit)
+{
+  SET_BITS(eightBit, (1<<0));
+  BYTES_EQUAL(0x01, eightBit);
+}
+
+TEST(BitManip, SetBits_MostSignificantBit)
+{
+  SET_BITS(eightBit, (1<<7));
+  BYTES_EQUAL(0x80, eightBit);
+}
+
+TEST(BitManip, ClearBits_LeastSignificantBit)
+{
+  eightBit = 0xff;
+  CLEAR_BITS(eightBit, (1<<0));
+  BYTES_EQUAL(0xfe, eightBit);
+}
+
+TEST(BitManip, ClearBits_MostSignificantBit)
+{
+  eightBit = 0xff;
+  CLEAR_BITS(eightBit, (1<<7));
+  BYTES_EQUAL(0x7f, eightBit);
+}
+
+TEST(BitManip, SetBitmaskTo_BitsToSetLimitsValueActuallySet)
 {
   SET_BITMASK_TO(eightBit, 0x3c, 0x18);
   BYTES_EQUAL(0x18, eightBit);
 }
 
-TEST(BitManip, SetBitmask_WillClearBits)
+TEST(BitManip, SetBitmaskTo_WillClearBits)
 {
   eightBit = 0xff;
   SET_BITMASK_TO(eightBit, 0x00, 0x18);
