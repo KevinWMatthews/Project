@@ -89,6 +89,10 @@ ifeq ($(strip $(MAKE_MODULE)),)
 	endif
 endif
 
+ifeq ($(strip $(MAKE_TARGET)),help)
+	override MAKE_MODULE=test_help
+endif
+
 MAKE=make $(NO_PRINT_DIRECTORY) --file
 PRODUCTION_MAKEFILE=makefile_avr.make
 TEST_MAKEFILE=makefile_cpputest.make
@@ -96,15 +100,13 @@ TEST_MAKEFILE=makefile_cpputest.make
 include make_colors
 
 .DEFAULT_GOAL:=all
-.PHONY: all clean
+.PHONY: all clean help
 
 .PHONY: production
 .PHONY: test
 
 .PHONY: compile run
 .PHONY: $(MAKE_MODULE)
-
-
 
 all:
 
@@ -120,6 +122,8 @@ test: $(MAKE_MODULE)
 $(MAKE_MODULE):
 	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) $(MAKE_TARGET) MODULE=$@
 
+help:
+	@echo "Type 'maket help' or 'makep help' to see help menus for test or production code."
 
 
 ### Documentation ###

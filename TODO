@@ -13,3 +13,5 @@ Unless you think of something else. Think it through again when you're all done.
 Not all modules depend on mockHw... go back and edit module_configs.
 
 Make the test clean module-specific.
+
+Fix up the help menus!!

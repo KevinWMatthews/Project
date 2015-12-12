@@ -305,5 +305,6 @@ help:
 	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
 	$(ECHO) "${BoldRed} TODO ${NoColor}"
 	@echo
+	@echo "talk about modules, etc"
 
 #shallow_clean Does not remove all parent directories that were created
