@@ -7,12 +7,17 @@ ifeq ($(SUPPRESS_ENTERING_DIRECTORY_MESSAGE),Y)
 	NO_PRINT_DIRECTORY=--no-print-directory
 endif
 
-### User config ###
-#Add all tests to this list!
+
+###################################
+###                             ###
+###     Module Configuration    ###
+### Add all tests to this list! ###
+###                             ###
+###################################
 #To run specific test, execute
-#  make test MODULES=<name> from the terminal
+#  make test MODULE=<name> from the terminal
 #Slick!
-MODULES= \
+ALL_MODULES= \
   lib/Global/test/BitManip \
   lib/ATtiny861/test/ChipFunctions \
   lib/Spi/test/SpiApi \
@@ -20,38 +25,88 @@ MODULES= \
   lib/ATtiny861/test/Timer0 \
 
 
-# PROJECTS= \
-#   master \
-  # slave
 
-# master slave:
-# 	$(MAKE_LAUNCHER)
+####################################################
+###                                              ###
+### Configure your project's directory structure ###
+###                                              ###
+####################################################
+TARGET_NAME=TheProject
+ROOT_DIR=.
+SRC_DIRS=src lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
+INC_DIRS=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc
+LIB_DIRS=
+MOCKHW_DIR=mockHw
+prod_obj_dir=obj
+test_obj_dir=obj_test
+prod_build_dir=build
+test_build_dir=build_test
 
-#export??
 
+
+#############################
+###                       ###
+### Auto-generated values ###
+###                       ###
+#############################
+include make_helper_functions
+
+MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
+
+
+#################################################
+### Create list of all production source code ###
+#################################################
+dirty_src=$(call get_src_from_dir_list,$(SRC_DIRS))
+dirty_inc=$(call get_inc_from_dir_list,$(INC_DIRS))
+SRC=$(call clean_path,$(dirty_src))
+INC=$(call clean_path,$(dirty_inc))
+LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
+
+export
+
+
+
+########################
+###                  ###
 ### Makefile targets ###
+###                  ###
+########################
 .DEFAULT_GOAL:=all
-.PHONY: all clean
+.PHONY: all all_clean
+
+
+.PHONY: pfiles
+.PHONY: tfiles
 .PHONY: test compile run
 .PHONY: production
 .PHONY: hex
 .PHONY: filelist dirlist flags info
-.PHONY: $(MODULES)
+.PHONY: $(ALL_MODULES)
 .PHONY: $(elf)
 
 include make_colors
 
-all: $(MODULES)
 
-filelist dirlist flags test: $(MODULES)
+all:
+
+
+
+pfiles:
+	make $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file makefile_avr.make filelist
+
+tfiles:
+	make $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file makefile_cpputest.make filelist MODULE=$(MODULE)
+
+filelist dirlist flags test: $(ALL_MODULES)
 
 production: avr
 
-hex: $(MODULES)
+hex: $(ALL_MODULES)
 
-clean: $(MODULES)
+clean: $(ALL_MODULES)
 
-$(MODULES) avr:
+$(ALL_MODULES) avr:
 	$(ECHO) "\n\n${BoldPurple}Launching Makefile for $@...${NoColor}"
 	$(MAKE_LAUNCHER)
 

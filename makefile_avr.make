@@ -169,13 +169,21 @@ $(OBJ_DIR)/%.s: %.c
 
 ### Targets for Makefile debugging ###
 filelist:
+	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "~~~ File List in AVR Makefile ~~~"
+	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
+	$(ECHO) "\n${BoldCyan}Targets:${NoColor}"
+	$(call echo_with_header,TARGET_NAME)
+	$(call echo_with_header,TARGET)
 	$(call echo_with_header,ELF_TARGET)
 	$(call echo_with_header,HEX_TARGET)
 	$(call echo_with_header,DUMP_TARGET)
+	@echo
+	$(ECHO) "\n${BoldCyan}Production code:${NoColor}"
 	$(call echo_with_header,SRC)
-	$(call echo_with_header,SRC_OBJ)
+#	$(call echo_with_header,SRC_OBJ)
+#	$(call echo_with_header,SRC_DEP)
 	$(call echo_with_header,INC)
-	$(call echo_with_header,LST)
 	$(call echo_with_header,LIBS)
 
 flags:

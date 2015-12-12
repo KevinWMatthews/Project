@@ -225,24 +225,38 @@ $(TEST_OBJ_DIR)/%.o: %.cpp
 
 
 filelist:
-	$(ECHO) "${BoldGreen}~~~ $(MODULE_DIR) $@ ~~~${NoColor}"
-	$(ECHO) "\n${BoldCyan}Directory of MakefileCppUTest.make:${NoColor}"
-	$(ECHO) "$(shell pwd)\n"
-
+	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "~~~ File List in CppUTest Makefile ~~~"
+	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "$(MODULE_DIR)${NoColor}"
+	$(ECHO) "\n${BoldCyan}Targets:${NoColor}"
+	$(call echo_with_header,TARGET_NAME)
+	$(call echo_with_header,TEST_TARGET)
+	@echo
+	$(ECHO) "\n${BoldCyan}Production code:${NoColor}"
+	$(call echo_with_header,SRC)
+#	$(call echo_with_header,SRC_OBJ)
+#	$(call echo_with_header,SRC_DEP)
+	$(call echo_with_header,INC)
+	$(call echo_with_header,LIBS)
+	@echo
+	$(ECHO) "\n${BoldCyan}Mock Hardware code:${NoColor}"
+	$(call echo_with_header,MOCKHW_SRC)
+	$(call echo_with_header,MOCKHW_INC)
+	@echo
 	$(ECHO) "\n${BoldCyan}Test code:${NoColor}"
-	 $(call echo_with_header,PRODUCTION_LIB)
-	 $(call echo_with_header,TEST_TARGET_NAME)
+	$(call echo_with_header,PRODUCTION_LIB)
+	$(call echo_with_header,TEST_TARGET_NAME)
 	$(call echo_with_header,TEST_TARGET)
 	$(call echo_with_header,TEST_SRC)
-	$(call echo_with_header,TEST_OBJ)
-	$(call echo_with_header,TEST_DEP)
+#	$(call echo_with_header,TEST_OBJ)
+#	$(call echo_with_header,TEST_DEP)
 	$(call echo_with_header,TEST_INC)
 	$(call echo_with_header,TEST_LIBS)
-
+	@echo
 	$(ECHO) "\n${BoldCyan}CppUTest code:${NoColor}"
 	$(call echo_with_header,CPPUTEST_LIBS,$(CPPUTEST_LIBS))
 	@echo
-
 	$(ECHO) "\n${BoldCyan}All Dependencies:${NoColor}"
 	$(call echo_with_header,DEP_FILES)
 
