@@ -177,7 +177,7 @@ endif
 .DEFAULT_GOAL:=all
 .PHONY: all rebuild run compile clean
 .PHONY: test
-.PHONY: dirlist filelist flags
+.PHONY: dirlist filelist flags help
 
 
 all: test
@@ -282,4 +282,11 @@ flags:
 	$(call echo_with_header,TEST_LINKER_FLAGS)
 	$(call echo_with_header,CPPUTEST_LINKER_FLAGS)
 	$(call echo_with_header,ARCHIVER_FLAGS)
+	@echo
+
+help:
+	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "~~~  CppUTest Makefile Help ~~~"
+	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
+	$(ECHO) "${BoldRed} TODO ${NoColor}"
 	@echo

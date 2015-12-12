@@ -76,8 +76,8 @@ export
 .DEFAULT_GOAL:=all
 .PHONY: all all_clean
 
-.PHONY: pfiles pdirs pflags
-.PHONY: tfiles tdirs tflags
+.PHONY: pfiles pdirs pflags phelp
+.PHONY: tfiles tdirs tflags thelp
 
 .PHONY: test compile run
 .PHONY: production
@@ -104,6 +104,9 @@ pdirs:
 pflags:
 	$(MAKE) $(PRODUCTION_MAKEFILE) flags
 
+phelp:
+	$(MAKE) $(PRODUCTION_MAKEFILE) help
+
 tfiles:
 	$(MAKE) $(TEST_MAKEFILE) filelist MODULE=$(MODULE)
 
@@ -112,6 +115,9 @@ tdirs:
 
 tflags:
 	$(MAKE) $(TEST_MAKEFILE) flags
+
+thelp:
+	$(MAKE) $(TEST_MAKEFILE) help
 
 test: $(ALL_MODULES)
 

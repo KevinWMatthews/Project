@@ -207,6 +207,9 @@ flags:
 	$(call echo_with_header,LINKER_FLAGS)
 
 help:
+	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "~~~  AVR Makefile Help ~~~"
+	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
 	$(ECHO) "all        Compile and link all source code, generate an .elf file (binary)."
 	$(ECHO) "install    Create an Intel Hex file from the .elf and write it to chip's flash."
 	$(ECHO) "writeflash Same as install."
