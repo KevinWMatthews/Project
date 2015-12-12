@@ -10,12 +10,14 @@ include make_helper_functions
 ####################################################
 TARGET_NAME=TheProject
 ROOT_DIR=.
-src_dirs=src lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
-inc_dirs=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc
-lib_dirs=
+SRC_DIRS=src lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
+INC_DIRS=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc
+LIB_DIRS=
 MOCKHW_DIR=mockHw
-obj_dir=obj
-build_dir=build
+prod_obj_dir=obj
+test_obj_dir=obj_test
+prod_build_dir=build
+test_build_dir=build_test
 
 
 # # Custom flags for compiling code for testing
@@ -41,12 +43,15 @@ build_dir=build
 TARGET=$(BUILD_DIR)/$(TARGET_NAME)
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 
-###########################
-### Project Directories ###
-###########################
-SRC_DIRS=$(src_dirs)
-INC_DIRS=$(inc_dirs)
-LIB_DIRS=$(lib_dirs)
+
+#################################################
+### Create list of all production source code ###
+#################################################
+dirty_src=$(call get_src_from_dir_list,$(SRC_DIRS))
+dirty_inc=$(call get_inc_from_dir_list,$(INC_DIRS))
+SRC=$(call clean_path,$(dirty_src))
+INC=$(call clean_path,$(dirty_inc))
+LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 
 
 #module_src_dirs, module_inc_dirs, and module_lib_dirs are user configured in make_module_config
@@ -58,26 +63,10 @@ LIB_DIRS=$(lib_dirs)
 # LIB_DIRS=$(call clean_path,$(module_lib_dirs))
 #LIB_LIST    User-configured in make_module_config
 
-OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(obj_dir))
-BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(build_dir))
 
 
 
-##########################################
-### Auto-detect production source code ###
-##########################################
-DIRTY_SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
-SRC=$(call clean_path,$(DIRTY_SRC))
-SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(SRC)))
-SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(SRC)))
-INC=$(call get_inc_from_dir_list,$(INC_DIRS))
-LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
-#clean mockHw?
-DIRTY_MOCKHW_SRC=$(call get_src_from_dir,$(MOCKHW_DIR)/avr)
-MOCKHW_SRC=$(call clean_path,$(DIRTY_MOCKHW_SRC))
-MOCKHW_SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(MOCKHW_SRC)))
-MOCKHW_SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(MOCKHW_SRC)))
-MOCKHW_INC=$(call get_inc_from_dir,$(MOCKHW_DIR)/avr)
+
 export
 
 

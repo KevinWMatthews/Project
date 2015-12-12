@@ -47,9 +47,32 @@ TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
 TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
 
 
+###################
+### Directories ###
+###################
+OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(test_obj_dir))
+BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(test_build_dir))
+
+
+####################################################################
+### Auto-detect production source code and generate object files ###
+####################################################################
+dirty_mockhw_src=$(call get_src_from_dir,$(MOCKHW_DIR)/avr)
+dirty_mockhw_inc=$(call get_inc_from_dir,$(MOCKHW_DIR)/avr)
+MOCKHW_SRC=$(call clean_path, $(dirty_mockhw_src))
+MOCKHW_INC=$(call clean_path, $(dirty_mockhw_inc))
+
+SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(SRC)))
+SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(SRC)))
+
+MOCKHW_SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(MOCKHW_SRC)))
+MOCKHW_SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(MOCKHW_SRC)))
+
 SRC_OBJ+=$(MOCKHW_SRC_OBJ)
 SRC_DEP+=$(MOCKHW_SRC_DEP)
+
 INC+=$(MOCKHW_INC)
+
 
 
 ########################
@@ -71,18 +94,13 @@ ifeq ("$(OSTYPE)","Cygwin")
 CPPUTEST_LIB_DIR=/usr/local/lib
 endif
 
-
-
-include make_helper_functions
-include make_colors
-
-#########################################################
-### Auto-detect source code and generate object files ###
-#########################################################
+##############################################################
+### Auto-detect test source code and generate object files ###
+##############################################################
 # Test code using CppUTest test harness
-DIRTY_TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
+dirty_test_src=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 #I don't think that this step is needed
-TEST_SRC=$(call clean_path,$(DIRTY_TEST_SRC))
+TEST_SRC=$(call clean_path,$(dirty_test_src))
 TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(TEST_SRC)))
 TEST_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(TEST_SRC)))
 TEST_INC=$(call get_inc_from_dir_list,$(TEST_INC_DIRS))
@@ -92,6 +110,11 @@ TEST_LIBS=$(addprefix lib,$(addsuffix .a,$(TEST_LIB_LIST)))
 CPPUTEST_LIBS=$(addprefix lib,$(addsuffix .a,$(CPPUTEST_LIB_LIST)))
 
 DEP_FILES=$(SRC_DEP) $(TEST_DEP)
+
+
+
+include make_helper_functions
+include make_colors
 
 
 

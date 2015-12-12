@@ -1,6 +1,8 @@
 #Ignore build results
 **/build/
+**/build_test/
 **/obj/
+**/obj_test/
 
 #Sublime Text editor files
 *.sublime-workspace
