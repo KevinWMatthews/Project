@@ -110,6 +110,7 @@ include make_colors
 ### Target Names ###
 ####################
 .PHONY: all install writeflash hex disasm stats clean help
+.PHONY: filelist dirlist
 
 all: $(ELF_TARGET)
 
@@ -185,6 +186,17 @@ filelist:
 #	$(call echo_with_header,SRC_DEP)
 	$(call echo_with_header,INC)
 	$(call echo_with_header,LIBS)
+
+dirlist:
+	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "~~~ Directory List in AVR Makefile ~~~"
+	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
+	$(call echo_with_header,ROOT_DIR)
+	$(call echo_with_header,SRC_DIRS)
+	$(call echo_with_header,INC_DIRS)
+	$(call echo_with_header,OBJ_DIR)
+	$(call echo_with_header,BUILD_DIR)
+	$(call echo_with_header,LIB_DIRS)
 
 flags:
 	$(call echo_with_header,C_COMPILER_FLAGS)

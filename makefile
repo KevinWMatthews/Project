@@ -67,6 +67,7 @@ export
 
 
 
+
 ########################
 ###                  ###
 ### Makefile targets ###
@@ -75,9 +76,9 @@ export
 .DEFAULT_GOAL:=all
 .PHONY: all all_clean
 
+.PHONY: pfiles pdirs
+.PHONY: tfiles tdirs
 
-.PHONY: pfiles
-.PHONY: tfiles
 .PHONY: test compile run
 .PHONY: production
 .PHONY: hex
@@ -86,19 +87,27 @@ export
 .PHONY: $(elf)
 
 include make_colors
-
+MAKE=make $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file
+PRODUCTION_MAKEFILE=makefile_avr.make
+TEST_MAKEFILE=makefile_cpputest.make
 
 all:
 
 
 
 pfiles:
-	make $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file makefile_avr.make filelist
+	$(MAKE) $(PRODUCTION_MAKEFILE) filelist
+
+pdirs:
+	$(MAKE) $(PRODUCTION_MAKEFILE) dirlist
 
 tfiles:
-	make $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file makefile_cpputest.make filelist MODULE=$(MODULE)
+	$(MAKE) $(TEST_MAKEFILE) filelist MODULE=$(MODULE)
 
-filelist dirlist flags test: $(ALL_MODULES)
+tdirs:
+	$(MAKE) $(TEST_MAKEFILE) dirlist MODULE=$(MODULE)
+
+flags test: $(ALL_MODULES)
 
 production: avr
 

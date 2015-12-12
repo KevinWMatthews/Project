@@ -37,16 +37,7 @@ flags:
 	$(LAUNCH_MAKE) makefile_avr.make
 
 dirlist:
-	$(call color_echo,"~~~ $(MODULE_DIR) Directory structure ~~~",BoldCyan)
-	$(call color_echo,"  $(MODULE_DIR) Common folders:",BoldPurple)
-	$(call echo_with_header,ROOT_DIR)
-	$(call echo_with_header,MODULE_DIR)
-	$(call echo_with_header,SRC_DIRS)
-	$(call echo_with_header,INC_DIRS)
-	$(call echo_with_header,MOCKHW_DIR)
-	$(call echo_with_header,OBJ_DIR)
-	$(call echo_with_header,BUILD_DIR)
-	$(call echo_with_header,LIB_DIRS)
+
 	$(call echo_with_header,LIB_LIST)
 	@echo
 	$(call color_echo,"  $(MODULE_DIR) Production code:",BoldCyan)
