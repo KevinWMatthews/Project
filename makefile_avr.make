@@ -87,6 +87,8 @@ HEX_TARGET=$(HEX_ROM_TARGET)
 # LST=$(call src_to_lst,$(SRC))
 
 
+include make_helper_functions
+include make_colors
 
 ########################
 ### Helper Functions ###
@@ -101,7 +103,7 @@ get_src_from_dir_list = $(foreach dir, $1, $(call get_src_from_dir,$(dir)))
 get_src_from_dir = $(wildcard $1/*.c) $(wildcard $1/*.cpp)
 
 get_inc = $(call clean_path,$(call get_inc_from_dir_list,$1))
-get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_from_dir,$(dir)))
+get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_frogm_dir,$(dir)))
 get_inc_from_dir = $(wildcard $1/*.h)
 
 #clean_path will only remove two subdirectories
@@ -145,9 +147,9 @@ clean:
 
 ### Generate files ###
 #Create .elf and .map files
-$(ELF_TARGET): $(OBJ)
+$(ELF_TARGET): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $@)
-	$(C_COMPILER) $(LINKER_FLAGS) -o $(ELF_TARGET) $(OBJ)
+	$(C_COMPILER) $(LINKER_FLAGS) -o $(ELF_TARGET) $(SRC_OBJ)
 
 #Create disassembly for executable
 $(DUMP_TARGET): $(ELF_TARGET)
@@ -155,17 +157,20 @@ $(DUMP_TARGET): $(ELF_TARGET)
 
 
 #Generate production code object files
-$(PRODUCTION_OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
-	$(SILENCE)mkdir -p $(dir $@)
-	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
+# $(PRODUCTION_OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
+# 	$(SILENCE)mkdir -p $(dir $@)
+# 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 #Generate hwDemo object files
-$(PRODUCTION_OBJ_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@echo here
+	@echo $(PRODUCTION_OBJ_DIR)
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 ##Generate hwDemo assembly
 $(PRODUCTION_OBJ_DIR)/%.s: %.c
+	@echo here
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) -S $(C_COMPILER_FLAGS) $< -o $@
 
@@ -177,21 +182,19 @@ $(PRODUCTION_OBJ_DIR)/%.s: %.c
 
 ### Targets for Makefile debugging ###
 filelist:
-	$(call techo,ELF_TARGET,$(ELF_TARGET))
-	$(call techo,HEX_TARGET,$(HEX_TARGET))
-	$(call techo,DUMP_TARGET,$(DUMP_TARGET))
-	$(call techo,SRC,$(SRC))
-	$(call techo,MOCKHW_SRC,$(MOCKHW_SRC))
-	$(call techo,OBJ,$(OBJ))
-	$(call techo,INC,$(INC))
-	$(call techo,MOCKHW_INC,$(MOCKHW_INC))
-	$(call techo,LST,$(LST))
-	$(call techo,LIBS,$(LIBS))
+	$(call echo_with_header,ELF_TARGET)
+	$(call echo_with_header,HEX_TARGET)
+	$(call echo_with_header,DUMP_TARGET)
+	$(call echo_with_header,SRC)
+	$(call echo_with_header,SRC_OBJ)
+	$(call echo_with_header,INC)
+	$(call echo_with_header,LST)
+	$(call echo_with_header,LIBS)
 
 flags:
-	$(call techo,C_COMPILER_FLAGS,$(C_COMPILER_FLAGS))
-	$(call techo,INCLUDE_FLAGS,$(INCLUDE_FLAGS))
-	$(call techo,LINKER_FLAGS,$(LINKER_FLAGS))
+	$(call echo_with_header,C_COMPILER_FLAGS)
+	$(call echo_with_header,INCLUDE_FLAGS)
+	$(call echo_with_header,LINKER_FLAGS)
 
 help:
 	$(ECHO) "all        Compile and link all source code, generate an .elf file (binary)."

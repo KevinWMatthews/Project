@@ -27,7 +27,6 @@ MODULES= \
 # master slave:
 # 	$(MAKE_LAUNCHER)
 
-
 #export??
 
 ### Makefile targets ###
@@ -38,7 +37,7 @@ MODULES= \
 .PHONY: hex
 .PHONY: filelist dirlist flags info
 .PHONY: $(MODULES)
-# .PHONY: $(PROJECTS)
+.PHONY: $(elf)
 
 include make_colors
 
@@ -46,13 +45,13 @@ all: $(MODULES)
 
 filelist dirlist flags test: $(MODULES)
 
-# production: $(PROJECTS)
+production: avr
 
 hex: $(MODULES)
 
 clean: $(MODULES)
 
-$(MODULES):
+$(MODULES) avr:
 	$(ECHO) "\n\n${BoldPurple}Launching Makefile for $@...${NoColor}"
 	$(MAKE_LAUNCHER)
 

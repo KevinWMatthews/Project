@@ -94,7 +94,7 @@ export
 
 all:
 	$(LAUNCH_MAKE) makefile_cpputest.make
-#	$(LAUNCH_MAKE) makefile_production.make
+#	$(LAUNCH_MAKE) makefile_avr.make
 
 clean:
 	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
@@ -108,7 +108,7 @@ test:
 	$(LAUNCH_MAKE) makefile_cpputest.make
 
 production:
-	$(LAUNCH_MAKE) makefile_avr.make
+	make --file makefile_avr.make all
 
 hex:
 	$(LAUNCH_MAKE) makefile_avr.make
@@ -132,8 +132,8 @@ filelist:
 	$(ECHO) "\n${BoldCyan}Mock Hardware code:${NoColor}"
 	$(call echo_with_header,MOCKHW_SRC)
 	$(call echo_with_header,MOCKHW_INC)
-	$(LAUNCH_MAKE) makefile_cpputest.make
-#	$(LAUNCH_MAKE) makefile_avr.make
+#	$(LAUNCH_MAKE) makefile_cpputest.make
+	$(LAUNCH_MAKE) makefile_avr.make
 
 flags:
 	@echo "~~~ $(MODULE_DIR) Flags ~~~"
