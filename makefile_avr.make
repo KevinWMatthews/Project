@@ -15,6 +15,12 @@ AVRDUDE_PROGRAMMERID=avrispmkII
 AVRDUDE_PORT=usb
 
 
+#######################
+### avr-gcc options ###
+#######################
+MCU=attiny861
+
+
 
 #########################
 #########################

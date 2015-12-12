@@ -10,7 +10,7 @@ include make_helper_functions
 ####################################################
 TARGET_NAME=TheProject
 ROOT_DIR=.
-src_dirs=lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
+src_dirs=. lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
 inc_dirs=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc
 lib_dirs=
 obj_dir=obj
