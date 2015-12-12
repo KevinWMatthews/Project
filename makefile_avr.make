@@ -104,33 +104,6 @@ SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(SRC)))
 include make_helper_functions
 include make_colors
 
-########################
-### Helper Functions ###
-########################
-#easy to use with colors!
-ECHO=@echo -e
-#"test" echo; used for checking makefile parameters
-techo=$(ECHO) "${BoldPurple}  $1:${NoColor}"; echo $2; echo;
-
-get_src = $(call clean_path,$(call get_src_from_dir_list,$1))
-get_src_from_dir_list = $(foreach dir, $1, $(call get_src_from_dir,$(dir)))
-get_src_from_dir = $(wildcard $1/*.c) $(wildcard $1/*.cpp)
-
-get_inc = $(call clean_path,$(call get_inc_from_dir_list,$1))
-get_inc_from_dir_list = $(foreach dir, $1, $(call get_inc_frogm_dir,$(dir)))
-get_inc_from_dir = $(wildcard $1/*.h)
-
-#clean_path will only remove two subdirectories
-#Hahahaha, nest calls because I'm too dumb to figure out how to loop it
-clean_path = $(call remove_dotdot,$(call remove_dotdot,$(call remove_dot,$1)))
-remove_dotdot = $(patsubst ../%,%,$1)
-remove_dot = $(patsubst ./%,%,$1)
-
-src_to_o = $(call src_to,.o,$1)
-src_to_s = $(call src_to,.s,$1)
-src_to_lst = $(call src_to,.lst,$1)
-src_to = $(patsubst %.c,%$1,$2)
-
 
 
 ####################
