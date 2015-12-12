@@ -1,6 +1,8 @@
 #This file does not make anything!
 #It contains helper functions for the various makefiles.
 
+REMOVE=rm -rf
+
 clean_path=$(call remove_leading_dot,$(call remove_trailing_slash,$1))
 remove_leading_dot=$(subst ./,,$1)
 remove_trailing_slash=$(patsubst %/,%,$(1))

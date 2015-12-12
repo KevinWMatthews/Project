@@ -35,7 +35,6 @@ C_LINKER=gcc
 ARCHIVER=ar
 CPP_COMPILER=g++
 CPP_LINKER=g++
-REMOVE=rm -rf
 
 
 #############################
@@ -48,6 +47,7 @@ REMOVE=rm -rf
 ###################
 ### Directories ###
 ###################
+MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(test_obj_dir))
 BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(test_build_dir))
 
@@ -175,7 +175,7 @@ endif
 ### Targets ###
 ###############
 .DEFAULT_GOAL:=all
-.PHONY: all rebuild run compile clean
+.PHONY: all rebuild run compile clean shallow_clean
 .PHONY: test
 .PHONY: dirlist filelist flags help
 
@@ -187,10 +187,21 @@ module: test
 rebuild: clean all
 
 clean:
-	$(ECHO) "${Yellow}Cleaning CppUTest files...${NoColor}"
+	$(ECHO) "${Yellow}Removing all CppUTest objects and directories for module $(MODULE)...${NoColor}"
 	$(SILENCE)$(REMOVE) $(OBJ_DIR)
 	$(SILENCE)$(REMOVE) $(BUILD_DIR)
+	$(ECHO) "${Green}...Module clean finished!${NoColor}\n"
+
+shallow_clean:
+	$(ECHO) "${Yellow}Cleaning CppUTest files for module $(MODULE)...${NoColor}"
+	@echo
+	$(ECHO) "${Yellow}Cleaning Production code files...${NoColor}"
+	$(SILENCE)$(REMOVE) $(PRODUCTION_LIB) $(dir $(SRC_OBJ))
 	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
+	$(ECHO) "${Yellow}Cleaning Test code files...${NoColor}"
+	$(SILENCE)$(REMOVE) $(TEST_TARGET) $(TEST_OBJ_DIR)/$(MODULE_DIR)
+	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
+	$(ECHO) "${Green}...Module clean finished!${NoColor}\n"
 
 ### Test code rules ###
 test: $(TEST_TARGET)
@@ -270,8 +281,9 @@ dirlist:
 	$(call echo_with_header,TEST_INC_DIRS)
 	$(call echo_with_header,TEST_LIB_DIRS)
 	$(call echo_with_header,TEST_LIB_LIST)
-#	$(call echo_with_header,TEST_OBJ_DIR)
-#	$(call echo_with_header,TEST_BUILD_DIR)
+	$(call echo_with_header,OBJ_DIR)
+	$(call echo_with_header,TEST_OBJ_DIR)
+	$(call echo_with_header,TEST_BUILD_DIR)
 	$(call echo_with_header,CPPUTEST_LIB_LIST)
 	$(call echo_with_header,CPPUTEST_LIB_DIR)
 	@echo
@@ -293,3 +305,5 @@ help:
 	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
 	$(ECHO) "${BoldRed} TODO ${NoColor}"
 	@echo
+
+#shallow_clean Does not remove all parent directories that were created

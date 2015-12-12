@@ -5,7 +5,7 @@
 #This is quite cumbersome to type, so it is recommended to put
 #the following functions in your .bashrc:
 #  makep() { make production MAKE_TARKET=$1; }
-#  maket() { make test MAKE_TARGET=$1; }
+#  maket() { make test MAKE_TARGET=$1 MODULE=$2; }
 
 # Set this to @ to keep the makefiles quiet
 SILENCE =
@@ -26,12 +26,12 @@ endif
 #To run specific test, execute
 #  make test MODULE=<name> from the terminal
 #Slick!
-# ALL_MODULES= \
-#   lib/Global/test/BitManip \
-#   lib/ATtiny861/test/ChipFunctions \
-#   lib/Spi/test/SpiApi \
-#   lib/Spi/test/SpiHw \
-#   lib/ATtiny861/test/Timer0 \
+ALL_MODULES= \
+  lib/Global/test/BitManip \
+  lib/ATtiny861/test/ChipFunctions \
+  lib/Spi/test/SpiApi \
+  lib/Spi/test/SpiHw \
+  lib/ATtiny861/test/Timer0 \
 
 
 
@@ -60,7 +60,6 @@ test_build_dir=build_test
 #############################
 include make_helper_functions
 
-MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 
 
 #################################################
@@ -82,33 +81,49 @@ export
 ### Makefile targets ###
 ###                  ###
 ########################
-.DEFAULT_GOAL:=all
-.PHONY: all all_clean clean
+ifeq ($(strip $(MAKE_MODULE)),)
+	override MAKE_MODULE=$(ALL_MODULES)
 
-.PHONY: production
-.PHONY: test
-
-.PHONY: compile run
-
-include make_colors
+	ifeq ($(strip $(MAKE_TARGET)),)
+		override MAKE_TARGET=all
+	endif
+endif
 
 MAKE=make $(NO_PRINT_DIRECTORY) --file
 PRODUCTION_MAKEFILE=makefile_avr.make
 TEST_MAKEFILE=makefile_cpputest.make
 
+include make_colors
+
+.DEFAULT_GOAL:=all
+.PHONY: all clean
+
+.PHONY: production
+.PHONY: test
+
+.PHONY: compile run
+.PHONY: $(MAKE_MODULE)
+
+
+
 all:
 
-all_clean clean:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) clean
+clean:
+
 
 production:
 	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) $(MAKE_TARGET)
 
-test:
 #MODULE is defined in .bashrc and is passed from the command prompt
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) $(MAKE_TARGET) $(MODULE)
+test: $(MAKE_MODULE)
+
+$(MAKE_MODULE):
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) $(MAKE_TARGET) MODULE=$@
+
 
 
 ### Documentation ###
 # .DEFAULT_GOAL is a special makefile variable
+# $@	the name of the target
+# $<	the name of the first prerequisite
+# $^	the names of all prerequisites separated by a space

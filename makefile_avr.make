@@ -35,7 +35,6 @@ OBJCOPY=avr-objcopy
 OBJDUMP=avr-objdump
 SIZE=avr-size
 AVRDUDE=avrdude
-REMOVE=rm -rf
 
 
 #############
@@ -142,6 +141,8 @@ clean:
 	$(SILENCE)$(REMOVE) $(OBJ_DIR)
 	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
 
+shallow_clean:
+	@echo TODO
 
 ### Generate files ###
 #Create .elf and .map files
