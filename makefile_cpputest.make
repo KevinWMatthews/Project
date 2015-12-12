@@ -67,14 +67,6 @@ include make_helper_functions
 #########################################################
 ### Auto-detect source code and generate object files ###
 #########################################################
-# Production source code
-SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
-CLEAN_SRC=$(call clean_path,$(SRC))
-SRC_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
-SRC_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
-INC=$(call get_inc_from_dir_list,$(INC_DIRS))
-LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
-
 # Test code using CppUTest test harness
 TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
@@ -170,7 +162,7 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $@)
 	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
 
-$(TEST_OBJ_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module production code${NoColor}"

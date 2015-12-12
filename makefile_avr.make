@@ -70,17 +70,17 @@ LINKER_FLAGS=-Wl,-Map,$(BUILD_DIR)/$(TARGET_NAME).map -mmcu=$(MCU)
 #############################
 ### Auto-generated values ###
 #############################
-ELF_TARGET=$(BUILD_DIR)/$(TARGET_NAME).elf
+ELF_TARGET=$(TARGET).elf
 DUMP_TARGET=$(TARGET_NAME).s
 
 HEX_ROM_TARGET=$(BUILD_DIR)/$(TARGET_NAME).hex
 HEX_TARGET=$(HEX_ROM_TARGET)
 
-SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
-OBJ=$(call clean_path,$(addprefix $(PRODUCTION_OBJ_DIR)/,$(call src_to_o,$(SRC))))
-INC=$(call get_inc,$(INC_DIRS))
-LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
-LST=$(call src_to_lst,$(SRC))
+# SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
+# OBJ=$(call clean_path,$(addprefix $(PRODUCTION_OBJ_DIR)/,$(call src_to_o,$(SRC))))
+# INC=$(call get_inc,$(INC_DIRS))
+# LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
+# LST=$(call src_to_lst,$(SRC))
 
 
 

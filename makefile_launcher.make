@@ -37,6 +37,15 @@ OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(obj_dir))
 BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(build_dir))
 
 
+# Production source code
+SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
+CLEAN_SRC=$(call clean_path,$(SRC))
+SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
+SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
+INC=$(call get_inc_from_dir_list,$(INC_DIRS))
+LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
+
+
 
 COMPILER_FLAGS=-Wall
 INCLUDE_FLAGS=
