@@ -129,8 +129,10 @@ stats: $(ELF_TARGET)
 	$(SIZE) $(ELF_TARGET)
 
 clean:
-	$(REMOVE) $(BUILD_DIR)
-	$(REMOVE) $(OBJ_DIR)
+	$(ECHO) "${Yellow}Cleaning production code...${NoColor}"
+	$(SILENCE)$(REMOVE) $(BUILD_DIR)
+	$(SILENCE)$(REMOVE) $(OBJ_DIR)
+	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
 
 
 ### Generate files ###

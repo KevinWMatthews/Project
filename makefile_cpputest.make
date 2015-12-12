@@ -35,7 +35,7 @@ C_LINKER=gcc
 ARCHIVER=ar
 CPP_COMPILER=g++
 CPP_LINKER=g++
-
+REMOVE=rm -rf
 
 
 #############################
@@ -185,9 +185,10 @@ all: test
 rebuild: clean all
 
 clean:
-	$(SILENCE)rm -rf $(OBJ_DIR)
-	$(SILENCE)rm -rf $(BUILD_DIR)
-
+	$(ECHO) "${Yellow}Cleaning CppUTest files...${NoColor}"
+	$(SILENCE)$(REMOVE) $(OBJ_DIR)
+	$(SILENCE)$(REMOVE) $(BUILD_DIR)
+	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
 
 ### Test code rules ###
 test: $(TEST_TARGET)

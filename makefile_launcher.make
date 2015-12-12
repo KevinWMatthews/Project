@@ -14,14 +14,6 @@ all:
 	$(LAUNCH_MAKE) makefile_cpputest.make
 #	$(LAUNCH_MAKE) makefile_avr.make
 
-clean:
-	$(ECHO) "${Yellow}Cleaning project...${NoColor}"
-#	$(SILENCE)rm -rf $(OBJ_DIR)
-#	$(SILENCE)rm -rf $(BUILD_DIR)
-	$(LAUNCH_MAKE) makefile_cpputest.make
-	$(LAUNCH_MAKE) makefile_avr.make
-	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
-
 test:
 	$(LAUNCH_MAKE) makefile_cpputest.make
 

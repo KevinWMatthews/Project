@@ -76,56 +76,70 @@ export
 .DEFAULT_GOAL:=all
 .PHONY: all all_clean
 
-.PHONY: pfiles pdirs pflags phelp
-.PHONY: tfiles tdirs tflags thelp
+.PHONY: pclean pfiles pdirs pflags phelp
+.PHONY: tclean tfiles tdirs tflags thelp
 
 .PHONY: test compile run
 .PHONY: production
 .PHONY: hex
-.PHONY: filelist dirlist flags info
+.PHONY: info
 .PHONY: $(ALL_MODULES)
 .PHONY: $(elf)
 
 include make_colors
-MAKE=make $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file
+MAKE=make $(NO_PRINT_DIRECTORY) --file
 PRODUCTION_MAKEFILE=makefile_avr.make
 TEST_MAKEFILE=makefile_cpputest.make
 
 all:
 
+all_clean:
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) clean
 
+
+##########################
+### Production Targets ###
+##########################
+pclean:
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
 
 pfiles:
-	$(MAKE) $(PRODUCTION_MAKEFILE) filelist
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) filelist
 
 pdirs:
-	$(MAKE) $(PRODUCTION_MAKEFILE) dirlist
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) dirlist
 
 pflags:
-	$(MAKE) $(PRODUCTION_MAKEFILE) flags
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) flags
 
 phelp:
-	$(MAKE) $(PRODUCTION_MAKEFILE) help
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) help
+
+
+####################
+### Test targets ###
+####################
+tclean:
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) clean
 
 tfiles:
-	$(MAKE) $(TEST_MAKEFILE) filelist MODULE=$(MODULE)
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) filelist MODULE=$(MODULE)
 
 tdirs:
-	$(MAKE) $(TEST_MAKEFILE) dirlist MODULE=$(MODULE)
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) dirlist MODULE=$(MODULE)
 
 tflags:
-	$(MAKE) $(TEST_MAKEFILE) flags
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) flags
 
 thelp:
-	$(MAKE) $(TEST_MAKEFILE) help
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) help
 
 test: $(ALL_MODULES)
 
 production: avr
 
 hex: $(ALL_MODULES)
-
-clean: $(ALL_MODULES)
 
 $(ALL_MODULES) avr:
 	$(ECHO) "\n\n${BoldPurple}Launching Makefile for $@...${NoColor}"
