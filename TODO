@@ -1,3 +1,6 @@
+Consider using aliases to simplify the top level makefile:
+	makep <MAKECMDGOALS>
+
 Move compiler, include, and linker flags up to the launcher?
 
 Is there any way to have the tests compile the production library without the test includes?

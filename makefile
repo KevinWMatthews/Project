@@ -76,7 +76,9 @@ export
 .DEFAULT_GOAL:=all
 .PHONY: all all_clean clean
 
-.PHONY: p prebuild pclean pfiles pdirs pflags phelp
+.PHONY: p prebuild pclean
+.PHONY: hex
+.PHONY: pfiles pdirs pflags phelp
 .PHONY: tclean tfiles tdirs tflags thelp
 
 .PHONY: test compile run
@@ -109,6 +111,9 @@ prebuild:
 
 pclean:
 	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
+
+hex:
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) hex
 
 pfiles:
 	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) filelist
@@ -144,8 +149,6 @@ thelp:
 test: $(ALL_MODULES)
 
 production: avr
-
-hex: $(ALL_MODULES)
 
 $(ALL_MODULES) avr:
 	$(ECHO) "\n\n${BoldPurple}Launching Makefile for $@...${NoColor}"

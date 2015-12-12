@@ -126,6 +126,9 @@ writeflash: hex
              -e -U flash:w:$(HEX_TARGET)
 
 hex: $(HEX_TARGET)
+	@echo
+	$(ECHO) "${BoldGreen}...Generated $^${NoColor}"
+	@echo
 
 disasm: $(DUMP_TARGET) stats
 
@@ -165,6 +168,7 @@ $(OBJ_DIR)/%.s: %.c
 
 #Chip-readable .hex file from compiler's binary file output, .elf
 %.hex: %.elf
+	$(ECHO) "\n${Yellow}Generating hex file from $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(OBJCOPY) -j .text -j .data -O $(HEX_FORMAT) $< $@
 
