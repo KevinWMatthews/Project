@@ -199,6 +199,9 @@ dirlist:
 	$(call echo_with_header,LIB_DIRS)
 
 flags:
+	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	$(ECHO)             "~~~ Flags in AVR Makefile ~~~"
+	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~${NoColor}"
 	$(call echo_with_header,C_COMPILER_FLAGS)
 	$(call echo_with_header,INCLUDE_FLAGS)
 	$(call echo_with_header,LINKER_FLAGS)

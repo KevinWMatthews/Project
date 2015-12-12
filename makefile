@@ -76,8 +76,8 @@ export
 .DEFAULT_GOAL:=all
 .PHONY: all all_clean
 
-.PHONY: pfiles pdirs
-.PHONY: tfiles tdirs
+.PHONY: pfiles pdirs pflags
+.PHONY: tfiles tdirs tflags
 
 .PHONY: test compile run
 .PHONY: production
@@ -101,13 +101,19 @@ pfiles:
 pdirs:
 	$(MAKE) $(PRODUCTION_MAKEFILE) dirlist
 
+pflags:
+	$(MAKE) $(PRODUCTION_MAKEFILE) flags
+
 tfiles:
 	$(MAKE) $(TEST_MAKEFILE) filelist MODULE=$(MODULE)
 
 tdirs:
 	$(MAKE) $(TEST_MAKEFILE) dirlist MODULE=$(MODULE)
 
-flags test: $(ALL_MODULES)
+tflags:
+	$(MAKE) $(TEST_MAKEFILE) flags
+
+test: $(ALL_MODULES)
 
 production: avr
 
