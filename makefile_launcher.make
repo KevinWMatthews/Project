@@ -10,34 +10,61 @@ include make_helper_functions
 ####################################################
 TARGET_NAME=TheProject
 ROOT_DIR=.
-scr_dirs=
-inc_dirs=
-lib_dirs=lib lib/Global lib/ATtiny861 lib/Spi
+src_dirs=lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
+inc_dirs=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc
+lib_dirs=
 obj_dir=obj
 build_dir=build
 
 
+# # Custom flags for compiling code for testing
+# TEST_COMPILER_FLAGS=-Wall
+# TEST_INCLUDE_FLAGS=
+# #Linker flags for libraries will be handled automatically if make_module_config is set
+# TEST_LINKER_FLAGS=
 
+# # Custom flags for compiling code for production
+# PRODUCTION_COMPILER_FLAGS=
+# PRODUCTION_INCLUDE_FLAGS=
+# #Linker flags for libraries will be handled automatically if make_module_config is set
+# PRODUCTION_LINKER_FLAGS=
+
+
+
+
+#############################
+###                       ###
+### Auto-generated values ###
+###                       ###
+#############################
 TARGET=$(BUILD_DIR)/$(TARGET_NAME)
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 include $(MODULE_DIR)/make_module_config.make
 
-#module_src_dirs, module_inc_dirs, and module_lib_dirs are user configured in make_module_config
+###################################
+### Collect project directories ###
+###################################
 SRC_DIRS=$(src_dirs)
-SRC_DIRS+=$(call append_src_to_dir,$(lib_dirs))
-SRC_DIRS+=$(call clean_path,$(module_src_dirs))
 INC_DIRS=$(inc_dirs)
-INC_DIRS+=$(call append_inc_to_dir,$(lib_dirs))
-INC_DIRS+=$(call clean_path,$(module_inc_dirs))
-#Wait, do we want to do this?
 LIB_DIRS=$(lib_dirs)
-LIB_DIRS=$(call clean_path,$(module_lib_dirs))
+
+#module_src_dirs, module_inc_dirs, and module_lib_dirs are user configured in make_module_config
+SRC_DIRS+=$(call clean_path,$(module_src_dirs))
+INC_DIRS+=$(call clean_path,$(module_inc_dirs))
+
+
+#We'll get to libraries later
+# LIB_DIRS=$(call clean_path,$(module_lib_dirs))
 #LIB_LIST    User-configured in make_module_config
+
 OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(obj_dir))
 BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(build_dir))
 
 
-# Production source code
+
+##########################################
+### Auto-detect production source code ###
+##########################################
 SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
 CLEAN_SRC=$(call clean_path,$(SRC))
 SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
@@ -45,18 +72,18 @@ SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
 INC=$(call get_inc_from_dir_list,$(INC_DIRS))
 LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 
-
-
-COMPILER_FLAGS=-Wall
-INCLUDE_FLAGS=
-#Linker flags for libraries will be handled automatically if make_module_config is set
-LINKER_FLAGS=
-
 export
 
+
+
+###############
+###         ###
 ### Targets ###
+###         ###
+###############
 .PHONY: all test
 .PHONY: production
+.PHONY: hex
 .PHONY: filelist dirlist flags
 
 all:
@@ -75,7 +102,10 @@ test:
 	$(LAUNCH_MAKE) makefile_cpputest.make
 
 production:
-	$(LAUNCH_MAKE) makefile_production.make
+	$(LAUNCH_MAKE) makefile_avr.make
+
+hex:
+	$(LAUNCH_MAKE) makefile_avr.make
 
 filelist:
 	$(ECHO) "${BoldGreen}~~~ $(MODULE_DIR) $@ ~~~${NoColor}"

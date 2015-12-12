@@ -35,6 +35,7 @@ MODULES= \
 .PHONY: all clean
 .PHONY: test compile run
 .PHONY: production
+.PHONY: hex
 .PHONY: filelist dirlist flags info
 .PHONY: $(MODULES)
 # .PHONY: $(PROJECTS)
@@ -46,6 +47,8 @@ all: $(MODULES)
 filelist dirlist flags test: $(MODULES)
 
 # production: $(PROJECTS)
+
+hex: $(MODULES)
 
 clean: $(MODULES)
 
