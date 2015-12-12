@@ -1,8 +1,9 @@
 #This file does not make anything!
 #It contains helper functions for the various makefiles.
 
-clean_path=$(call remove_leading_dot,$1)
+clean_path=$(call remove_leading_dot,$(call remove_trailing_slash,$1))
 remove_leading_dot=$(subst ./,,$1)
+remove_trailing_slash=$(patsubst %/,%,$(1))
 #Not sure I want to allow a directory structure with ../
 #Must remove dotdot first because ./ produces a false positive when compared to ../
 #clean_path=$(call remove_leading_dot,$(call remove_leading_dotdot,$1))
