@@ -13,7 +13,7 @@ ROOT_DIR=.
 scr_dirs=
 inc_dirs=
 lib_dirs=lib lib/Global lib/ATtiny861 lib/Spi
-obj_dir=obj/CppUTest
+obj_dir=obj
 build_dir=build
 
 

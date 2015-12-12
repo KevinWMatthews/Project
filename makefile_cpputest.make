@@ -47,7 +47,7 @@ TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
 TEST_SRC_DIRS=$(TEST_DIR)/src
 TEST_INC_DIRS=$(TEST_DIR)/inc
 
-#TEST_OBJ_DIR=$(OBJ_DIR)
+TEST_OBJ_DIR=$(OBJ_DIR)/CppUTest
 #TEST_BUILD_DIR=$(BUILD_DIR)
 #Production code is compiled into a library
 PRODUCTION_LIB=$(BUILD_DIR)/$(addsuffix .a,$(addprefix lib,$(TARGET_NAME)))
@@ -70,16 +70,16 @@ include make_helper_functions
 # Production source code
 SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
 CLEAN_SRC=$(call clean_path,$(SRC))
-SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
-SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
+SRC_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
+SRC_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
 INC=$(call get_inc_from_dir_list,$(INC_DIRS))
 LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 
 # Test code using CppUTest test harness
 TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
-TEST_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
-TEST_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_TEST_SRC)))
+TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
+TEST_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(CLEAN_TEST_SRC)))
 TEST_INC=$(call get_inc_from_dir_list,$(TEST_INC_DIRS))
 TEST_LIBS=$(addprefix lib,$(addsuffix .a,$(TEST_LIB_LIST)))
 
@@ -145,7 +145,7 @@ all: test
 rebuild: clean all
 
 clean:
-	$(SILENCE)rm -rf $(OBJ_DIR)
+	$(SILENCE)rm -rf $(TEST_OBJ_DIR)
 	$(SILENCE)rm -rf $(BUILD_DIR)
 
 
@@ -170,13 +170,13 @@ $(PRODUCTION_LIB): $(SRC_OBJ)
 	$(SILENCE)mkdir -p $(dir $@)
 	$(SILENCE)$(ARCHIVER) $(ARCHIVER_FLAGS) $@ $^
 
-$(OBJ_DIR)/%.o: %.c
+$(TEST_OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module production code${NoColor}"
 	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
-$(OBJ_DIR)/%.o: %.cpp
+$(TEST_OBJ_DIR)/%.o: %.cpp
 	@echo
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
