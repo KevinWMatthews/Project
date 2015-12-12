@@ -76,11 +76,13 @@ filelist:
 	$(call echo_with_header,TARGET_NAME)
 	$(call echo_with_header,TARGET)
 	@echo
-	$(LAUNCH_MAKE) makefile_cpputest.make
+#	$(LAUNCH_MAKE) makefile_cpputest.make
+	$(LAUNCH_MAKE) makefile_avr.make
 
 flags:
 	@echo "~~~ $(MODULE_DIR) Flags ~~~"
-	$(LAUNCH_MAKE) makefile_cpputest.make
+#	$(LAUNCH_MAKE) makefile_cpputest.make
+	$(LAUNCH_MAKE) makefile_avr.make
 
 dirlist:
 	$(call color_echo,"~~~ $(MODULE_DIR) Directory structure ~~~",BoldCyan)
@@ -96,8 +98,8 @@ dirlist:
 	@echo
 	$(call color_echo,"  $(MODULE_DIR) Production code:",BoldCyan)
 	$(LAUNCH_MAKE) makefile_production.make
-	$(call color_echo,"  $(MODULE_DIR) Test code:",BoldCyan)
-	$(LAUNCH_MAKE) makefile_cpputest.make
+#	$(call color_echo,"  $(MODULE_DIR) Test code:",BoldCyan)
+#	$(LAUNCH_MAKE) makefile_cpputest.make
 	@echo
 
 

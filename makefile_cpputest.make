@@ -7,7 +7,9 @@ ifndef DEBUG
 	DEBUG=Y
 endif
 
+##############################
 ### Generate and set flags ###
+##############################
 ##User-entered flags
 #Flags for user's unit tests written under CppUTest framework
 TEST_COMPILER_FLAGS=
@@ -17,6 +19,22 @@ TEST_LINKER_FLAGS=
 #Flags for CppUTest framework's source code
 #(not the user's unit tests; the test framework itself)
 CPPUTEST_LINKER_FLAGS=
+
+#If for some reason your tests have a library dependency, list it here
+TEST_LIB_DIRS=
+#Static library names without lib prefix and .a suffix
+TEST_LIB_LIST=
+
+
+
+######################
+### Compiler tools ###
+######################
+C_COMPILER=gcc
+C_LINKER=gcc
+ARCHIVER=ar
+CPP_COMPILER=g++
+CPP_LINKER=g++
 
 
 
@@ -28,10 +46,7 @@ TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
 TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
 TEST_SRC_DIRS=$(TEST_DIR)/src
 TEST_INC_DIRS=$(TEST_DIR)/inc
-#If for some reason your tests have a library dependency, list it here
-TEST_LIB_DIRS=
-#Static library names without lib prefix and .a suffix
-TEST_LIB_LIST=
+
 #TEST_OBJ_DIR=$(OBJ_DIR)
 #TEST_BUILD_DIR=$(BUILD_DIR)
 #Production code is compiled into a library
@@ -113,17 +128,6 @@ ifdef SILENCE
 else
 	ARCHIVER_FLAGS=rcvs
 endif
-
-
-
-######################
-### Compiler tools ###
-######################
-C_COMPILER=gcc
-C_LINKER=gcc
-ARCHIVER=ar
-CPP_COMPILER=g++
-CPP_LINKER=g++
 
 
 

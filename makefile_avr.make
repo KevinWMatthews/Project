@@ -1,13 +1,6 @@
-# Set this to @ to keep the makefile quiet
-ifndef SILENCE
-	SILENCE =
-endif
-
-
 include $(MODULE_DIR)/make_module_config.make
 
-OBJ_DIR=obj/avr
-TARGET_DIR=build
+PRODUCTION_OBJ_DIR=$(OBJ_DIR)/avr
 
 
 ########################
@@ -59,7 +52,7 @@ INCLUDE_FLAGS=$(addprefix -I,$(INC_DIRS))
 
 #TODO add in library support
 #use  -lm $(LIBS) ?
-LINKER_FLAGS=-Wl,-Map,$(TARGET_DIR)/$(TARGET_NAME).map -mmcu=$(MCU)
+LINKER_FLAGS=-Wl,-Map,$(BUILD_DIR)/$(TARGET_NAME).map -mmcu=$(MCU)
 
 
 
@@ -77,14 +70,14 @@ LINKER_FLAGS=-Wl,-Map,$(TARGET_DIR)/$(TARGET_NAME).map -mmcu=$(MCU)
 #############################
 ### Auto-generated values ###
 #############################
-TARGET=$(TARGET_DIR)/$(TARGET_NAME).elf
+ELF_TARGET=$(BUILD_DIR)/$(TARGET_NAME).elf
 DUMP_TARGET=$(TARGET_NAME).s
 
-HEX_ROM_TARGET=$(TARGET_DIR)/$(TARGET_NAME).hex
+HEX_ROM_TARGET=$(BUILD_DIR)/$(TARGET_NAME).hex
 HEX_TARGET=$(HEX_ROM_TARGET)
 
-SRC=$(call get_src,$(SRC_DIRS)) $(call clean_path,$(SRC_FILES))
-OBJ=$(call clean_path,$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(SRC))))
+SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
+OBJ=$(call clean_path,$(addprefix $(PRODUCTION_OBJ_DIR)/,$(call src_to_o,$(SRC))))
 INC=$(call get_inc,$(INC_DIRS))
 LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 LST=$(call src_to_lst,$(SRC))
@@ -125,7 +118,7 @@ src_to = $(patsubst %.c,%$1,$2)
 ####################
 .PHONY: all install writeflash hex disasm stats clean help
 
-all: $(TARGET)
+all: $(ELF_TARGET)
 
 install: writeflash
 
@@ -137,38 +130,38 @@ hex: $(HEX_TARGET)
 
 disasm: $(DUMP_TARGET) stats
 
-stats: $(TARGET)
-	$(OBJDUMP) -h $(TARGET)
-	$(SIZE) $(TARGET)
+stats: $(ELF_TARGET)
+	$(OBJDUMP) -h $(ELF_TARGET)
+	$(SIZE) $(ELF_TARGET)
 
 clean:
-	$(REMOVE) $(TARGET_DIR)
-	$(REMOVE) $(OBJ_DIR)
+	$(REMOVE) $(BUILD_DIR)
+	$(REMOVE) $(PRODUCTION_OBJ_DIR)
 
 
 ### Generate files ###
 #Create .elf and .map files
-$(TARGET): $(OBJ)
+$(ELF_TARGET): $(OBJ)
 	$(SILENCE)mkdir -p $(dir $@)
-	$(C_COMPILER) $(LINKER_FLAGS) -o $(TARGET) $(OBJ)
+	$(C_COMPILER) $(LINKER_FLAGS) -o $(ELF_TARGET) $(OBJ)
 
 #Create disassembly for executable
-$(DUMP_TARGET): $(TARGET)
-	$(OBJDUMP) -S $< > $(TARGET_DIR)/$@
+$(DUMP_TARGET): $(ELF_TARGET)
+	$(OBJDUMP) -S $< > $(BUILD_DIR)/$@
 
 
 #Generate production code object files
-$(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
+$(PRODUCTION_OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 #Generate hwDemo object files
-$(OBJ_DIR)/%.o: %.c
+$(PRODUCTION_OBJ_DIR)/%.o: %.c
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 ##Generate hwDemo assembly
-$(OBJ_DIR)/%.s: %.c
+$(PRODUCTION_OBJ_DIR)/%.s: %.c
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) -S $(C_COMPILER_FLAGS) $< -o $@
 
@@ -180,7 +173,7 @@ $(OBJ_DIR)/%.s: %.c
 
 ### Targets for Makefile debugging ###
 filelist:
-	$(call techo,TARGET,$(TARGET))
+	$(call techo,ELF_TARGET,$(ELF_TARGET))
 	$(call techo,HEX_TARGET,$(HEX_TARGET))
 	$(call techo,DUMP_TARGET,$(DUMP_TARGET))
 	$(call techo,SRC,$(SRC))
