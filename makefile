@@ -74,9 +74,9 @@ export
 ###                  ###
 ########################
 .DEFAULT_GOAL:=all
-.PHONY: all all_clean
+.PHONY: all all_clean clean
 
-.PHONY: pclean pfiles pdirs pflags phelp
+.PHONY: p prebuild pclean pfiles pdirs pflags phelp
 .PHONY: tclean tfiles tdirs tflags thelp
 
 .PHONY: test compile run
@@ -93,7 +93,7 @@ TEST_MAKEFILE=makefile_cpputest.make
 
 all:
 
-all_clean:
+all_clean clean:
 	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
 	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) clean
 
@@ -101,6 +101,12 @@ all_clean:
 ##########################
 ### Production Targets ###
 ##########################
+p:
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) all
+
+prebuild:
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) rebuild
+
 pclean:
 	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
 

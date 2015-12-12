@@ -109,10 +109,15 @@ include make_colors
 ####################
 ### Target Names ###
 ####################
-.PHONY: all install writeflash hex disasm stats clean help
+.PHONY: all install writeflash hex disasm stats clean rebuild help
 .PHONY: filelist dirlist
 
 all: $(ELF_TARGET)
+	@echo
+	$(ECHO) "${BoldGreen}...Generated $^${NoColor}"
+	@echo
+
+rebuild: clean all
 
 install: writeflash
 
@@ -138,31 +143,25 @@ clean:
 ### Generate files ###
 #Create .elf and .map files
 $(ELF_TARGET): $(SRC_OBJ)
+	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
-	$(C_COMPILER) $(LINKER_FLAGS) -o $(ELF_TARGET) $(SRC_OBJ)
+	$(SILENCE)$(C_COMPILER) $(LINKER_FLAGS) -o $(ELF_TARGET) $(SRC_OBJ)
 
 #Create disassembly for executable
 $(DUMP_TARGET): $(ELF_TARGET)
 	$(OBJDUMP) -S $< > $(BUILD_DIR)/$@
 
-
-#Generate production code object files
-# $(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
-# 	$(SILENCE)mkdir -p $(dir $@)
-# 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
-
-#Generate hwDemo object files
+#Generate object files
 $(OBJ_DIR)/%.o: %.c
-	@echo here
-	@echo $(OBJ_DIR)
+	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
-	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
+	$(SILENCE)$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
-##Generate hwDemo assembly
+##Generate assembly
 $(OBJ_DIR)/%.s: %.c
-	@echo here
+	$(ECHO) "\n${Yellow}Generating assembly for $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
-	$(C_COMPILER) -S $(C_COMPILER_FLAGS) $< -o $@
+	$(SILENCE)$(C_COMPILER) -S $(C_COMPILER_FLAGS) $< -o $@
 
 #Chip-readable .hex file from compiler's binary file output, .elf
 %.hex: %.elf
