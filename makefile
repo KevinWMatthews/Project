@@ -1,3 +1,12 @@
+#This makefile spawns two submakes: production and test
+#These are launched with a command of the form
+#  make production MAKE_TARGET=<target>
+#
+#This is quite cumbersome to type, so it is recommended to put
+#the following functions in your .bashrc:
+#  makep() { make production MAKE_TARKET=$1; }
+#  maket() { make test MAKE_TARGET=$1; }
+
 # Set this to @ to keep the makefiles quiet
 SILENCE =
 
@@ -17,12 +26,12 @@ endif
 #To run specific test, execute
 #  make test MODULE=<name> from the terminal
 #Slick!
-ALL_MODULES= \
-  lib/Global/test/BitManip \
-  lib/ATtiny861/test/ChipFunctions \
-  lib/Spi/test/SpiApi \
-  lib/Spi/test/SpiHw \
-  lib/ATtiny861/test/Timer0 \
+# ALL_MODULES= \
+#   lib/Global/test/BitManip \
+#   lib/ATtiny861/test/ChipFunctions \
+#   lib/Spi/test/SpiApi \
+#   lib/Spi/test/SpiHw \
+#   lib/ATtiny861/test/Timer0 \
 
 
 
@@ -76,19 +85,13 @@ export
 .DEFAULT_GOAL:=all
 .PHONY: all all_clean clean
 
-.PHONY: p prebuild pclean
-.PHONY: hex
-.PHONY: pfiles pdirs pflags phelp
-.PHONY: tclean tfiles tdirs tflags thelp
-
-.PHONY: test compile run
 .PHONY: production
-.PHONY: hex
-.PHONY: info
-.PHONY: $(ALL_MODULES)
-.PHONY: $(elf)
+.PHONY: test
+
+.PHONY: compile run
 
 include make_colors
+
 MAKE=make $(NO_PRINT_DIRECTORY) --file
 PRODUCTION_MAKEFILE=makefile_avr.make
 TEST_MAKEFILE=makefile_cpputest.make
@@ -99,67 +102,13 @@ all_clean clean:
 	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
 	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) clean
 
+production:
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) $(MAKE_TARGET)
 
-##########################
-### Production Targets ###
-##########################
-p:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) all
-
-prebuild:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) rebuild
-
-pclean:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) clean
-
-hex:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) hex
-
-pfiles:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) filelist
-
-pdirs:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) dirlist
-
-pflags:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) flags
-
-phelp:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) help
-
-
-####################
-### Test targets ###
-####################
-tclean:
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) clean
-
-tfiles:
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) filelist MODULE=$(MODULE)
-
-tdirs:
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) dirlist MODULE=$(MODULE)
-
-tflags:
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) flags
-
-thelp:
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) help
-
-test: $(ALL_MODULES)
-
-production: avr
-
-$(ALL_MODULES) avr:
-	$(ECHO) "\n\n${BoldPurple}Launching Makefile for $@...${NoColor}"
-	$(MAKE_LAUNCHER)
-
-
-### Helpers ###
-# MODULE is defined here and is passed into all other makefiles
-MAKE_LAUNCHER=make $(MAKECMDGOALS) $(NO_PRINT_DIRECTORY) SILENCE=$(SILENCE) --file makefile_launcher.make MODULE=$@
+test:
+#MODULE is defined in .bashrc and is passed from the command prompt
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) $(MAKE_TARGET) $(MODULE)
 
 
 ### Documentation ###
-# MAKECMDGOALS is a special variable that is set by make
-# .DEFAULT_GOAL is a special variable that the user can set
+# .DEFAULT_GOAL is a special makefile variable

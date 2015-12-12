@@ -182,6 +182,8 @@ endif
 
 all: test
 
+module: test
+
 rebuild: clean all
 
 clean:
