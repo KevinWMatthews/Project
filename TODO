@@ -8,3 +8,5 @@ Consider where we should put object files. Should all projects depend on the sam
 Unless you think of something else. Think it through again when you're all done.
 
 Not all modules depend on mockHw... go back and edit module_configs.
+
+Have clean path remove trailing /? This would make tab completion easier.
