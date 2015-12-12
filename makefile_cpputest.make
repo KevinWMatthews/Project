@@ -175,9 +175,10 @@ endif
 ### Targets ###
 ###############
 .DEFAULT_GOAL:=all
-.PHONY: all rebuild run compile clean shallow_clean
-.PHONY: test
-.PHONY: dirlist filelist flags help
+.PHONY: all compile clean rebuild help
+.PHONY: test run
+.PHONY: dirlist filelist flags
+.PHONY: shallow_clean
 
 
 all: test
@@ -185,6 +186,11 @@ all: test
 module: test
 
 rebuild: clean all
+
+compile: $(TEST_TARGET)
+
+run: compile
+	$(TEST_TARGET)
 
 clean:
 	$(ECHO) "${Yellow}Removing all CppUTest objects and directories for module $(MODULE)...${NoColor}"

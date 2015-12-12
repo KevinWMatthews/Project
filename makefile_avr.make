@@ -108,7 +108,8 @@ include make_colors
 ####################
 ### Target Names ###
 ####################
-.PHONY: all install writeflash hex disasm stats clean rebuild help
+.PHONY: all compile clean rebuild help
+.PHONY: install writeflash hex disasm stats
 .PHONY: filelist dirlist
 
 all: $(ELF_TARGET)
@@ -135,6 +136,8 @@ stats: $(ELF_TARGET)
 	$(OBJDUMP) -h $(ELF_TARGET)
 	$(SIZE) $(ELF_TARGET)
 
+compile: $(SRC_OBJ)
+
 clean:
 	$(ECHO) "${Yellow}Cleaning production code...${NoColor}"
 	$(SILENCE)$(REMOVE) $(BUILD_DIR)
@@ -146,7 +149,7 @@ shallow_clean:
 
 ### Generate files ###
 #Create .elf and .map files
-$(ELF_TARGET): $(SRC_OBJ)
+$(ELF_TARGET): compile
 	$(ECHO) "\n${Yellow}Linking $(notdir $@)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(SILENCE)$(C_COMPILER) $(LINKER_FLAGS) -o $(ELF_TARGET) $(SRC_OBJ)

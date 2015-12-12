@@ -1,11 +1,11 @@
 #This makefile spawns two submakes: production and test
 #These are launched with a command of the form
-#  make production MAKE_TARGET=<target>
+#  make production SUBMAKE_TARGET=<target>
 #
 #This is quite cumbersome to type, so it is recommended to put
 #the following functions in your .bashrc:
-#  makep() { make production MAKE_TARKET=$1; }
-#  maket() { make test MAKE_TARGET=$1 MODULE=$2; }
+#  makep() { make production SUBSUBMAKE_TARGET=$1; }
+#  maket() { make test SUBMAKE_TARGET=$1 MODULE=$2; }
 
 # Set this to @ to keep the makefiles quiet
 SILENCE =
@@ -24,8 +24,8 @@ endif
 ###                             ###
 ###################################
 #To run specific test, execute
-#  make test MODULE=<name> from the terminal
-#Slick!
+#  maket module <name>
+#from the terminal. Tab completetion works. Slick!
 ALL_MODULES= \
   lib/Global/test/BitManip \
   lib/ATtiny861/test/ChipFunctions \
@@ -76,22 +76,37 @@ export
 
 
 
-########################
-###                  ###
-### Makefile targets ###
-###                  ###
-########################
-ifeq ($(strip $(MAKE_MODULE)),)
-	override MAKE_MODULE=$(ALL_MODULES)
-
-	ifeq ($(strip $(MAKE_TARGET)),)
-		override MAKE_TARGET=all
-	endif
+#######################################
+###                                 ###
+###         Makefile details        ###
+### Sort out make, makep, and maket ###
+###                                 ###
+#######################################
+#The targets are configured to respond best to maket and makep,
+#so we need to force things when using standard make
+ifeq ($(MAKECMDGOALS),clean)
+	SUBMAKE_TARGET=clean
+endif
+ifeq ($(MAKECMDGOALS),help)
+	SUBMAKE_TARGET=help
 endif
 
-ifeq ($(strip $(MAKE_TARGET)),help)
-	override MAKE_MODULE=test_help
+#maket and makep need a bit of help because .DEFAULT_GOAL doesn't change
+#our custom SUBMAKE_TARGET
+ifeq ($(strip $(SUBMAKE_TARGET)),)
+	override SUBMAKE_TARGET=all
 endif
+#The test makefile hits once for each module. Suppress this duplication
+#by defining a dummy module
+ifeq ($(strip $(SUBMAKE_TARGET)),help)
+	override TEST_MODULE=test_help
+endif
+
+#If no test module is specified, make all of them
+ifeq ($(strip $(TEST_MODULE)),)
+	override TEST_MODULE=$(ALL_MODULES)
+endif
+
 
 MAKE=make $(NO_PRINT_DIRECTORY) --file
 PRODUCTION_MAKEFILE=makefile_avr.make
@@ -99,31 +114,35 @@ TEST_MAKEFILE=makefile_cpputest.make
 
 include make_colors
 
+
+########################
+###                  ###
+### Makefile targets ###
+###                  ###
+########################
 .DEFAULT_GOAL:=all
 .PHONY: all clean help
-
 .PHONY: production
 .PHONY: test
 
-.PHONY: compile run
-.PHONY: $(MAKE_MODULE)
+#Private to tests
+.PHONY: $(TEST_MODULE)
 
-all:
+all: production test
 
-clean:
-
+clean: production test
 
 production:
-	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) $(MAKE_TARGET)
+	$(SILENCE)$(MAKE) $(PRODUCTION_MAKEFILE) $(SUBMAKE_TARGET)
 
-#MODULE is defined in .bashrc and is passed from the command prompt
-test: $(MAKE_MODULE)
+#TEST_MODULE is defined in .bashrc and is passed from the command prompt
+test: $(TEST_MODULE)
 
-$(MAKE_MODULE):
-	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) $(MAKE_TARGET) MODULE=$@
+$(TEST_MODULE):
+	$(SILENCE)$(MAKE) $(TEST_MAKEFILE) $(SUBMAKE_TARGET) MODULE=$@
 
-help:
-	@echo "Type 'maket help' or 'makep help' to see help menus for test or production code."
+help: production test
+
 
 
 ### Documentation ###
