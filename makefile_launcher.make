@@ -10,9 +10,10 @@ include make_helper_functions
 ####################################################
 TARGET_NAME=TheProject
 ROOT_DIR=.
-src_dirs=. lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
+src_dirs=src lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src
 inc_dirs=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc
 lib_dirs=
+MOCKHW_DIR=mockHw
 obj_dir=obj
 build_dir=build
 
@@ -39,18 +40,18 @@ build_dir=build
 #############################
 TARGET=$(BUILD_DIR)/$(TARGET_NAME)
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
-include $(MODULE_DIR)/make_module_config.make
 
-###################################
-### Collect project directories ###
-###################################
+###########################
+### Project Directories ###
+###########################
 SRC_DIRS=$(src_dirs)
 INC_DIRS=$(inc_dirs)
 LIB_DIRS=$(lib_dirs)
 
+
 #module_src_dirs, module_inc_dirs, and module_lib_dirs are user configured in make_module_config
-SRC_DIRS+=$(call clean_path,$(module_src_dirs))
-INC_DIRS+=$(call clean_path,$(module_inc_dirs))
+# SRC_DIRS+=$(call clean_path,$(module_src_dirs))
+# INC_DIRS+=$(call clean_path,$(module_inc_dirs))
 
 
 #We'll get to libraries later
@@ -71,7 +72,12 @@ SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
 SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
 INC=$(call get_inc_from_dir_list,$(INC_DIRS))
 LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
-
+#clean mockHw?
+MOCKHW_SRC=$(call get_src_from_dir,$(MOCKHW_DIR)/avr)
+CLEAN_MOCKHW_SRC=$(call clean_path,$(MOCKHW_SRC))
+MOCKHW_SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_MOCKHW_SRC)))
+MOCKHW_SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_MOCKHW_SRC)))
+MOCKHW_INC=$(call get_inc_from_dir,$(MOCKHW_DIR)/avr)
 export
 
 
@@ -115,8 +121,19 @@ filelist:
 	$(call echo_with_header,TARGET_NAME)
 	$(call echo_with_header,TARGET)
 	@echo
-#	$(LAUNCH_MAKE) makefile_cpputest.make
-	$(LAUNCH_MAKE) makefile_avr.make
+	$(ECHO) "\n${BoldCyan}Production code:${NoColor}"
+	$(call echo_with_header,SRC)
+	$(call echo_with_header,CLEAN_SRC)
+	$(call echo_with_header,SRC_OBJ)
+	$(call echo_with_header,SRC_DEP)
+	$(call echo_with_header,INC)
+	$(call echo_with_header,LIBS)
+	@echo
+	$(ECHO) "\n${BoldCyan}Mock Hardware code:${NoColor}"
+	$(call echo_with_header,MOCKHW_SRC)
+	$(call echo_with_header,MOCKHW_INC)
+	$(LAUNCH_MAKE) makefile_cpputest.make
+#	$(LAUNCH_MAKE) makefile_avr.make
 
 flags:
 	@echo "~~~ $(MODULE_DIR) Flags ~~~"
@@ -130,6 +147,7 @@ dirlist:
 	$(call echo_with_header,MODULE_DIR)
 	$(call echo_with_header,SRC_DIRS)
 	$(call echo_with_header,INC_DIRS)
+	$(call echo_with_header,MOCKHW_DIR)
 	$(call echo_with_header,OBJ_DIR)
 	$(call echo_with_header,BUILD_DIR)
 	$(call echo_with_header,LIB_DIRS)

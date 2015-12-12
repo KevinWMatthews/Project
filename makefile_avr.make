@@ -1,5 +1,3 @@
-include $(MODULE_DIR)/make_module_config.make
-
 PRODUCTION_OBJ_DIR=$(OBJ_DIR)/avr
 
 
@@ -183,8 +181,10 @@ filelist:
 	$(call techo,HEX_TARGET,$(HEX_TARGET))
 	$(call techo,DUMP_TARGET,$(DUMP_TARGET))
 	$(call techo,SRC,$(SRC))
+	$(call techo,MOCKHW_SRC,$(MOCKHW_SRC))
 	$(call techo,OBJ,$(OBJ))
 	$(call techo,INC,$(INC))
+	$(call techo,MOCKHW_INC,$(MOCKHW_INC))
 	$(call techo,LST,$(LST))
 	$(call techo,LIBS,$(LIBS))
 

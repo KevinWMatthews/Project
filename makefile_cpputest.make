@@ -38,14 +38,25 @@ CPP_LINKER=g++
 
 
 
-################################
-### Test directory structure ###
-################################
-TEST_DIR=$(call clean_path,$(MODULE_DIR))
+#############################
+###                       ###
+### Auto-generated values ###
+###                       ###
+#############################
 TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
 TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
-TEST_SRC_DIRS=$(TEST_DIR)/src
-TEST_INC_DIRS=$(TEST_DIR)/inc
+
+
+SRC_OBJ+=$(MOCKHW_SRC_OBJ)
+SRC_DEP+=$(MOCKHW_SRC_DEP)
+CLEAN_INC+=$(MOCKHW_INC)
+
+
+########################
+### Test Directories ###
+########################
+TEST_SRC_DIRS=$(MODULE_DIR)/src
+TEST_INC_DIRS=$(MODULE_DIR)/inc
 
 TEST_OBJ_DIR=$(OBJ_DIR)/CppUTest
 #TEST_BUILD_DIR=$(BUILD_DIR)
@@ -63,12 +74,14 @@ endif
 
 
 include make_helper_functions
+include make_colors
 
 #########################################################
 ### Auto-detect source code and generate object files ###
 #########################################################
 # Test code using CppUTest test harness
 TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
+#I don't think that this step is needed
 CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
 TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
 TEST_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(CLEAN_TEST_SRC)))
@@ -92,8 +105,11 @@ ifeq ($(DEBUG),Y)
 endif
 #This may move up to the launcher
 INCLUDE_FLAGS+=$(addprefix -I,$(INC_DIRS))
+INCLUDE_FLAGS+=$(addprefix -I,$(MOCKHW_DIR))
+
 LINKER_FLAGS+=$(addprefix -L,$(LIB_DIRS))
 LINKER_FLAGS+=$(addprefix -l,$(LIB_LIST))
+
 
 #Flags for user's unit tests written under CppUTest framework
 ifeq ($DEBUG,Y)
@@ -177,23 +193,13 @@ $(TEST_OBJ_DIR)/%.o: %.cpp
 
 
 filelist:
+	$(ECHO) "${BoldGreen}~~~ $(MODULE_DIR) $@ ~~~${NoColor}"
 	$(ECHO) "\n${BoldCyan}Directory of MakefileCppUTest.make:${NoColor}"
 	$(ECHO) "$(shell pwd)\n"
 
-	$(ECHO) "\n${BoldCyan}All Dependencies:${NoColor}"
-	$(call echo_with_header,DEP_FILES)
-
-	$(ECHO) "\n${BoldCyan}Production code:${NoColor}"
-	$(call echo_with_header,SRC)
-	$(call echo_with_header,CLEAN_SRC)
-	$(call echo_with_header,SRC_OBJ)
-	$(call echo_with_header,SRC_DEP)
-	$(call echo_with_header,INC)
-	$(call echo_with_header,LIBS)
-
 	$(ECHO) "\n${BoldCyan}Test code:${NoColor}"
-	$(call echo_with_header,PRODUCTION_LIB)
-	$(call echo_with_header,TEST_TARGET_NAME)
+	 $(call echo_with_header,PRODUCTION_LIB)
+	 $(call echo_with_header,TEST_TARGET_NAME)
 	$(call echo_with_header,TEST_TARGET)
 	$(call echo_with_header,TEST_SRC)
 	$(call echo_with_header,TEST_OBJ)
@@ -205,9 +211,12 @@ filelist:
 	$(call echo_with_header,CPPUTEST_LIBS,$(CPPUTEST_LIBS))
 	@echo
 
+	$(ECHO) "\n${BoldCyan}All Dependencies:${NoColor}"
+	$(call echo_with_header,DEP_FILES)
+
 dirlist:
 	$(ECHO) "\n${BoldCyan}Test code:${NoColor}"
-	$(call echo_with_header,TEST_DIR)
+	$(call echo_with_header,MODULE_DIR)
 	$(call echo_with_header,TEST_SRC_DIRS)
 	$(call echo_with_header,TEST_INC_DIRS)
 	$(call echo_with_header,TEST_LIB_DIRS)

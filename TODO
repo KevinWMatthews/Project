@@ -6,3 +6,5 @@ We might need to move this to its own library.
 
 Consider where we should put object files. Should all projects depend on the same library objects? Probably. That's why they're in a library, right? So we want obj in the root directory. Tests also all depend on the same obj directory, so let's stick with keeping obj there.
 Unless you think of something else. Think it through again when you're all done.
+
+Not all modules depend on mockHw... go back and edit module_configs.
