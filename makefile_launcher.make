@@ -40,7 +40,6 @@ test_build_dir=build_test
 ### Auto-generated values ###
 ###                       ###
 #############################
-TARGET=$(BUILD_DIR)/$(TARGET_NAME)
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 
 
@@ -90,7 +89,7 @@ clean:
 #	$(SILENCE)rm -rf $(OBJ_DIR)
 #	$(SILENCE)rm -rf $(BUILD_DIR)
 	$(LAUNCH_MAKE) makefile_cpputest.make
-	$(LAUNCH_MAKE) makefile_production.make
+	$(LAUNCH_MAKE) makefile_avr.make
 	$(ECHO) "${Green}...Clean finished!${NoColor}\n"
 
 test:

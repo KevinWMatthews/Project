@@ -1,6 +1,3 @@
-PRODUCTION_OBJ_DIR=$(OBJ_DIR)/avr
-
-
 ########################
 ### AVR Dude options ###
 ########################
@@ -72,19 +69,36 @@ LINKER_FLAGS=-Wl,-Map,$(BUILD_DIR)/$(TARGET_NAME).map -mmcu=$(MCU)
 
 
 #############################
+###                       ###
 ### Auto-generated values ###
+###                       ###
 #############################
+
+
+###################
+### Directories ###
+###################
+OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(prod_obj_dir))
+BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(prod_build_dir))
+
+
+########################
+### Test Directories ###
+########################
+TARGET=$(BUILD_DIR)/$(TARGET_NAME)
 ELF_TARGET=$(TARGET).elf
 DUMP_TARGET=$(TARGET_NAME).s
 
 HEX_ROM_TARGET=$(BUILD_DIR)/$(TARGET_NAME).hex
 HEX_TARGET=$(HEX_ROM_TARGET)
 
-# SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
-# OBJ=$(call clean_path,$(addprefix $(PRODUCTION_OBJ_DIR)/,$(call src_to_o,$(SRC))))
-# INC=$(call get_inc,$(INC_DIRS))
-# LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
-# LST=$(call src_to_lst,$(SRC))
+
+#############################
+### Generate object files ###
+#############################
+SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(SRC)))
+SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(SRC)))
+
 
 
 include make_helper_functions
@@ -142,7 +156,7 @@ stats: $(ELF_TARGET)
 
 clean:
 	$(REMOVE) $(BUILD_DIR)
-	$(REMOVE) $(PRODUCTION_OBJ_DIR)
+	$(REMOVE) $(OBJ_DIR)
 
 
 ### Generate files ###
@@ -157,19 +171,19 @@ $(DUMP_TARGET): $(ELF_TARGET)
 
 
 #Generate production code object files
-# $(PRODUCTION_OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
+# $(OBJ_DIR)/%.o: $(ROOT_DIR)/%.c
 # 	$(SILENCE)mkdir -p $(dir $@)
 # 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 #Generate hwDemo object files
 $(OBJ_DIR)/%.o: %.c
 	@echo here
-	@echo $(PRODUCTION_OBJ_DIR)
+	@echo $(OBJ_DIR)
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) $(C_COMPILER_FLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 ##Generate hwDemo assembly
-$(PRODUCTION_OBJ_DIR)/%.s: %.c
+$(OBJ_DIR)/%.s: %.c
 	@echo here
 	$(SILENCE)mkdir -p $(dir $@)
 	$(C_COMPILER) -S $(C_COMPILER_FLAGS) $< -o $@

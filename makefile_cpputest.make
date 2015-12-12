@@ -43,8 +43,6 @@ CPP_LINKER=g++
 ### Auto-generated values ###
 ###                       ###
 #############################
-TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
-TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
 
 
 ###################
@@ -54,14 +52,25 @@ OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(test_obj_dir))
 BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(test_build_dir))
 
 
-####################################################################
-### Auto-detect production source code and generate object files ###
-####################################################################
+###############
+### Targets ###
+###############
+TEST_TARGET_NAME=test_$(notdir $(MODULE_DIR))
+TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
+
+
+#######################################
+### Auto-detect production source code
+#######################################
 dirty_mockhw_src=$(call get_src_from_dir,$(MOCKHW_DIR)/avr)
 dirty_mockhw_inc=$(call get_inc_from_dir,$(MOCKHW_DIR)/avr)
 MOCKHW_SRC=$(call clean_path, $(dirty_mockhw_src))
 MOCKHW_INC=$(call clean_path, $(dirty_mockhw_inc))
 
+
+#############################
+### Generate object files ###
+#############################
 SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(SRC)))
 SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(SRC)))
 
@@ -176,7 +185,7 @@ all: test
 rebuild: clean all
 
 clean:
-	$(SILENCE)rm -rf $(TEST_OBJ_DIR)
+	$(SILENCE)rm -rf $(OBJ_DIR)
 	$(SILENCE)rm -rf $(BUILD_DIR)
 
 
