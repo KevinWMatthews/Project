@@ -49,7 +49,7 @@ TEST_TARGET=$(BUILD_DIR)/$(TEST_TARGET_NAME)
 
 SRC_OBJ+=$(MOCKHW_SRC_OBJ)
 SRC_DEP+=$(MOCKHW_SRC_DEP)
-CLEAN_INC+=$(MOCKHW_INC)
+INC+=$(MOCKHW_INC)
 
 
 ########################
@@ -80,11 +80,11 @@ include make_colors
 ### Auto-detect source code and generate object files ###
 #########################################################
 # Test code using CppUTest test harness
-TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
+DIRTY_TEST_SRC=$(call get_src_from_dir_list,$(TEST_SRC_DIRS))
 #I don't think that this step is needed
-CLEAN_TEST_SRC=$(call clean_path,$(TEST_SRC))
-TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(CLEAN_TEST_SRC)))
-TEST_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(CLEAN_TEST_SRC)))
+TEST_SRC=$(call clean_path,$(DIRTY_TEST_SRC))
+TEST_OBJ=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_o,$(TEST_SRC)))
+TEST_DEP=$(addprefix $(TEST_OBJ_DIR)/,$(call src_to_d,$(TEST_SRC)))
 TEST_INC=$(call get_inc_from_dir_list,$(TEST_INC_DIRS))
 TEST_LIBS=$(addprefix lib,$(addsuffix .a,$(TEST_LIB_LIST)))
 

@@ -66,17 +66,17 @@ BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(build_dir))
 ##########################################
 ### Auto-detect production source code ###
 ##########################################
-SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
-CLEAN_SRC=$(call clean_path,$(SRC))
-SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_SRC)))
-SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_SRC)))
+DIRTY_SRC=$(call get_src_from_dir_list,$(SRC_DIRS))
+SRC=$(call clean_path,$(DIRTY_SRC))
+SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(SRC)))
+SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(SRC)))
 INC=$(call get_inc_from_dir_list,$(INC_DIRS))
 LIBS=$(addprefix lib,$(addsuffix .a,$(LIB_LIST)))
 #clean mockHw?
-MOCKHW_SRC=$(call get_src_from_dir,$(MOCKHW_DIR)/avr)
-CLEAN_MOCKHW_SRC=$(call clean_path,$(MOCKHW_SRC))
-MOCKHW_SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(CLEAN_MOCKHW_SRC)))
-MOCKHW_SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(CLEAN_MOCKHW_SRC)))
+DIRTY_MOCKHW_SRC=$(call get_src_from_dir,$(MOCKHW_DIR)/avr)
+MOCKHW_SRC=$(call clean_path,$(DIRTY_MOCKHW_SRC))
+MOCKHW_SRC_OBJ=$(addprefix $(OBJ_DIR)/,$(call src_to_o,$(MOCKHW_SRC)))
+MOCKHW_SRC_DEP=$(addprefix $(OBJ_DIR)/,$(call src_to_d,$(MOCKHW_SRC)))
 MOCKHW_INC=$(call get_inc_from_dir,$(MOCKHW_DIR)/avr)
 export
 
