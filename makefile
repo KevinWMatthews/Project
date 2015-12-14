@@ -10,6 +10,11 @@
 # Set this to @ to keep the makefiles quiet
 SILENCE =
 
+#Some systems need the -e flag (interpret backslash-escaped characters) for colors to display correctly.
+#Others already display colors properly and will instead output -e to the terminal.
+#If colors are not properly displaying add/remove -e here.
+ECHO_INTERPRETATION=
+
 #Set to 'Y' to suppress makefile messages when entering and leaving sub-makes
 SUPPRESS_ENTERING_DIRECTORY_MESSAGE=Y
 ifeq ($(SUPPRESS_ENTERING_DIRECTORY_MESSAGE),Y)

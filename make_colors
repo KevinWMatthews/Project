@@ -2,7 +2,7 @@
 # $1 = text, $2 = text color
 color_echo=$(ECHO) "${$2}$1${NoColor}"
 echo_with_header=$(ECHO) "${BoldPurple}  $1:${NoColor}"; echo $($1); echo;
-ECHO=@echo -e
+ECHO=@echo $(ECHO_INTERPRETATION)
 
 
 ### Color codes ###
