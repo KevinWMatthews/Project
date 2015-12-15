@@ -1,0 +1,7 @@
+Reset Line
+As a part of checking if the target cable is correctly mounted it will, after Vtarget is applied, check if the reset line has the correct voltage and check if it is possible to force this line low.
+If there is no pull-up resistor on the line, i.e. if the Atmel AVRISP mkII detects 0V on reset, then the status LED will blink orange.
+If the pull-up resistor on the reset line is to strong, the short circuit protection will trigger when the reset is forced low by the AVRISP mkII.
+The Reset line should not have a pull up stronger (i.e. smaller value) than 4.7k ohm. Any de-coupling capacitor should not be larger than 10uF. No decoupling capacitor can be present for PDI programming (refer to XMEGA Schematic Checklist).
+
+From the Atmel website.
