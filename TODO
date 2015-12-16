@@ -9,6 +9,8 @@ Is there any way to have the tests compile the production library without the te
 We might need to move this to its own library.
 
 
+Changes to header files need to cause a rebuild....
+
 Consider where we should put object files. Should all projects depend on the same library objects? Probably. That's why they're in a library, right? So we want obj in the root directory. Tests also all depend on the same obj directory, so let's stick with keeping obj there.
 Unless you think of something else. Think it through again when you're all done.
 

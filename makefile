@@ -8,7 +8,7 @@
 #  maket() { make test SUBMAKE_TARGET=$1 MODULE=$2; }
 
 # Set this to @ to keep the makefiles quiet
-SILENCE =
+SILENCE=@
 
 #Some systems need the -e flag (interpret backslash-escaped characters) for colors to display correctly.
 #Others already display colors properly and will instead output -e to the terminal.
@@ -33,11 +33,11 @@ endif
 #  maket module <name>
 #from the terminal. Tab completetion works. Slick!
 ALL_MODULES= \
-  lib/Global/test/BitManip \
-  lib/ATtiny861/test/ChipFunctions \
   lib/Spi/test/SpiApi \
-  lib/Spi/test/SpiHw \
-  lib/ATtiny861/test/Timer0 \
+  # lib/Global/test/BitManip \
+  # lib/ATtiny861/test/ChipFunctions \
+  # lib/Spi/test/SpiHw \
+  # lib/ATtiny861/test/Timer0 \
 
 
 
@@ -63,7 +63,8 @@ test_build_dir=build_test
 ### Configure special compiler flags ###
 ###                                  ###
 ########################################
-TEST_COMPILER_FLAGS=-Wall -Werror
+TEST_COMPILER_FLAGS=-Wall
+# -Werror
 PRODUCTION_COMPILER_FLAGS=
 
 
