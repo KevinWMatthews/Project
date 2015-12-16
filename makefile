@@ -58,6 +58,15 @@ prod_build_dir=build
 test_build_dir=build_test
 
 
+########################################
+###                                  ###
+### Configure special compiler flags ###
+###                                  ###
+########################################
+TEST_COMPILER_FLAGS=-Wall -Werror
+PRODUCTION_COMPILER_FLAGS=
+
+
 
 #############################
 ###                       ###
@@ -65,8 +74,6 @@ test_build_dir=build_test
 ###                       ###
 #############################
 include make_helper_functions
-
-
 
 #################################################
 ### Create list of all production source code ###

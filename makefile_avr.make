@@ -47,6 +47,7 @@ C_COMPILER_FLAGS=-g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-funsigned-bitfields -funsigned-char         \
 	-fpack-struct -fshort-enums                  \
 #	-Wa,-ahlms=$(firstword $(filter %.lst, $(<:.c=.lst)))
+C_COMPILER_FLAGS+=$(PRODUCTION_COMPILER_FLAGS)
 
 INCLUDE_FLAGS=$(addprefix -I,$(INC_DIRS))
 
