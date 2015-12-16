@@ -1,3 +1,5 @@
+Figure out dependencies: copy doesn't get detected by makefile but save does.  ? It might be a timestamp thing....
+
 Consider using aliases to simplify the top level makefile:
 	makep <MAKECMDGOALS>
 
