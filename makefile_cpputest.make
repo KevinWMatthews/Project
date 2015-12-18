@@ -120,7 +120,7 @@ include make_colors
 ### Auto-generated flags ###
 ############################
 # Production code
-COMPILER_FLAGS+=-c -MMD -MP
+COMPILER_FLAGS+=-c -MMD -MP -DCPPUTEST
 ifeq ($(DEBUG),Y)
 	COMPILER_FLAGS+=-g
 endif

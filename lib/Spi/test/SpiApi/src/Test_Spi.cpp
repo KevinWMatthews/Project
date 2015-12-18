@@ -10,10 +10,13 @@ extern "C"
 
 TEST_GROUP(Spi)
 {
-  SpiSlaveSelect slave;
+  RegisterPointer slave;
+  SpiSlaveCommand command;
+
   void setup()
   {
     slave = NULL;
+    command = NULL;
     mock().strictOrder();
   }
 
@@ -24,12 +27,27 @@ TEST_GROUP(Spi)
   }
 };
 
-TEST(Spi, TEST_SEND_DATA_SUCCESS)
+TEST(Spi, TEST_FAIL_IF_SLAVE_IS_ALREADY_SELECTED)
 {
   int8_t result, data;
 
   data = 42;
 
+  mock().expectOneCall("SpiHw_IsSlaveBusy")
+      .withParameter("slave", slave)
+      .andReturnValue(TRUE);
+
+  result = Spi_Send(slave, data);
+  LONGS_EQUAL(SPI_FAIL_SLAVE_BUSY, result);
+}
+
+IGNORE_TEST(Spi, TEST_SEND_DATA_SUCCESS)
+{
+  int8_t result, data;
+
+  data = 42;
+
+  //TODO set up mock here
   result = Spi_Send(slave, data);
   LONGS_EQUAL(SPI_SUCCESS, result);
 }

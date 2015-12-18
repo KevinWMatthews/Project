@@ -15,8 +15,12 @@ typedef enum
   TRUE  = 1
 } BOOL;
 
+#ifdef CPPUTEST
+//CppUTest framework has ambiguous overloads if we mark RegisterPointers as volatile
+typedef uint8_t * RegisterPointer;
+#else
 typedef volatile uint8_t * RegisterPointer;
-
+#endif
 
 #ifndef NULL
 #define NULL 0
