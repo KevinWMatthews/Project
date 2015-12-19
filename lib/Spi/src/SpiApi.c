@@ -1,7 +1,7 @@
 #include "SpiApi.h"
 #include "SpiHw.h"
 
-int8_t SpiApi_Send(RegisterPointer slave, int8_t data)
+int8_t SpiApi_Send_Impl(RegisterPointer slave, int8_t data)
 {
   if (!SpiHw_IsMasterReady())
   {
@@ -16,12 +16,18 @@ int8_t SpiApi_Send(RegisterPointer slave, int8_t data)
     return SPIAPI_PREPARE_DATA_FAIL;
   }
   SpiHw_StartTransmission();
-  return SPIAPI_SUCCESS;
+  return SPIAPI_SEND_SUCCESS;
 }
+
+int8_t (*SpiApi_Send)(RegisterPointer, int8_t) = SpiApi_Send_Impl;
 
 int8_t SpiApi_Get(RegisterPointer slave, int8_t *data)
 {
-  SpiHw_IsMasterReady();
+  if (!SpiHw_IsMasterReady())
+  {
+    *data = 0;
+    return SPIAPI_MASTER_NOT_READY;
+  }
   *data = 0;
-  return SPIAPI_MASTER_NOT_READY;
+  return SPIAPI_SEND_FAILED;
 }

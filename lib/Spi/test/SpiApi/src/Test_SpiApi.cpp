@@ -1,6 +1,7 @@
 extern "C"
 {
   #include "SpiApi.h"
+  #include "FakeSpiApi.h"
 }
 
 //CppUTest includes should be after your system includes
@@ -30,6 +31,8 @@ TEST_GROUP(SpiApi)
     mock().clear();
   }
 };
+
+
 
 TEST(SpiApi, TEST_SEND_FAILS_IF_MASTER_NOT_READY)
 {
@@ -78,7 +81,7 @@ TEST(SpiApi, TEST_SEND_SEND_SUCCESS)
         .andReturnValue(TRUE);
   mock().expectOneCall("SpiHw_StartTransmission");
   result = SpiApi_Send(slave, data);
-  LONGS_EQUAL(SPIAPI_SUCCESS, result);
+  LONGS_EQUAL(SPIAPI_SEND_SUCCESS, result);
 }
 
 TEST(SpiApi, TEST_GET_FAILS_IF_MASTER_NOT_READY)
@@ -94,5 +97,9 @@ TEST(SpiApi, TEST_GET_FAILS_IF_SEND_FAILS)
 {
   mock().expectOneCall("SpiHw_IsMasterReady")
         .andReturnValue(TRUE);
-  //How do I test SpiApi_Send?
+  UT_PTR_SET(SpiApi_Send, FakeSpiApi_Send_Fails);
+
+  result = SpiApi_Get(slave, &data);
+  LONGS_EQUAL(SPIAPI_SEND_FAILED, result);
+  LONGS_EQUAL(0, data);
 }
