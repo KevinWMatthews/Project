@@ -223,6 +223,12 @@ $(TEST_OBJ_DIR)/%.o: %.cpp
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
 	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
+$(TEST_OBJ_DIR)/%.o: %.c
+	@echo
+	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
+	$(SILENCE)mkdir -p $(dir $@)
+	$(ECHO) "${DarkGray}Module test code${NoColor}"
+	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 # MAKECMDGOALS is a special variable that is set by Make
 #For some reason this needs to be below the targets.
