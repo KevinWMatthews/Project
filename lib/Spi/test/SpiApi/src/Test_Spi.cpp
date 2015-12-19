@@ -10,13 +10,15 @@ extern "C"
 
 TEST_GROUP(Spi)
 {
+  int8_t result, data;
   RegisterPointer slave;
-  SpiSlaveCommand command;
+  uint8_t dummySlaveSelectRegister;
 
   void setup()
   {
-    slave = NULL;
-    command = NULL;
+    data   = 42;
+    result = -120;
+    slave  = &dummySlaveSelectRegister;
     mock().strictOrder();
   }
 
@@ -27,26 +29,35 @@ TEST_GROUP(Spi)
   }
 };
 
-TEST(Spi, TEST_FAIL_IF_SLAVE_IS_ALREADY_SELECTED)
+TEST(Spi, TEST_SEND_FAILS_IF_SLAVE_IS_NULL)
 {
-  int8_t result, data;
+  result = Spi_Send(NULL, data);
+  LONGS_EQUAL(SPI_FAIL_NULL_SLAVE, result);
+}
 
-  data = 42;
-
+TEST(Spi, TEST_SEND_FAILS_IF_SLAVE_IS_ALREADY_SELECTED)
+{
   mock().expectOneCall("SpiHw_IsSlaveBusy")
-      .withParameter("slave", slave)
-      .andReturnValue(TRUE);
+        .withParameter("slave", slave)
+        .andReturnValue(TRUE);
 
   result = Spi_Send(slave, data);
   LONGS_EQUAL(SPI_FAIL_SLAVE_BUSY, result);
 }
 
+TEST(Spi, TEST_SEND_FAILS_IF_USI_COUNTER_IS_NONZERO)
+{
+  mock().expectOneCall("SpiHw_IsSlaveBusy")
+        .withParameter("slave", slave)
+        .andReturnValue(FALSE);
+  mock().expectOneCall("SpiHw_GetUsiCounter")
+        .andReturnValue(1);
+  result = Spi_Send(slave, data);
+  LONGS_EQUAL(SPI_FAIL_USI_COUNTER_NONZERO, result);
+}
+
 IGNORE_TEST(Spi, TEST_SEND_DATA_SUCCESS)
 {
-  int8_t result, data;
-
-  data = 42;
-
   //TODO set up mock here
   result = Spi_Send(slave, data);
   LONGS_EQUAL(SPI_SUCCESS, result);

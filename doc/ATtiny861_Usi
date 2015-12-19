@@ -100,6 +100,8 @@ USIPP – USI Pin Position
 
 
 
+Rewrite this for details pertinent to a Counter-controlled clock.
+
 For three-wire mode and a software-controlled clock pulse,
   Set USIWM1:0 (USICR 5:4) to 01   three-wire mode
   Set USICS1:0 (USICR 3:2) to 10   external clock

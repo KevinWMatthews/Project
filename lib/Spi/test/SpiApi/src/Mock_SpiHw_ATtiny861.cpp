@@ -11,3 +11,9 @@ BOOL SpiHw_IsSlaveBusy(RegisterPointer slave)
         .withParameter("slave", slave);
   return (BOOL)(mock().intReturnValue());
 }
+
+int8_t SpiHw_GetUsiCounter(void)
+{
+  mock().actualCall("SpiHw_GetUsiCounter");
+  return mock().intReturnValue();
+}
