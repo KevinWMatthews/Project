@@ -18,3 +18,8 @@ BOOL SpiHw_PrepareForSend(int8_t data)
         .withParameter("data", data);
   return (BOOL)(mock().intReturnValue());
 }
+
+void SpiHw_StartTransmission(void)
+{
+  mock().actualCall("SpiHw_StartTransmission");
+}
