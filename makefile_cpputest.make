@@ -224,6 +224,12 @@ $(TEST_OBJ_DIR)/%.o: %.cpp
 	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 
+# MAKECMDGOALS is a special variable that is set by Make
+#For some reason this needs to be below the targets.
+ifneq ("$(SUBMAKE_TARGET)","clean")
+-include $(DEP_FILES)
+endif
+
 filelist:
 	$(ECHO) "${BoldGreen}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	$(ECHO)             "~~~ File List in CppUTest Makefile ~~~"
