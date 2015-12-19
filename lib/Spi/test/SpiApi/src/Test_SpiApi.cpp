@@ -31,34 +31,49 @@ TEST_GROUP(SpiApi)
   }
 };
 
-TEST(SpiApi, TEST_SEND_FAILS_IF_SLAVE_NOT_READY)
-{
-  mock().expectOneCall("SpiHw_IsDeviceReady")
-        .withParameter("device", slave)
-        .andReturnValue(FALSE);
-  result = SpiApi_Send(slave, data);
-  LONGS_EQUAL(SPIAPI_SLAVE_NOT_READY, result);
-}
-
 TEST(SpiApi, TEST_SEND_FAILS_IF_MASTER_NOT_READY)
 {
-  mock().expectOneCall("SpiHw_IsDeviceReady")
-        .withParameter("device", slave)
-        .andReturnValue(TRUE);
-  mock().expectOneCall("SpiHw_PrepareForSend")
-        .withParameter("data", data)
+  mock().expectOneCall("SpiHw_IsMasterReady")
         .andReturnValue(FALSE);
 
   result = SpiApi_Send(slave, data);
   LONGS_EQUAL(SPIAPI_MASTER_NOT_READY, result);
 }
 
+TEST(SpiApi, TEST_SEND_FAILS_IF_SLAVE_NOT_READY)
+{
+  mock().expectOneCall("SpiHw_IsMasterReady")
+        .andReturnValue(TRUE);
+  mock().expectOneCall("SpiHw_IsSlaveReady")
+        .withParameter("slave", slave)
+        .andReturnValue(FALSE);
+  result = SpiApi_Send(slave, data);
+  LONGS_EQUAL(SPIAPI_SLAVE_NOT_READY, result);
+}
+
+TEST(SpiApi, TEST_SEND_FAILS_IF_DATA_PREPARATION_FAILS)
+{
+  mock().expectOneCall("SpiHw_IsMasterReady")
+        .andReturnValue(TRUE);
+  mock().expectOneCall("SpiHw_IsSlaveReady")
+        .withParameter("slave", slave)
+        .andReturnValue(TRUE);
+  mock().expectOneCall("SpiHw_PrepareDataForSend")
+        .withParameter("data", data)
+        .andReturnValue(FALSE);
+
+  result = SpiApi_Send(slave, data);
+  LONGS_EQUAL(SPIAPI_PREPARE_DATA_FAIL, result);
+}
+
 TEST(SpiApi, TEST_SEND_SEND_SUCCESS)
 {
-  mock().expectOneCall("SpiHw_IsDeviceReady")
-        .withParameter("device", slave)
+  mock().expectOneCall("SpiHw_IsMasterReady")
         .andReturnValue(TRUE);
-  mock().expectOneCall("SpiHw_PrepareForSend")
+  mock().expectOneCall("SpiHw_IsSlaveReady")
+        .withParameter("slave", slave)
+        .andReturnValue(TRUE);
+  mock().expectOneCall("SpiHw_PrepareDataForSend")
         .withParameter("data", data)
         .andReturnValue(TRUE);
   mock().expectOneCall("SpiHw_StartTransmission");

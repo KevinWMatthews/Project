@@ -5,9 +5,10 @@
 
 enum
 {
-  SPIAPI_MASTER_NOT_READY = -2,
-  SPIAPI_SLAVE_NOT_READY  = -1,
-  SPIAPI_SUCCESS          = 0
+  SPIAPI_PREPARE_DATA_FAIL = -3,
+  SPIAPI_MASTER_NOT_READY  = -2,
+  SPIAPI_SLAVE_NOT_READY   = -1,
+  SPIAPI_SUCCESS           = 0
 };
 int8_t SpiApi_Send(RegisterPointer slave, int8_t data);
 

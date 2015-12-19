@@ -3,8 +3,9 @@
 
 #include "DataTypes.h"
 
-BOOL SpiHw_IsDeviceReady(RegisterPointer device);
-BOOL SpiHw_PrepareForSend(int8_t data);
+BOOL SpiHw_IsMasterReady(void);
+BOOL SpiHw_IsSlaveReady(RegisterPointer slave);
+BOOL SpiHw_PrepareDataForSend(int8_t data);
 void SpiHw_StartTransmission(void);
 
 #endif
