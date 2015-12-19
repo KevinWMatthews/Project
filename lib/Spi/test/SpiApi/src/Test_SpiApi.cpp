@@ -10,8 +10,17 @@ extern "C"
 
 TEST_GROUP(SpiApi)
 {
+  RegisterPointer slave;
+  uint8_t dummyRegister;
+  int8_t data;
+  int8_t result;
+
   void setup()
   {
+    slave         = &dummyRegister;
+    dummyRegister = 0;
+    data          = 42;
+    result        = 66; //Something that won't yield a false positive
     mock().strictOrder();
   }
 
@@ -22,7 +31,11 @@ TEST_GROUP(SpiApi)
   }
 };
 
-TEST(SpiApi, TEST_FAIL)
+TEST(SpiApi, TEST_SEND_FAILS_IF_SLAVE_NOT_READY)
 {
-  FAIL("Testing SpiApi!");
+  mock().expectOneCall("SpiHw_IsDeviceReady")
+        .withParameter("device", slave)
+        .andReturnValue(FALSE);
+  result = SpiApi_Send(slave, data);
+  LONGS_EQUAL(SPIAPI_SLAVE_NOT_READY, result);
 }

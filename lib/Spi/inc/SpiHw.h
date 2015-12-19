@@ -3,4 +3,6 @@
 
 #include "DataTypes.h"
 
+BOOL SpiHw_IsDeviceReady(RegisterPointer device);
+
 #endif
