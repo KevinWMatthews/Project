@@ -39,3 +39,16 @@ TEST(SpiApi, TEST_SEND_FAILS_IF_SLAVE_NOT_READY)
   result = SpiApi_Send(slave, data);
   LONGS_EQUAL(SPIAPI_SLAVE_NOT_READY, result);
 }
+
+TEST(SpiApi, TEST_SEND_FAILS_IF_MASTER_NOT_READY)
+{
+  mock().expectOneCall("SpiHw_IsDeviceReady")
+        .withParameter("device", slave)
+        .andReturnValue(TRUE);
+  mock().expectOneCall("SpiHw_PrepareForSend")
+        .withParameter("data", data)
+        .andReturnValue(FALSE);
+
+  result = SpiApi_Send(slave, data);
+  LONGS_EQUAL(SPIAPI_MASTER_NOT_READY, result);
+}

@@ -11,3 +11,10 @@ BOOL SpiHw_IsDeviceReady(RegisterPointer device)
         .withParameter("device", device);
   return (BOOL)(mock().intReturnValue());
 }
+
+BOOL SpiHw_PrepareForSend(int8_t data)
+{
+  mock().actualCall("SpiHw_PrepareForSend")
+        .withParameter("data", data);
+  return (BOOL)(mock().intReturnValue());
+}
