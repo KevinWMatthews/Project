@@ -89,3 +89,10 @@ TEST(SpiApi, TEST_GET_FAILS_IF_MASTER_NOT_READY)
   LONGS_EQUAL(SPIAPI_MASTER_NOT_READY, result);
   LONGS_EQUAL(0, data);
 }
+
+TEST(SpiApi, TEST_GET_FAILS_IF_SEND_FAILS)
+{
+  mock().expectOneCall("SpiHw_IsMasterReady")
+        .andReturnValue(TRUE);
+  //How do I test SpiApi_Send?
+}
