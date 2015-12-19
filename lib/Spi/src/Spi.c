@@ -14,5 +14,7 @@ int8_t Spi_Send(RegisterPointer slave, int8_t data)
   {
     return SPI_FAIL_USI_COUNTER_NONZERO;
   }
+  SpiHw_LoadOutputRegister(data);
+  SpiHw_EnableClockInterrupt(TRUE);
   return SPI_SUCCESS;
 }

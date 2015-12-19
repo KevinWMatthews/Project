@@ -56,9 +56,18 @@ TEST(Spi, TEST_SEND_FAILS_IF_USI_COUNTER_IS_NONZERO)
   LONGS_EQUAL(SPI_FAIL_USI_COUNTER_NONZERO, result);
 }
 
-IGNORE_TEST(Spi, TEST_SEND_DATA_SUCCESS)
+TEST(Spi, TEST_SEND_DATA_SUCCESS)
 {
-  //TODO set up mock here
+  mock().expectOneCall("SpiHw_IsSlaveBusy")
+        .withParameter("slave", slave)
+        .andReturnValue(FALSE);
+  mock().expectOneCall("SpiHw_GetUsiCounter")
+        .andReturnValue(0);
+  mock().expectOneCall("SpiHw_LoadOutputRegister")
+        .withParameter("data", data);
+  mock().expectOneCall("SpiHw_EnableClockInterrupt")
+        .withParameter("isEnabled", TRUE);
+
   result = Spi_Send(slave, data);
   LONGS_EQUAL(SPI_SUCCESS, result);
 }
