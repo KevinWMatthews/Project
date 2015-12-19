@@ -3,6 +3,6 @@
 
 #include "DataTypes.h"
 
-
+void SpiApi_Service(void);
 
 #endif

@@ -21,3 +21,8 @@ TEST_GROUP(SpiApi)
     mock().clear();
   }
 };
+
+TEST(SpiApi, TEST_SERVICE_SPI_DOES_NOTHING_IF_NO_COMMANDS_IN_QUEUE)
+{
+  SpiApi_Service();
+}
