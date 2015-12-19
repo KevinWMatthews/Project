@@ -11,5 +11,6 @@ enum
   SPIAPI_SUCCESS           = 0
 };
 int8_t SpiApi_Send(RegisterPointer slave, int8_t data);
+int8_t SpiApi_Get(RegisterPointer slave, int8_t *data);
 
 #endif

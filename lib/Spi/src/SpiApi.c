@@ -18,3 +18,10 @@ int8_t SpiApi_Send(RegisterPointer slave, int8_t data)
   SpiHw_StartTransmission();
   return SPIAPI_SUCCESS;
 }
+
+int8_t SpiApi_Get(RegisterPointer slave, int8_t *data)
+{
+  SpiHw_IsMasterReady();
+  *data = 0;
+  return SPIAPI_MASTER_NOT_READY;
+}

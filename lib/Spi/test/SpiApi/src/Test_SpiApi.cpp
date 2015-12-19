@@ -80,3 +80,12 @@ TEST(SpiApi, TEST_SEND_SEND_SUCCESS)
   result = SpiApi_Send(slave, data);
   LONGS_EQUAL(SPIAPI_SUCCESS, result);
 }
+
+TEST(SpiApi, TEST_GET_FAILS_IF_MASTER_NOT_READY)
+{
+  mock().expectOneCall("SpiHw_IsMasterReady")
+        .andReturnValue(FALSE);
+  result = SpiApi_Get(slave, &data);
+  LONGS_EQUAL(SPIAPI_MASTER_NOT_READY, result);
+  LONGS_EQUAL(0, data);
+}
