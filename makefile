@@ -33,6 +33,7 @@ endif
 #  maket module <name>
 #from the terminal. Tab completetion works. Slick!
 ALL_MODULES= \
+  lib/Array/test/Array \
   lib/CircularBuffer/test/CircularBuffer \
   # lib/Spi/test/SpiApi \
   # lib/Global/test/BitManip \
@@ -49,8 +50,8 @@ ALL_MODULES= \
 ####################################################
 TARGET_NAME=TheProject
 ROOT_DIR=.
-SRC_DIRS=src lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src lib/CircularBuffer/src
-INC_DIRS=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc lib/CircularBuffer/inc
+SRC_DIRS=src lib/src lib/Global/src lib/ATtiny861/src lib/Spi/src lib/CircularBuffer/src lib/Array/src
+INC_DIRS=lib/inc lib/Global/inc lib/ATtiny861/inc lib/Spi/inc lib/CircularBuffer/inc lib/Array/inc
 LIB_DIRS=
 MOCKHW_DIR=mockHw
 prod_obj_dir=obj
