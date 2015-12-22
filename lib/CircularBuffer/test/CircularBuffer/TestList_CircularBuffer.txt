@@ -1,0 +1,6 @@
+TestList_CircularBuffer.txt
+
+Throw if buffer size < 2
+All functions must not fail with a null pointer.
+
+Destroy: How to test if (*self)->values == NULL

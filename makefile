@@ -33,7 +33,7 @@ endif
 #  maket module <name>
 #from the terminal. Tab completetion works. Slick!
 ALL_MODULES= \
-  lib/CircularBuffer/test \
+  lib/CircularBuffer/test/CircularBuffer \
   # lib/Spi/test/SpiApi \
   # lib/Global/test/BitManip \
   # lib/ATtiny861/test/ChipFunctions \
