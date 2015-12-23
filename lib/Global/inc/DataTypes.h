@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#define u08 uint8_t
+#define s08 int8_t
+
 typedef enum
 {
   PIN_LOW  = 0,

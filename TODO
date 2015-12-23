@@ -19,3 +19,5 @@ Not all modules depend on mockHw... go back and edit module_configs.
 Make the test clean module-specific.
 
 Fix up the help menus!!
+
+callocs can silently fail...
