@@ -21,7 +21,7 @@ enum
   ARRAY_SUCCESS               = 0
 };
 int8_t Array_Get(Array self, int8_t index, void * return_value);
-// int8_t Array_Set(Array self, int8_t index, void * value);
+int8_t Array_Set(Array self, int8_t index, void * value);
 
 #include "ArrayPrivate.h"
 

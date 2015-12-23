@@ -74,14 +74,14 @@ TEST(Array, TEST_ELEMENTS_INITIALIZED_TO_EMPTY)
 //   LONGS_EQUAL(ARRAY_ELEMENT_OUT_OF_BOUNDS, result);
 // }
 
-// TEST(Array, TEST_SET_FIRST_ARRAY_ELEMENT)
-// {
-//   int8_t set_value = 42;
-//   int8_t get_value = 0;
-//   int8_t result;
+TEST(Array, TEST_SET_FIRST_ARRAY_ELEMENT)
+{
+  int8_t set_value = 42;
+  int8_t get_value = 0;
+  int8_t result;
 
-//   result = Array_Set(array, 0, (void *)&set_value);
-//   Array_Get(array, 0, (void *)&get_value);
-//   LONGS_EQUAL(ARRAY_SUCCESS, result);
-//   LONGS_EQUAL(set_value, get_value);
-// }
+  result = Array_Set(array, 0, (void *)&set_value);
+  Array_Get(array, 0, (void *)&get_value);
+  LONGS_EQUAL(ARRAY_SUCCESS, result);
+  LONGS_EQUAL(set_value, get_value);
+}

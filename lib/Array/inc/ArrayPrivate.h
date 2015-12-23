@@ -11,7 +11,8 @@ typedef struct ArrayStruct
 typedef struct ArrayInterfaceStruct
 {
   void (*Destroy)(Array self);
-  void (*Get)(Array self, int8_t index, void * return_value);
+  int8_t (*Get)(Array self, int8_t index, void * return_value);
+  int8_t (*Set)(Array self, int8_t index, void * value);
 } ArrayInterfaceStruct;
 
 #endif

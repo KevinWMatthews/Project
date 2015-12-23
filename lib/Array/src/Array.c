@@ -13,8 +13,13 @@ void Array_Destroy(Array self)
 
 int8_t Array_Get(Array self, int8_t index, void * return_value)
 {
-  self->vtable->Get(self, index, return_value);
-  return ARRAY_SUCCESS;
+  return self->vtable->Get(self, index, return_value);
+}
+
+int8_t Array_Set(Array self, int8_t index, void * value)
+{
+  assert(self->vtable->Set != NULL);
+  return self->vtable->Set(self, index, value);
 }
 
 // static BOOL is_index_out_of_range(Array self, int8_t index);
