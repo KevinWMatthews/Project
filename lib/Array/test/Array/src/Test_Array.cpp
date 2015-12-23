@@ -29,19 +29,19 @@ TEST(Array, TEST_CREATE_AND_DESTROY)
 {
 }
 
-// TEST(Array, TEST_ELEMENTS_INITIALIZED_TO_EMPTY)
-// {
-//   int8_t value = 66;
-//   int8_t result = 66;
-//   for (int i = 0; i < ARRAY_SIZE; i++)
-//   {
-//     value = 66;
-//     result = 66;
-//     result = Array_Get(array, i, (void *)&value);
-//     LONGS_EQUAL(0, value);
-//     LONGS_EQUAL(ARRAY_SUCCESS, result);
-//   }
-// }
+TEST(Array, TEST_ELEMENTS_INITIALIZED_TO_EMPTY)
+{
+  int8_t value = 66;
+  int8_t result = 66;
+  for (int i = 0; i < ARRAY_SIZE; i++)
+  {
+    value = 66;
+    result = 66;
+    result = Array_Get(array, i, (void *)&value);
+    LONGS_EQUAL(0, value);
+    LONGS_EQUAL(ARRAY_SUCCESS, result);
+  }
+}
 
 // TEST(Array, TEST_GET_FAILS_IF_INDEX_IS_OUT_OF_RANGE)
 // {

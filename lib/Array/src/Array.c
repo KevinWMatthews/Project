@@ -2,11 +2,19 @@
 #include <stdlib.h>
 #include <assert.h>
 
+//Probably want to put null checks in here... what if I mess up the interface?
+//Or should I toss in an assert? Let's live on the wild side and see how it bites me ;)
 void Array_Destroy(Array self)
 {
   assert(self != NULL);
   RETURN_IF_NULL(self);
   self->vtable->Destroy(self);
+}
+
+int8_t Array_Get(Array self, int8_t index, void * return_value)
+{
+  self->vtable->Get(self, index, return_value);
+  return ARRAY_SUCCESS;
 }
 
 // static BOOL is_index_out_of_range(Array self, int8_t index);

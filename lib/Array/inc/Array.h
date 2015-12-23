@@ -15,12 +15,12 @@ void Array_Destroy(Array self);
 // BOOL Array_VerifyBufferIntegrity(Array self);
 
 
-// enum
-// {
+enum
+{
 //   ARRAY_ELEMENT_OUT_OF_BOUNDS = -1,
-//   ARRAY_SUCCESS               = 0
-// };
-// int8_t Array_Get(Array self, int8_t index, void * return_value);
+  ARRAY_SUCCESS               = 0
+};
+int8_t Array_Get(Array self, int8_t index, void * return_value);
 // int8_t Array_Set(Array self, int8_t index, void * value);
 
 #include "ArrayPrivate.h"
