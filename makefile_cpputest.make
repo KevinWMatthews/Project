@@ -36,6 +36,7 @@ CPP_LINKER=g++
 MODULE_DIR=$(call clean_path,$(ROOT_DIR)/$(MODULE))
 OBJ_DIR=$(call clean_path,$(ROOT_DIR)/$(test_obj_dir))
 BUILD_DIR=$(call clean_path,$(ROOT_DIR)/$(test_build_dir))
+CPPUTEST_DIR=/usr/local
 
 
 ###############
@@ -87,7 +88,7 @@ CPPUTEST_LIB_LIST=CppUTest CppUTestExt
 OSTYPE:=$(shell uname -o)
 ifeq ("$(OSTYPE)","Cygwin")
 # Cygwin's linker can't seem to find CppUTest libraries even though they're in the PATH...
-CPPUTEST_LIB_DIR=/usr/local/lib
+CPPUTEST_LIB_DIR=$(CPPUTEST_DIR)/lib
 endif
 
 # CppUTest test harness source code
@@ -126,16 +127,22 @@ ifeq ($(DEBUG),Y)
 endif
 COMPILER_FLAGS+=$(TEST_COMPILER_FLAGS)
 
+#Flags for CppUTest framework's source code
+MEMORY_LEAK_CFLAGS+=-include $(CPPUTEST_DIR)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
+MEMORY_LEAK_CPPFLAGS+=-include $(CPPUTEST_DIR)/include/CppUTest/MemoryLeakDetectorNewMacros.h
+
+C_COMPILER_FLAGS=$(COMPILER_FLAGS) $(MEMORY_LEAK_CFLAGS)
+CPP_COMPILER_FLAGS=$(COMPILER_FLAGS) $(MEMORY_LEAK_CPPFLAGS)
+
 INCLUDE_FLAGS+=$(addprefix -I,$(INC_DIRS))
 INCLUDE_FLAGS+=$(addprefix -I,$(MOCKHW_DIR))
-
-LINKER_FLAGS+=$(addprefix -L,$(LIB_DIRS))
-LINKER_FLAGS+=$(addprefix -l,$(LIB_LIST))
 
 # User unit tests
 TEST_INCLUDE_FLAGS=$(addprefix -I,$(TEST_INC_DIRS))
 
-#Flags for CppUTest framework's source code
+LINKER_FLAGS+=$(addprefix -L,$(LIB_DIRS))
+LINKER_FLAGS+=$(addprefix -l,$(LIB_LIST))
+
 #(not the user's unit tests; the test framework itself)
 CPPUTEST_LINKER_FLAGS+=$(addprefix -l,$(CPPUTEST_LIB_LIST))
 ifeq ("$(OSTYPE)","Cygwin")
@@ -214,21 +221,21 @@ $(OBJ_DIR)/%.o: %.c
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module production code${NoColor}"
-	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(SILENCE)$(C_COMPILER) $(C_COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 $(TEST_OBJ_DIR)/%.o: %.cpp
 	@echo
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
-	$(SILENCE)$(CPP_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(SILENCE)$(CPP_COMPILER) $(CPP_COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 $(TEST_OBJ_DIR)/%.o: %.c
 	@echo
 	$(ECHO) "\n${Yellow}Compiling $(notdir $<)...${NoColor}"
 	$(SILENCE)mkdir -p $(dir $@)
 	$(ECHO) "${DarkGray}Module test code${NoColor}"
-	$(SILENCE)$(C_COMPILER) $(COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
+	$(SILENCE)$(C_COMPILER) $(C_COMPILER_FLAGS) $< -o $@ $(INCLUDE_FLAGS) $(TEST_INCLUDE_FLAGS)
 
 # MAKECMDGOALS is a special variable that is set by Make
 #For some reason this needs to be below the targets.
@@ -294,7 +301,8 @@ flags:
 	$(ECHO)             "~~~ Flags in CppUTest Makefile ~~~"
 	$(ECHO)             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	$(ECHO)             "$(MODULE_DIR)${NoColor}"
-	$(call echo_with_header,COMPILER_FLAGS)
+	$(call echo_with_header,C_COMPILER_FLAGS)
+	$(call echo_with_header,CPP_COMPILER_FLAGS)
 	$(call echo_with_header,INCLUDE_FLAGS)
 	$(call echo_with_header,LINKER_FLAGS)
 	$(call echo_with_header,CPPUTEST_LINKER_FLAGS)
