@@ -1,10 +1,11 @@
 #include "U08Array.h"
-#include "Array.h"
 #include <stdlib.h>
 
 
 
-//Define data structures
+//******************************//
+//*** Data type declarations ***//
+//******************************//
 typedef struct U08ArrayStruct
 {
   ArrayStruct base;
@@ -13,14 +14,18 @@ typedef struct U08ArrayStruct
 
 
 
-//Prototypes
+//*****************************//
+//*** Function declarations ***//
+//*****************************//
 static void U08Array_Destroy(Array super);
 static s08 U08Array_Get(Array super, s08 index, void * return_value);
 static s08 U08Array_Set(Array super, s08 index, void * value);
 
 
 
-//Initialize file-scope variables
+//***************************************//
+//*** File-scope variable definitions ***//
+//***************************************//
 static ArrayInterfaceStruct interface = {
   .Destroy = U08Array_Destroy,
   .Get = U08Array_Get,
@@ -29,7 +34,9 @@ static ArrayInterfaceStruct interface = {
 
 
 
-//Functions
+//****************************//
+//*** Function definitions ***//
+//****************************//
 Array U08Array_Create(s08 size)
 {
   U08Array self = calloc(1, sizeof(U08ArrayStruct));

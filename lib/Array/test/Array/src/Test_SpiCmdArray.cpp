@@ -5,7 +5,7 @@ extern "C"
   #include "SpiCommand.h"
 }
 
-//CppUTest includes should be after your and system includes
+//CppUTest includes should be after your system includes
 #include "CppUTest/TestHarness.h"
 #include "Test_SpiCmdArray.h"
 

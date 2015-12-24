@@ -3,7 +3,7 @@ extern "C"
   #include "U08Array.h"
 }
 
-//CppUTest includes should be after your and system includes
+//CppUTest includes should be after your system includes
 #include "CppUTest/TestHarness.h"
 #include "Test_U08Array.h"
 

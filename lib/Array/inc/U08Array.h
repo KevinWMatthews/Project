@@ -7,4 +7,6 @@ typedef struct U08ArrayStruct * U08Array;
 
 Array U08Array_Create(s08 size);
 
+//See Array.h for the Array interface.
+
 #endif

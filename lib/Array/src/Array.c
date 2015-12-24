@@ -2,8 +2,18 @@
 #include <stdlib.h>
 #include <assert.h>
 
+
+
+//*****************************//
+//*** Function declarations ***//
+//*****************************//
 static BOOL is_index_out_of_range(Array self, s08 index);
 
+
+
+//****************************//
+//*** Function definitions ***//
+//****************************//
 void Array_Destroy(Array self)
 {
   RETURN_IF_NULL(self);

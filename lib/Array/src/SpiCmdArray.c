@@ -2,28 +2,43 @@
 #include "SpiCommand.h"
 #include <stdlib.h>
 
-typedef struct SpiCmdArrayStruct * SpiCmdArray;
 
-//Data type definitions
+
+//******************************//
+//*** Data type declarations ***//
+//******************************//
+typedef struct SpiCmdArrayStruct * SpiCmdArray;
 typedef struct SpiCmdArrayStruct
 {
   ArrayStruct base;
-  SpiCommandStruct * array; //Change to a pointer?
+  SpiCommand array;
 } SpiCmdArrayStruct;
 
-//Function prototypes
+
+
+//*****************************//
+//*** Function declarations ***//
+//*****************************//
 static void SpiCmdArray_Destroy(Array super);
 static s08 SpiCmdArray_Get(Array super, s08 index, void * return_value);
 static s08 SpiCmdArray_Set(Array super, s08 index, void * value);
 
-//File-scope variable declarations
+
+
+//***************************************//
+//*** File-scope variable definitions ***//
+//***************************************//
 static ArrayInterfaceStruct interface = {
   .Destroy = SpiCmdArray_Destroy,
   .Get     = SpiCmdArray_Get,
   .Set     = SpiCmdArray_Set
 };
 
-//Function definitions
+
+
+//****************************//
+//*** Function definitions ***//
+//****************************//
 Array SpiCmdArray_Create(s08 size)
 {
   SpiCmdArray self = calloc(1, sizeof(SpiCmdArrayStruct));

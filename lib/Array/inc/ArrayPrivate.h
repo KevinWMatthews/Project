@@ -3,12 +3,14 @@
 
 typedef struct ArrayInterfaceStruct * ArrayInterface;
 
+// The base/common elements of an Array struct
 typedef struct ArrayStruct
 {
   ArrayInterface vtable;
   s08 size;
 } ArrayStruct;
 
+//All Arrays subclasses must implement this interface
 typedef struct ArrayInterfaceStruct
 {
   void (*Destroy)(Array self);
