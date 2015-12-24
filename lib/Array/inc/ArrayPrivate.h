@@ -6,6 +6,7 @@ typedef struct ArrayInterfaceStruct * ArrayInterface;
 typedef struct ArrayStruct
 {
   ArrayInterface vtable;
+  s08 size;
 } ArrayStruct;
 
 typedef struct ArrayInterfaceStruct

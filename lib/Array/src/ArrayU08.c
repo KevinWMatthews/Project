@@ -34,9 +34,12 @@ Array ArrayU08_Create(s08 size)
 {
   ArrayU08 self = calloc(1, sizeof(ArrayU08Struct));
   RETURN_VALUE_IF_NULL(self, NULL);
+
   self->base.vtable = &interface;
+  self->base.size   = size;
+
   self->array = calloc(size, sizeof(u08));
-  RETURN_VALUE_IF_NULL(self, NULL);
+  RETURN_VALUE_IF_NULL(self->array, NULL);
   return (Array)self;
 }
 

@@ -12,6 +12,10 @@ void Array_Destroy(Array self)
 s08 Array_Get(Array self, s08 index, void * return_value)
 {
   assert(self->vtable->Get != NULL);
+  if (index < 0 || index >= self->size)
+  {
+    return ARRAY_INDEX_OUT_OF_BOUNDS;
+  }
   return self->vtable->Get(self, index, return_value);
 }
 

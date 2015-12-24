@@ -17,8 +17,8 @@ void Array_Destroy(Array self);
 
 enum
 {
-//   ARRAY_ELEMENT_OUT_OF_BOUNDS = -1,
-  ARRAY_SUCCESS               = 0
+  ARRAY_INDEX_OUT_OF_BOUNDS = -1,
+  ARRAY_SUCCESS             = 0
 };
 s08 Array_Get(Array self, s08 index, void * return_value);
 s08 Array_Set(Array self, s08 index, void * value);
