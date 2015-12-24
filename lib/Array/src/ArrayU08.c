@@ -15,13 +15,13 @@ typedef struct ArrayU08Struct
 
 //Prototypes
 static void ArrayU08_Destroy(Array super);
-static int8_t ArrayU08_Get(Array super, int8_t index, void * return_value);
-static int8_t ArrayU08_Set(Array super, int8_t index, void * value);
+static s08 ArrayU08_Get(Array super, s08 index, void * return_value);
+static s08 ArrayU08_Set(Array super, s08 index, void * value);
 
 
 
 //Initialize file-scope variables
-ArrayInterfaceStruct interface = {
+static ArrayInterfaceStruct interface = {
   .Destroy = ArrayU08_Destroy,
   .Get = ArrayU08_Get,
   .Set = ArrayU08_Set
@@ -30,7 +30,7 @@ ArrayInterfaceStruct interface = {
 
 
 //Functions
-Array ArrayU08_Create(int8_t size)
+Array ArrayU08_Create(s08 size)
 {
   ArrayU08 self = calloc(1, sizeof(ArrayU08Struct));
   RETURN_VALUE_IF_NULL(self, NULL);
@@ -50,7 +50,7 @@ static void ArrayU08_Destroy(Array super)
   free(self);
 }
 
-static int8_t ArrayU08_Get(Array super, int8_t index, void * return_value)
+static s08 ArrayU08_Get(Array super, s08 index, void * return_value)
 {
   ArrayU08 self = (ArrayU08)super;
   u08 * data = (u08 *)return_value;
@@ -60,7 +60,7 @@ static int8_t ArrayU08_Get(Array super, int8_t index, void * return_value)
   return ARRAY_SUCCESS;
 }
 
-static int8_t ArrayU08_Set(Array super, int8_t index, void * value)
+static s08 ArrayU08_Set(Array super, s08 index, void * value)
 {
   ArrayU08 self = (ArrayU08)super;
   u08 * data = (u08 *)value;

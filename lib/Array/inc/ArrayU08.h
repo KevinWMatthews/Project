@@ -5,6 +5,6 @@
 
 typedef struct ArrayU08Struct * ArrayU08;
 
-Array ArrayU08_Create(int8_t size);
+Array ArrayU08_Create(s08 size);
 
 #endif
