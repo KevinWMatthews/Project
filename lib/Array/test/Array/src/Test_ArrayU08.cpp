@@ -38,6 +38,11 @@ TEST(ArrayU08, TEST_CREATE_AND_DESTROY)
 {
 }
 
+TEST(ArrayU08, TEST_DESTROY_HANDLES_NULL)
+{
+  Array_Destroy(NULL);
+}
+
 TEST(ArrayU08, TEST_ELEMENTS_INITIALIZED_TO_EMPTY)
 {
   for (int i = 0; i < ARRAY_SIZE; i++)
@@ -48,6 +53,15 @@ TEST(ArrayU08, TEST_ELEMENTS_INITIALIZED_TO_EMPTY)
     LONGS_EQUAL(0, get_value);
     LONGS_EQUAL(ARRAY_SUCCESS, result);
   }
+}
+
+TEST(ArrayU08, TEST_GET_HANDLES_NULL)
+{
+  result = Array_Get(NULL, 1, (void*)&get_value);
+  LONGS_EQUAL(ARRAY_NULL_POINTER, result);
+  result = 1;
+  result = Array_Get(array, 1, NULL);
+  LONGS_EQUAL(ARRAY_NULL_POINTER, result);
 }
 
 TEST(ArrayU08, TEST_GET_FAILS_IF_INDEX_IS_TOO_SMALL)
