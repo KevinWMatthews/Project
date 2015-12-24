@@ -9,7 +9,7 @@ extern "C"
 #include "Test_ArrayU08.h"
 
 #define ARRAY_SIZE 10
-#define GET_INITIAL 66
+#define GET_INITIAL 66  //Used to detect accidental modifications ot the get_value pointer
 #define SET_INITIAL 42
 #define RESULT_INITIAL 77
 
@@ -38,44 +38,13 @@ TEST(ArrayU08, TEST_CREATE_AND_DESTROY)
 {
 }
 
-TEST(ArrayU08, TEST_DESTROY_HANDLES_NULL)
+TEST(ArrayU08, TEST_ELEMENT_INITIALIZED_TO_EMPTY)
 {
-  Array_Destroy(NULL);
-}
-
-TEST(ArrayU08, TEST_ELEMENTS_INITIALIZED_TO_EMPTY)
-{
-  for (int i = 0; i < ARRAY_SIZE; i++)
-  {
-    get_value = GET_INITIAL;
-    result    = RESULT_INITIAL;
-    result = Array_Get(array, i, (void *)&get_value);
-    LONGS_EQUAL(0, get_value);
-    LONGS_EQUAL(ARRAY_SUCCESS, result);
-  }
-}
-
-TEST(ArrayU08, TEST_GET_HANDLES_NULL)
-{
-  result = Array_Get(NULL, 1, (void*)&get_value);
-  LONGS_EQUAL(ARRAY_NULL_POINTER, result);
-  result = 1;
-  result = Array_Get(array, 1, NULL);
-  LONGS_EQUAL(ARRAY_NULL_POINTER, result);
-}
-
-TEST(ArrayU08, TEST_GET_FAILS_IF_INDEX_IS_TOO_SMALL)
-{
-  result = Array_Get(array, -1, (void *)&get_value);
-  LONGS_EQUAL(ARRAY_INDEX_OUT_OF_BOUNDS, result);
-  LONGS_EQUAL(GET_INITIAL, get_value);
-}
-
-TEST(ArrayU08, TEST_GET_FAILS_IF_INDEX_IS_TOO_LARGE)
-{
-  result = Array_Get(array, ARRAY_SIZE, (void *)&get_value);
-  LONGS_EQUAL(ARRAY_INDEX_OUT_OF_BOUNDS, result);
-  LONGS_EQUAL(GET_INITIAL, get_value);
+  get_value = GET_INITIAL;
+  result    = RESULT_INITIAL;
+  result = Array_Get(array, 0, (void *)&get_value);
+  LONGS_EQUAL(0, get_value);
+  LONGS_EQUAL(ARRAY_SUCCESS, result);
 }
 
 TEST(ArrayU08, TEST_SET_FIRST_ARRAY_ELEMENT)
@@ -86,16 +55,11 @@ TEST(ArrayU08, TEST_SET_FIRST_ARRAY_ELEMENT)
   LONGS_EQUAL(set_value, get_value);
 }
 
-TEST(ArrayU08, TEST_SET_FAILS_IF_INDEX_IS_TOO_SMALL)
+TEST(ArrayU08, TEST_SET_FIRST_ARRAY_ELEMENT_AGAIN)  //I'm tired.
 {
-  result = Array_Set(array, -1, (void *)&set_value);
-  LONGS_EQUAL(ARRAY_INDEX_OUT_OF_BOUNDS, result);
-  LONGS_EQUAL(SET_INITIAL, set_value);
-}
-
-TEST(ArrayU08, TEST_SET_FAILS_IF_INDEX_IS_TOO_LARGE)
-{
-  result = Array_Set(array, ARRAY_SIZE, (void *)&set_value);
-  LONGS_EQUAL(ARRAY_INDEX_OUT_OF_BOUNDS, result);
-  LONGS_EQUAL(SET_INITIAL, set_value);
+  set_value = 7;
+  result = Array_Set(array, 0, (void *)&set_value);
+  Array_Get(array, 0, (void *)&get_value);
+  LONGS_EQUAL(ARRAY_SUCCESS, result);
+  LONGS_EQUAL(set_value, get_value);
 }
