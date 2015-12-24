@@ -1,5 +1,6 @@
 #include "CircularBuffer.h"
-#include "Array.h"
+// #include "Array.h"
+#include "U08Array.h"
 #include <stdlib.h>
 
 // enum {BUFFER_GUARD = -999};
@@ -11,10 +12,10 @@
 //******************************//
 typedef struct CircularBufferStruct
 {
-  uint8_t count;    // Current number of entries
-  uint8_t index;
-  uint8_t outdex;
-  uint8_t capacity;
+  s08 count;    // Current number of entries
+  s08 index;
+  s08 outdex;
+  s08 capacity;
   Array array;      // Pointer to the actual buffer
 } CircularBufferStruct;
 
@@ -37,24 +38,26 @@ typedef struct CircularBufferStruct
 //****************************//
 CircularBuffer CircularBuffer_Create(s08 capacity)
 {
-  // CircularBuffer self = calloc(1, sizeof(CircularBufferStruct));
-  // self->values = calloc(capacity + 1, sizeof(int16_t));
+  CircularBuffer self = calloc(1, sizeof(CircularBufferStruct));
+  self->array = U08Array_Create(capacity+1);    //TODO this needs to be dynamic :/
   // self->values[capacity] = BUFFER_GUARD;
-  // self->capacity = capacity;
-  // return self;
-  return NULL;
+  self->capacity = capacity;
+  return self;
 }
 
-// void CircularBuffer_Destroy(CircularBuffer* self)
-// {
+//Carefule, we're passed a pointer to a pointer.
+void CircularBuffer_Destroy(CircularBuffer * pointer_to_self)
+{
+  CircularBuffer self = *pointer_to_self; //I'm not sure that this helps...
 //   RETURN_IF_NULL(self);
 //   RETURN_IF_NULL(*self);
 //   RETURN_IF_NULL((*self)->values);
 
 //   free((*self)->values);
-//   free(*self);
-//   *self = NULL;
-// }
+  Array_Destroy(self->array);
+  free(self);                  //Free the memory that self is pointing to
+  *pointer_to_self = (CircularBuffer)NULL; //Set self to NULL
+}
 
 // BOOL CircularBuffer_VerifyIntegrity(CircularBuffer self)
 // {

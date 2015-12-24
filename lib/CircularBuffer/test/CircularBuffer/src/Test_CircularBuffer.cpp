@@ -18,7 +18,8 @@ TEST_GROUP(CircularBuffer)
 
   void teardown()
   {
-    // CircularBuffer_Destroy(buffer);
+    CircularBuffer_Destroy(&buffer);
+    POINTERS_EQUAL(NULL, buffer);
   }
 };
 

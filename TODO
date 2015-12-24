@@ -30,3 +30,7 @@ Or is it better to implement them at the low level? Hmmm.
 Change array size to s16.
 
 Support negative array indices! :)
+
+Set Array pointers to NULL after free? We should checktheir value after free is called.
+
+Have Array handle the null terminator.
