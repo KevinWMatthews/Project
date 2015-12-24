@@ -46,12 +46,6 @@ TEST_GROUP(CircularBuffer)
       CircularBuffer_Put(buffer, i+seed);
     }
   }
-
-  // Step is assumed to be 1 (n, n+1, n+2, ...)
-  float calculateAverage(int first, int last)
-  {
-    return (first + last) / 2.0;
-  }
 };
 
 //*** Test Create() and Destroy() ***//
@@ -86,7 +80,6 @@ TEST(CircularBuffer, AllFunctionsCanHandleNullPointer)
   LONGS_EQUAL(FALSE, CircularBuffer_IsFull(NULL));
   LONGS_EQUAL(FALSE, CircularBuffer_Put(NULL, 666));
   LONGS_EQUAL(0, CircularBuffer_Get(NULL));
-  DOUBLES_EQUAL(0, CircularBuffer_Average(NULL), FLOAT_PRECISION);
 }
 
 TEST(CircularBuffer, EmptyAfterCreation)
@@ -200,56 +193,4 @@ TEST(CircularBuffer, PutToFullDoesNotDamageContents)
 TEST(CircularBuffer, GetFromEmptyReturns0)
 {
   LONGS_EQUAL(0, CircularBuffer_Get(buffer));
-}
-
-TEST(CircularBuffer, AverageWithEmptyBuffer)
-{
-  LONGS_EQUAL(0, CircularBuffer_Average(buffer));
-}
-
-TEST(CircularBuffer, AverageWithOneEntryAtBeginning)
-{
-  CircularBuffer_Put(buffer, 42);
-  LONGS_EQUAL(42, CircularBuffer_Average(buffer));
-}
-
-TEST(CircularBuffer, AverageWithOneEntryInMiddle)
-{
-  CircularBuffer_Put(buffer, 42);
-  CircularBuffer_Put(buffer, 52);
-  CircularBuffer_Get(buffer);
-  LONGS_EQUAL(52, CircularBuffer_Average(buffer));
-}
-
-TEST(CircularBuffer, AverageWithSeveralEntries)
-{
-  CircularBuffer_Put(buffer, 48);
-  CircularBuffer_Put(buffer, 52);
-  LONGS_EQUAL(50, CircularBuffer_Average(buffer));
-}
-
-TEST(CircularBuffer, AverageWithFullBuffer)
-{
-  float ave;
-  putManyInTheBuffer(100, BUFFER_SIZE);
-  ave = calculateAverage(100, 100+BUFFER_SIZE-1);
-  DOUBLES_EQUAL(ave, CircularBuffer_Average(buffer), FLOAT_PRECISION);
-}
-
-TEST(CircularBuffer, FloatingPointAverage)
-{
-  CircularBuffer_Put(buffer, 33);
-  CircularBuffer_Put(buffer, 33);
-  CircularBuffer_Put(buffer, 34);
-  DOUBLES_EQUAL(33.333333, CircularBuffer_Average(buffer), FLOAT_PRECISION);
-}
-
-TEST(CircularBuffer, AverageWrapAround)
-{
-  float ave;
-  putManyInTheBuffer(10, 10);     // Fill buffer with 10-19
-  CircularBuffer_Get(buffer);
-  CircularBuffer_Put(buffer, 20); // Buffer now holds 11-20
-  ave = calculateAverage(11, 20);
-  DOUBLES_EQUAL(ave, CircularBuffer_Average(buffer), FLOAT_PRECISION);
 }

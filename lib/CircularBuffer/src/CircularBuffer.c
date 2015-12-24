@@ -94,28 +94,3 @@ int16_t CircularBuffer_Get(CircularBuffer self)
   }
   return value;
 }
-
-float CircularBuffer_Average(CircularBuffer self)
-{
-  float value;
-  int i, n;
-
-  RETURN_VALUE_IF_NULL(self, 0);
-
-  if (self->count <= 0)
-  {
-    return 0;
-  }
-
-  value = 0;
-  i = self->outdex;
-  for (n = 0; n < self->count; n++, i++)
-  {
-    if (i >= self->capacity)
-    {
-      i = 0;
-    }
-    value += self->values[i];
-  }
-  return value / self->count;
-}
