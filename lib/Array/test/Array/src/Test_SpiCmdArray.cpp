@@ -43,3 +43,17 @@ TEST(SpiCmd, TEST_GET_SPI_COMMAND)
   LONGS_EQUAL(0, spi_cmd.command_type);
   LONGS_EQUAL(0, spi_cmd.data);
 }
+
+TEST(SpiCmd, TEST_SET_SPI_COMMAND)
+{
+  SpiCommandStruct new_spi_cmd = {
+    .command_type = 12,
+    .data = 42
+  };
+  result = Array_Set(array, 0, (void *)&new_spi_cmd);
+  LONGS_EQUAL(ARRAY_SUCCESS, result);
+  result = Array_Get(array, 0, (void *)&spi_cmd);
+  LONGS_EQUAL(ARRAY_SUCCESS, result);
+  LONGS_EQUAL(12, spi_cmd.command_type);
+  LONGS_EQUAL(42, spi_cmd.data);
+}

@@ -59,5 +59,9 @@ static s08 SpiCmdArray_Get(Array super, s08 index, void * return_value)
 
 static s08 SpiCmdArray_Set(Array super, s08 index, void * value)
 {
-  return 18;
+  SpiCmdArray self = (SpiCmdArray)super;
+  SpiCommand data = (SpiCommand)value;
+
+  self->array[index] = *data;
+  return ARRAY_SUCCESS;
 }
