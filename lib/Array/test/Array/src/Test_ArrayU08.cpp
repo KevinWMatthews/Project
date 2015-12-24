@@ -64,28 +64,24 @@ TEST(ArrayU08, TEST_GET_FAILS_IF_INDEX_IS_TOO_LARGE)
   LONGS_EQUAL(GET_INITIAL, get_value);
 }
 
-// //Verify that the null terminator is intact
-// //I'm not sure that this is properly tested
-// // TEST(ArrayU08, TEST_VERIFY_BUFFER_INTEGRITY)
-// // {
-// //   CHECK_TRUE(Array_VerifyBufferIntegrity(array));
-// // }
-
-// TEST(ArrayU08, TEST_SET_FAILS_IF_INDEX_IS_OUT_OF_RANGE)
-// {
-//   s08 get_value = 66;
-//   s08 result;
-
-//   result = Array_Set(array, -1, (void *)&get_value);
-//   LONGS_EQUAL(ARRAY_ELEMENT_OUT_OF_BOUNDS, result);
-//   result = Array_Set(array, ARRAY_SIZE, (void *)&get_value);
-//   LONGS_EQUAL(ARRAY_ELEMENT_OUT_OF_BOUNDS, result);
-// }
-
 TEST(ArrayU08, TEST_SET_FIRST_ARRAY_ELEMENT)
 {
   result = Array_Set(array, 0, (void *)&set_value);
   Array_Get(array, 0, (void *)&get_value);
   LONGS_EQUAL(ARRAY_SUCCESS, result);
   LONGS_EQUAL(set_value, get_value);
+}
+
+TEST(ArrayU08, TEST_SET_FAILS_IF_INDEX_IS_TOO_SMALL)
+{
+  result = Array_Set(array, -1, (void *)&set_value);
+  LONGS_EQUAL(ARRAY_INDEX_OUT_OF_BOUNDS, result);
+  LONGS_EQUAL(SET_INITIAL, set_value);
+}
+
+TEST(ArrayU08, TEST_SET_FAILS_IF_INDEX_IS_TOO_LARGE)
+{
+  result = Array_Set(array, ARRAY_SIZE, (void *)&set_value);
+  LONGS_EQUAL(ARRAY_INDEX_OUT_OF_BOUNDS, result);
+  LONGS_EQUAL(SET_INITIAL, set_value);
 }

@@ -67,7 +67,6 @@ static s08 ArrayU08_Set(Array super, s08 index, void * value)
 {
   ArrayU08 self = (ArrayU08)super;
   u08 * data = (u08 *)value;
-
   self->array[index] = *data;
   return ARRAY_SUCCESS;
 }

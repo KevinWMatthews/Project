@@ -22,6 +22,10 @@ s08 Array_Get(Array self, s08 index, void * return_value)
 s08 Array_Set(Array self, s08 index, void * value)
 {
   assert(self->vtable->Set != NULL);
+  if (index < 0 || index >= self->size)
+  {
+    return ARRAY_INDEX_OUT_OF_BOUNDS;
+  }
   return self->vtable->Set(self, index, value);
 }
 
