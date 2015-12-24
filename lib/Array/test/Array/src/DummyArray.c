@@ -6,7 +6,7 @@ static s08 DummyGet(Array self, s08 index, void * return_value);
 static s08 DummySet(Array self, s08 index, void * value);
 
 //Comment out individual function assignments to verify assertions
-ArrayInterfaceStruct interface = {
+static ArrayInterfaceStruct interface = {
   .Destroy = DummyDestroy,
   .Get = DummyGet,
   .Set = DummySet
