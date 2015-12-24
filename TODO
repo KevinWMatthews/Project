@@ -26,3 +26,7 @@ Assertions that dynamic interface pointers are non-null are untested.
 Add Array_VerifyBufferIntegrity()
 I don't have a consistent place for null checks. The interfaces don't implement them but instead depend on the higher level for implementing it?
 Or is it better to implement them at the low level? Hmmm.
+
+Change array size to s16.
+
+Support negative array indices! :)

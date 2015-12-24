@@ -8,8 +8,12 @@ extern "C"
 #include "CppUTest/TestHarness.h"
 #include "Test_SpiCmdArray.h"
 
+#define ARRAY_SIZE 10
+
 TEST_GROUP(SpiCmd)
 {
+  Array array;
+
   void setup()
   {}
 
@@ -17,7 +21,12 @@ TEST_GROUP(SpiCmd)
   {}
 };
 
-TEST(SpiCmd, TEST_FAIL)
+TEST(SpiCmd, TEST_CREATE)
 {
-  FAIL("SpiCmd wiring check");
+  array = SpiCmdArray_Create(ARRAY_SIZE);
+}
+
+TEST(SpiCmd, TEST_DESTROY)
+{
+  Array_Destroy(array);
 }
