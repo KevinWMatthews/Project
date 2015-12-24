@@ -39,8 +39,13 @@ typedef struct CircularBufferStruct
 CircularBuffer CircularBuffer_Create(s08 capacity)
 {
   CircularBuffer self = calloc(1, sizeof(CircularBufferStruct));
-  self->array = U08Array_Create(capacity+1);    //TODO this needs to be dynamic :/
-  // self->values[capacity] = BUFFER_GUARD;
+  RETURN_VALUE_IF_NULL(self, NULL);
+
+  //TODO this needs to be dynamic :/
+  //TODO move the +1 within the Array.
+  self->array = U08Array_Create(capacity+1);
+  RETURN_VALUE_IF_NULL(self->array, NULL);
+
   self->capacity = capacity;
   return self;
 }
@@ -48,14 +53,15 @@ CircularBuffer CircularBuffer_Create(s08 capacity)
 //Carefule, we're passed a pointer to a pointer.
 void CircularBuffer_Destroy(CircularBuffer * pointer_to_self)
 {
-  CircularBuffer self = *pointer_to_self; //I'm not sure that this helps...
-//   RETURN_IF_NULL(self);
-//   RETURN_IF_NULL(*self);
-//   RETURN_IF_NULL((*self)->values);
+  CircularBuffer self;
 
-//   free((*self)->values);
-  Array_Destroy(self->array);
-  free(self);                  //Free the memory that self is pointing to
+  RETURN_IF_NULL(pointer_to_self);
+  self = *pointer_to_self; //I'm not sure that this helps...
+
+  RETURN_IF_NULL(self);
+  Array_Destroy(self->array); //Destroy the Array within the CircularBuffer
+  free(self);                 //Free the memory that self is pointing to
+
   *pointer_to_self = (CircularBuffer)NULL; //Set self to NULL
 }
 

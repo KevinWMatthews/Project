@@ -27,6 +27,13 @@ TEST(CircularBuffer, CreateAndDestroy)
 {
 }
 
+TEST(CircularBuffer, DestroyWontSegfaultWithNullPointer)
+{
+  CircularBuffer null_pointer = NULL;
+  CircularBuffer_Destroy(NULL);
+  CircularBuffer_Destroy(&null_pointer);
+}
+
 // TEST_GROUP(CircularBuffer)
 // {
 //   #define BUFFER_SIZE 10
@@ -52,23 +59,6 @@ TEST(CircularBuffer, CreateAndDestroy)
 //     }
 //   }
 // };
-
-// TEST(CircularBuffer_Init, DestroyCanHandleNullPointer)
-// {
-//   CircularBuffer_Destroy(NULL);
-// }
-
-// TEST(CircularBuffer_Init, DestroyClearsPointer)
-// {
-//   CircularBuffer_Destroy(&buffer);
-//   POINTERS_EQUAL(NULL, buffer);
-// }
-
-// TEST(CircularBuffer_Init, CanDestroySameBufferTwice)
-// {
-//   CircularBuffer_Destroy(&buffer);
-//   CircularBuffer_Destroy(&buffer);
-// }
 
 // //*** Test CircularBuffer functionality ***//
 // TEST(CircularBuffer, AllFunctionsCanHandleNullPointer)
