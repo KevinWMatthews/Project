@@ -34,6 +34,22 @@ TEST(CircularBuffer, DestroyWontSegfaultWithNullPointer)
   CircularBuffer_Destroy(&null_pointer);
 }
 
+TEST(CircularBuffer, FunctionsWontSegfaultWithNullPointer)
+{
+  CircularBuffer_IsEmpty(NULL);
+  CircularBuffer_IsFull(NULL);
+}
+
+TEST(CircularBuffer, EmptyAfterCreation)
+{
+  CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
+}
+
+TEST(CircularBuffer, NotFullAfterCreation)
+{
+  CHECK_FALSE(CircularBuffer_IsFull(buffer));
+}
+
 // TEST_GROUP(CircularBuffer)
 // {
 //   #define BUFFER_SIZE 10
@@ -71,15 +87,7 @@ TEST(CircularBuffer, DestroyWontSegfaultWithNullPointer)
 //   LONGS_EQUAL(0, CircularBuffer_Get(NULL));
 // }
 
-// TEST(CircularBuffer, EmptyAfterCreation)
-// {
-//   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
-// }
 
-// TEST(CircularBuffer, NotFullAfterCreation)
-// {
-//   CHECK_FALSE(CircularBuffer_IsFull(buffer));
-// }
 
 // TEST(CircularBuffer, NotEmptyThenEmpty)
 // {

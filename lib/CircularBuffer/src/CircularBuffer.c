@@ -77,17 +77,17 @@ void CircularBuffer_Destroy(CircularBuffer * pointer_to_self)
 //   return self->capacity;
 // }
 
-// BOOL CircularBuffer_IsEmpty(CircularBuffer self)
-// {
-//   RETURN_VALUE_IF_NULL(self, TRUE);
-//   return self->count == 0;
-// }
+BOOL CircularBuffer_IsEmpty(CircularBuffer self)
+{
+  // RETURN_VALUE_IF_NULL(self, TRUE);
+  return TRUE;//self->count == 0;
+}
 
-// BOOL CircularBuffer_IsFull(CircularBuffer self)
-// {
-//   RETURN_VALUE_IF_NULL(self, FALSE);
-//   return self->count == self->capacity;
-// }
+BOOL CircularBuffer_IsFull(CircularBuffer self)
+{
+  // RETURN_VALUE_IF_NULL(self, FALSE);
+  return FALSE;//self->count == self->capacity;
+}
 
 // BOOL CircularBuffer_Put(CircularBuffer self, int16_t value)
 // {
