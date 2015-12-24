@@ -1,22 +1,23 @@
 #include "Array.h"
 #include <stdlib.h>
+#include <assert.h>
 
-//Probably want to put null checks in here... what if I mess up the interface?
-//Or should I toss in an assert? Let's live on the wild side and see how it bites me ;)
 void Array_Destroy(Array self)
 {
   RETURN_IF_NULL(self);
-  RETURN_IF_NULL(self->vtable->Destroy);
+  assert(self->vtable->Destroy != NULL);
   self->vtable->Destroy(self);
 }
 
 s08 Array_Get(Array self, s08 index, void * return_value)
 {
+  assert(self->vtable->Get != NULL);
   return self->vtable->Get(self, index, return_value);
 }
 
 s08 Array_Set(Array self, s08 index, void * value)
 {
+  assert(self->vtable->Set != NULL);
   return self->vtable->Set(self, index, value);
 }
 

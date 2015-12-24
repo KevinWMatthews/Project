@@ -21,3 +21,5 @@ Make the test clean module-specific.
 Fix up the help menus!!
 
 callocs can silently fail...
+
+Assertions that dynamic interface pointers are non-null are untested.
