@@ -4,7 +4,7 @@ Treat array's null terminator specially?
 
 Test return values in CircularBuffer Set and Get
 
-
+What to returnif Get fails because buffer is empty?
 
 Figure out dependencies: copy doesn't get detected by makefile but save does.  ? It might be a timestamp thing....
 

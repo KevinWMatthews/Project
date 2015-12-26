@@ -128,6 +128,13 @@ s08 CircularBuffer_Get(CircularBuffer self, void * data)
 {
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
+
+  //Handle empty buffer
+  if (self->count == 0)
+  {
+    return CIRCULARBUFFER_EMPTY;
+  }
+
   Array_Get(self->array, self->outdex, data);
   self->outdex++;
   self->count--;

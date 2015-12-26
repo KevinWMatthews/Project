@@ -193,6 +193,13 @@ TEST(CircularBuffer, PutToFullReturnsFalse)
   LONGS_EQUAL(CIRCULARBUFFER_FULL, CircularBuffer_Put(buffer, &data));
 }
 
+TEST(CircularBuffer, GetFromEmptyReturns0)
+{
+  u08 data = 1;
+  LONGS_EQUAL(CIRCULARBUFFER_EMPTY, CircularBuffer_Get(buffer, &data));
+  LONGS_EQUAL(1, data);
+}
+
 // TEST(CircularBuffer, PutToFullDoesNotDamageContents)
 // {
 //   putManyInTheBuffer(900, CircularBuffer_Capacity(buffer));
@@ -205,9 +212,4 @@ TEST(CircularBuffer, PutToFullReturnsFalse)
 //   }
 
 //   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
-// }
-
-// TEST(CircularBuffer, GetFromEmptyReturns0)
-// {
-//   LONGS_EQUAL(0, CircularBuffer_Get(buffer));
 // }
