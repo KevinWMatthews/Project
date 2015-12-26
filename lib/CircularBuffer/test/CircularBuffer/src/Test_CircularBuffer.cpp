@@ -112,32 +112,34 @@ TEST(CircularBuffer, Capacity)
 
 TEST(CircularBuffer, IsFull)
 {
-  u08 data;
   for (int i = 0; i < CircularBuffer_Capacity(buffer); i++)
   {
-    data = i + 10;
+    u08 data = i + 10;
     CircularBuffer_Put(buffer, &data);
   }
 
   CHECK_TRUE(CircularBuffer_IsFull(buffer));
 }
 
-// TEST(CircularBuffer, EmptyToFullToEmpty)
-// {
-//   for (int i = 0; i < CircularBuffer_Capacity(buffer); i++)
-//   {
-//     CircularBuffer_Put(buffer, i+100);
-//   }
-//   CHECK_TRUE(CircularBuffer_IsFull(buffer));
+TEST(CircularBuffer, EmptyToFullToEmpty)
+{
+  u08 data;
+  for (u08 i = 0; i < CircularBuffer_Capacity(buffer); i++)
+  {
+    data = i + 10;
+    CircularBuffer_Put(buffer, &data);
+  }
+  CHECK_TRUE(CircularBuffer_IsFull(buffer));
 
-//   for (int j = 0; j < CircularBuffer_Capacity(buffer); j++)
-//   {
-//     LONGS_EQUAL(j+100, CircularBuffer_Get(buffer));
-//   }
+  for (int j = 0; j < CircularBuffer_Capacity(buffer); j++)
+  {
+    CircularBuffer_Get(buffer, &data);
+    LONGS_EQUAL(j + 10, data);
+  }
 
-//   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
-//   CHECK_FALSE(CircularBuffer_IsFull(buffer));
-// }
+  CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
+  CHECK_FALSE(CircularBuffer_IsFull(buffer));
+}
 
 // TEST(CircularBuffer, WrapAround)
 // {
