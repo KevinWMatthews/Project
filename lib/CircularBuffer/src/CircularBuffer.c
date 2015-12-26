@@ -100,8 +100,8 @@ BOOL CircularBuffer_IsEmpty(CircularBuffer self)
 
 BOOL CircularBuffer_IsFull(CircularBuffer self)
 {
-  // RETURN_VALUE_IF_NULL(self, FALSE);
-  return FALSE;//self->count == self->capacity;
+  RETURN_VALUE_IF_NULL(self, FALSE);
+  return self->count == self->capacity;
 }
 
 s08 CircularBuffer_Put(CircularBuffer self, void * data)

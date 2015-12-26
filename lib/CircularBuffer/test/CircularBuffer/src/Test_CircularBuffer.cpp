@@ -110,15 +110,17 @@ TEST(CircularBuffer, Capacity)
   CircularBuffer_Destroy(&b);
 }
 
-// TEST(CircularBuffer, IsFull)
-// {
-//   for (int i = 0; i < CircularBuffer_Capacity(buffer); i++)
-//   {
-//     CircularBuffer_Put(buffer, i+100);
-//   }
+TEST(CircularBuffer, IsFull)
+{
+  u08 data;
+  for (int i = 0; i < CircularBuffer_Capacity(buffer); i++)
+  {
+    data = i + 10;
+    CircularBuffer_Put(buffer, &data);
+  }
 
-//   CHECK_TRUE(CircularBuffer_IsFull(buffer));
-// }
+  CHECK_TRUE(CircularBuffer_IsFull(buffer));
+}
 
 // TEST(CircularBuffer, EmptyToFullToEmpty)
 // {
