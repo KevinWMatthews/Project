@@ -1,3 +1,11 @@
+Treat array's null terminator specially?
+	Create a custom return code to signal wraparound (or end of string?).
+	Of course, rethink this.
+
+Test return values in CircularBuffer Set and Get
+
+
+
 Figure out dependencies: copy doesn't get detected by makefile but save does.  ? It might be a timestamp thing....
 
 Consider using aliases to simplify the top level makefile:

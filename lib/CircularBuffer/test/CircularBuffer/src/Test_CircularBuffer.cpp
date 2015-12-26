@@ -22,6 +22,15 @@ TEST_GROUP(CircularBuffer)
     CircularBuffer_Destroy(&buffer);
     POINTERS_EQUAL(NULL, buffer);
   }
+
+  void fillBuffer(CircularBuffer self, s08 capacity)
+  {
+    for (int i = 0; i < CircularBuffer_Capacity(buffer); i++)
+    {
+      u08 data = i + 10;
+      CircularBuffer_Put(buffer, &data);
+    }
+  }
 };
 
 TEST(CircularBuffer, CreateAndDestroy)
@@ -177,11 +186,12 @@ TEST(CircularBuffer, WrapAround)
   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
 }
 
-// TEST(CircularBuffer, PutToFullReturnsFalse)
-// {
-//   putManyInTheBuffer(900, CircularBuffer_Capacity(buffer));
-//   CHECK_FALSE(CircularBuffer_Put(buffer, 9999));
-// }
+TEST(CircularBuffer, PutToFullReturnsFalse)
+{
+  u08 data = 99;
+  fillBuffer(buffer, CircularBuffer_Capacity(buffer));
+  LONGS_EQUAL(CIRCULARBUFFER_FULL, CircularBuffer_Put(buffer, &data));
+}
 
 // TEST(CircularBuffer, PutToFullDoesNotDamageContents)
 // {

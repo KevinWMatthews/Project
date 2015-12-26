@@ -3,8 +3,6 @@
 #include "U08Array.h"
 #include <stdlib.h>
 
-// enum {BUFFER_GUARD = -999};
-
 
 
 //******************************//
@@ -42,12 +40,10 @@ CircularBuffer CircularBuffer_Create(CircularBuffer_DataType array_type, s08 cap
   CircularBuffer self = calloc(1, sizeof(CircularBufferStruct));
   RETURN_VALUE_IF_NULL(self, NULL);
 
-  //TODO this needs to be dynamic :/
-  //TODO move the +1 within the Array.
   switch (array_type)
   {
   case (CIRCULARBUFFER_U08):
-    self->array = U08Array_Create(capacity+1);
+    self->array = U08Array_Create(capacity);
     self->data_type = "U08";
     break;
   default:
@@ -108,9 +104,23 @@ s08 CircularBuffer_Put(CircularBuffer self, void * data)
 {
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
-  Array_Set(self->array, self->index, data);  //TODO Pass up return code from here?
-  self->count++;
+
+  //Handle wraparound
+  //TODO create custom return code if array is precisely full.
+  if (self->count == self->capacity)
+  {
+    return CIRCULARBUFFER_FULL;
+  }
+
+  Array_Set(self->array, self->index, data);
   self->index++;
+  self->count++;
+
+  if (self->index >= self->capacity)
+  {
+    self->index = 0;
+  }
+
   return CIRCLARBUFFER_SUCCESS;
 }
 
@@ -119,8 +129,13 @@ s08 CircularBuffer_Get(CircularBuffer self, void * data)
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
   Array_Get(self->array, self->outdex, data);
-  self->count--;
   self->outdex++;
+  self->count--;
+  if (self->outdex == self->capacity)
+  {
+    self->outdex = 0;
+  }
+
   return CIRCLARBUFFER_SUCCESS;
 }
 

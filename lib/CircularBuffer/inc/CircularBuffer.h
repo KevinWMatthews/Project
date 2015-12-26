@@ -19,6 +19,7 @@ BOOL CircularBuffer_IsEmpty(CircularBuffer self);
 BOOL CircularBuffer_IsFull(CircularBuffer self);
 enum
 {
+  CIRCULARBUFFER_FULL         = -2,
   CIRCULARBUFFER_NULL_POINTER = -1,
   CIRCLARBUFFER_SUCCESS       = 0
 };
