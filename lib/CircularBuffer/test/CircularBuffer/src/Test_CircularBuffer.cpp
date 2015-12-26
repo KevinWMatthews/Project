@@ -70,52 +70,16 @@ TEST(CircularBuffer, GetPutOneValue)
   LONGS_EQUAL(123, output);
 }
 
-// TEST_GROUP(CircularBuffer)
-// {
-//   #define BUFFER_SIZE 10
-//   #define FLOAT_PRECISION 0.000001
-//   CircularBuffer buffer;
+TEST(CircularBuffer, NotEmptyThenEmpty)
+{
+  u08 input = 123;
+  u08 output = 0;
 
-//   void setup()
-//   {
-//     buffer = CircularBuffer_Create(BUFFER_SIZE);
-//   }
-
-//   void teardown()
-//   {
-//     CHECK_TRUE(CircularBuffer_VerifyIntegrity(buffer));
-//     CircularBuffer_Destroy(&buffer);
-//   }
-
-//   void putManyInTheBuffer(int seed, int howMany)
-//   {
-//     for (int i = 0; i < howMany; i++)
-//     {
-//       CircularBuffer_Put(buffer, i+seed);
-//     }
-//   }
-// };
-
-// //*** Test CircularBuffer functionality ***//
-// TEST(CircularBuffer, AllFunctionsCanHandleNullPointer)
-// {
-//   LONGS_EQUAL(FALSE, CircularBuffer_VerifyIntegrity(NULL));
-//   LONGS_EQUAL(0, CircularBuffer_Capacity(NULL));
-//   LONGS_EQUAL(TRUE, CircularBuffer_IsEmpty(NULL));
-//   LONGS_EQUAL(FALSE, CircularBuffer_IsFull(NULL));
-//   LONGS_EQUAL(FALSE, CircularBuffer_Put(NULL, 666));
-//   LONGS_EQUAL(0, CircularBuffer_Get(NULL));
-// }
-
-
-
-// TEST(CircularBuffer, NotEmptyThenEmpty)
-// {
-//   CircularBuffer_Put(buffer, 4567);
-//   CHECK_FALSE(CircularBuffer_IsEmpty(buffer));
-//   CircularBuffer_Get(buffer);
-//   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
-// }
+  CircularBuffer_Put(buffer, &input);
+  CHECK_FALSE(CircularBuffer_IsEmpty(buffer));
+  CircularBuffer_Get(buffer, &output);
+  CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
+}
 
 // TEST(CircularBuffer, GetPutAFew)
 // {

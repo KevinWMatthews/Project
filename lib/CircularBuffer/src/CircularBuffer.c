@@ -86,8 +86,8 @@ void CircularBuffer_Destroy(CircularBuffer * pointer_to_self)
 
 BOOL CircularBuffer_IsEmpty(CircularBuffer self)
 {
-  // RETURN_VALUE_IF_NULL(self, TRUE);
-  return TRUE;//self->count == 0;
+  RETURN_VALUE_IF_NULL(self, TRUE);
+  return self->count == 0;
 }
 
 BOOL CircularBuffer_IsFull(CircularBuffer self)
@@ -101,6 +101,7 @@ s08 CircularBuffer_Put(CircularBuffer self, void * data)
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
   Array_Set(self->array, 0, data);  //TODO Pass up return code from here?
+  self->count++;
   return CIRCLARBUFFER_SUCCESS;
 }
 
@@ -109,6 +110,7 @@ s08 CircularBuffer_Get(CircularBuffer self, void * data)
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
   Array_Get(self->array, 0, data);
+  self->count--;
   return CIRCLARBUFFER_SUCCESS;
 }
 
