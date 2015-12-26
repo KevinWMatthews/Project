@@ -141,25 +141,41 @@ TEST(CircularBuffer, EmptyToFullToEmpty)
   CHECK_FALSE(CircularBuffer_IsFull(buffer));
 }
 
-// TEST(CircularBuffer, WrapAround)
-// {
-//   int capacity = CircularBuffer_Capacity(buffer);
-//   putManyInTheBuffer(100, capacity);
+TEST(CircularBuffer, WrapAround)
+{
+  int capacity = CircularBuffer_Capacity(buffer);
+  u08 data = 0;
 
-//   CHECK_TRUE(CircularBuffer_IsFull(buffer));
-//   LONGS_EQUAL(100, CircularBuffer_Get(buffer));
-//   CHECK_FALSE(CircularBuffer_IsFull(buffer));
-//   CircularBuffer_Put(buffer, 1000);
-//   CHECK_TRUE(CircularBuffer_IsFull(buffer));
+  //Fill buffer
+  for (u08 i = 0; i < CircularBuffer_Capacity(buffer); i++)
+  {
+    data = i + 10;
+    CircularBuffer_Put(buffer, &data);
+  }
+  CHECK_TRUE(CircularBuffer_IsFull(buffer));
 
-//   for (int i = 1; i < capacity; i++)
-//   {
-//     LONGS_EQUAL(i+100, CircularBuffer_Get(buffer));
-//   }
+  //Get first element
+  CircularBuffer_Get(buffer, &data);
+  LONGS_EQUAL(10, data);
+  CHECK_FALSE(CircularBuffer_IsFull(buffer));
 
-//   LONGS_EQUAL(1000, CircularBuffer_Get(buffer));
-//   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
-// }
+  //Refill the first buffer element with a unique value
+  data = 200;
+  CircularBuffer_Put(buffer, &data);
+  CHECK_TRUE(CircularBuffer_IsFull(buffer));
+
+  //Get the remaining elements
+  for (int i = 1; i < capacity; i++)
+  {
+    CircularBuffer_Get(buffer, &data);
+    LONGS_EQUAL(i+10, data);
+  }
+
+  //Get our unique first element
+  CircularBuffer_Get(buffer, &data);
+  LONGS_EQUAL(200, data);
+  CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
+}
 
 // TEST(CircularBuffer, PutToFullReturnsFalse)
 // {
