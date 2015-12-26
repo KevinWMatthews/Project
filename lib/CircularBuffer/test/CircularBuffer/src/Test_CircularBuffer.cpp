@@ -26,6 +26,7 @@ TEST_GROUP(CircularBuffer)
 
 TEST(CircularBuffer, CreateAndDestroy)
 {
+  STRCMP_EQUAL("U08", CircularBuffer_Type(buffer));
 }
 
 TEST(CircularBuffer, DestroyWontSegfaultWithNullPointer)
@@ -38,6 +39,7 @@ TEST(CircularBuffer, DestroyWontSegfaultWithNullPointer)
 TEST(CircularBuffer, FunctionsWontSegfaultWithNullPointer)
 {
   u08 data = 0;
+  STRCMP_EQUAL("NULL", CircularBuffer_Type(NULL));
   CircularBuffer_IsEmpty(NULL);
   CircularBuffer_IsFull(NULL);
   LONGS_EQUAL(CIRCULARBUFFER_NULL_POINTER, CircularBuffer_Put(NULL, &data));

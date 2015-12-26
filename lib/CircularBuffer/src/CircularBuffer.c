@@ -16,6 +16,7 @@ typedef struct CircularBufferStruct
   s08 index;
   s08 outdex;
   s08 capacity;
+  const char * data_type;
   Array array;      // Pointer to the actual buffer
 } CircularBufferStruct;
 
@@ -36,7 +37,7 @@ typedef struct CircularBufferStruct
 //****************************//
 //*** Function definitions ***//
 //****************************//
-CircularBuffer CircularBuffer_Create(CircularBuffer_Type array_type, s08 capacity)
+CircularBuffer CircularBuffer_Create(CircularBuffer_DataType array_type, s08 capacity)
 {
   CircularBuffer self = calloc(1, sizeof(CircularBufferStruct));
   RETURN_VALUE_IF_NULL(self, NULL);
@@ -47,6 +48,7 @@ CircularBuffer CircularBuffer_Create(CircularBuffer_Type array_type, s08 capacit
   {
   case (CIRCULARBUFFER_U08):
     self->array = U08Array_Create(capacity+1);
+    self->data_type = "U08";
     break;
   default:
     return NULL;
@@ -70,6 +72,12 @@ void CircularBuffer_Destroy(CircularBuffer * pointer_to_self)
   free(self);                 //Free the memory that self is pointing to
 
   *pointer_to_self = (CircularBuffer)NULL; //Set self to NULL
+}
+
+const char* CircularBuffer_Type(CircularBuffer self)
+{
+  RETURN_VALUE_IF_NULL(self, "NULL");
+  return self->data_type;
 }
 
 // BOOL CircularBuffer_VerifyIntegrity(CircularBuffer self)
