@@ -14,7 +14,7 @@ void CircularBuffer_Destroy(CircularBuffer * self);
 
 const char* CircularBuffer_Type(CircularBuffer self);
 // BOOL CircularBuffer_VerifyIntegrity(CircularBuffer self);
-// int8_t CircularBuffer_Capacity(CircularBuffer self);
+s08 CircularBuffer_Capacity(CircularBuffer self);
 BOOL CircularBuffer_IsEmpty(CircularBuffer self);
 BOOL CircularBuffer_IsFull(CircularBuffer self);
 enum

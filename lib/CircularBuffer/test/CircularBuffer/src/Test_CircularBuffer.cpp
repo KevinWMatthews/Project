@@ -40,6 +40,7 @@ TEST(CircularBuffer, FunctionsWontSegfaultWithNullPointer)
 {
   u08 data = 0;
   STRCMP_EQUAL("NULL", CircularBuffer_Type(NULL));
+  LONGS_EQUAL(0, CircularBuffer_Capacity(NULL));
   CircularBuffer_IsEmpty(NULL);
   CircularBuffer_IsFull(NULL);
   LONGS_EQUAL(CIRCULARBUFFER_NULL_POINTER, CircularBuffer_Put(NULL, &data));
@@ -102,12 +103,12 @@ TEST(CircularBuffer, PutAndGetAFew)
   LONGS_EQUAL(3, output);
 }
 
-// TEST(CircularBuffer, Capacity)
-// {
-//   CircularBuffer b = CircularBuffer_Create(2);
-//   LONGS_EQUAL(2, CircularBuffer_Capacity(b));
-//   CircularBuffer_Destroy(&b);
-// }
+TEST(CircularBuffer, Capacity)
+{
+  CircularBuffer b = CircularBuffer_Create(CIRCULARBUFFER_U08, 2);
+  LONGS_EQUAL(2, CircularBuffer_Capacity(b));
+  CircularBuffer_Destroy(&b);
+}
 
 // TEST(CircularBuffer, IsFull)
 // {

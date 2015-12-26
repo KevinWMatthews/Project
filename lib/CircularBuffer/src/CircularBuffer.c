@@ -86,11 +86,11 @@ const char* CircularBuffer_Type(CircularBuffer self)
 //   return self->values[self->capacity] == BUFFER_GUARD;
 // }
 
-// int8_t CircularBuffer_Capacity(CircularBuffer self)
-// {
-//   RETURN_VALUE_IF_NULL(self, 0);
-//   return self->capacity;
-// }
+s08 CircularBuffer_Capacity(CircularBuffer self)
+{
+  RETURN_VALUE_IF_NULL(self, 0);
+  return self->capacity;
+}
 
 BOOL CircularBuffer_IsEmpty(CircularBuffer self)
 {
