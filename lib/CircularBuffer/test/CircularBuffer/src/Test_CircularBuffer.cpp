@@ -81,15 +81,24 @@ TEST(CircularBuffer, NotEmptyThenEmpty)
   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
 }
 
-// TEST(CircularBuffer, GetPutAFew)
-// {
-//   CircularBuffer_Put(buffer, 1);
-//   CircularBuffer_Put(buffer, 2);
-//   CircularBuffer_Put(buffer, 3);
-//   LONGS_EQUAL(1, CircularBuffer_Get(buffer));
-//   LONGS_EQUAL(2, CircularBuffer_Get(buffer));
-//   LONGS_EQUAL(3, CircularBuffer_Get(buffer));
-// }
+TEST(CircularBuffer, PutAndGetAFew)
+{
+  u08 input = 1;
+  u08 output = 0;
+
+  CircularBuffer_Put(buffer, &input);
+  input++;
+  CircularBuffer_Put(buffer, &input);
+  input++;
+  CircularBuffer_Put(buffer, &input);
+
+  CircularBuffer_Get(buffer, &output);
+  LONGS_EQUAL(1, output);
+  CircularBuffer_Get(buffer, &output);
+  LONGS_EQUAL(2, output);
+  CircularBuffer_Get(buffer, &output);
+  LONGS_EQUAL(3, output);
+}
 
 // TEST(CircularBuffer, Capacity)
 // {

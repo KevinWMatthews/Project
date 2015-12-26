@@ -100,8 +100,9 @@ s08 CircularBuffer_Put(CircularBuffer self, void * data)
 {
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
-  Array_Set(self->array, 0, data);  //TODO Pass up return code from here?
+  Array_Set(self->array, self->index, data);  //TODO Pass up return code from here?
   self->count++;
+  self->index++;
   return CIRCLARBUFFER_SUCCESS;
 }
 
@@ -109,8 +110,9 @@ s08 CircularBuffer_Get(CircularBuffer self, void * data)
 {
   RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
   RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
-  Array_Get(self->array, 0, data);
+  Array_Get(self->array, self->outdex, data);
   self->count--;
+  self->outdex++;
   return CIRCLARBUFFER_SUCCESS;
 }
 
