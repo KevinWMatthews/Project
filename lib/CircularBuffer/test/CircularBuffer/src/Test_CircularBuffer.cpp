@@ -37,8 +37,13 @@ TEST(CircularBuffer, DestroyWontSegfaultWithNullPointer)
 
 TEST(CircularBuffer, FunctionsWontSegfaultWithNullPointer)
 {
+  u08 data = 0;
   CircularBuffer_IsEmpty(NULL);
   CircularBuffer_IsFull(NULL);
+  LONGS_EQUAL(CIRCULARBUFFER_NULL_POINTER, CircularBuffer_Put(NULL, &data));
+  LONGS_EQUAL(CIRCULARBUFFER_NULL_POINTER, CircularBuffer_Put(buffer, NULL));
+  LONGS_EQUAL(CIRCULARBUFFER_NULL_POINTER, CircularBuffer_Get(NULL, &data));
+  LONGS_EQUAL(CIRCULARBUFFER_NULL_POINTER, CircularBuffer_Get(buffer, NULL));
 }
 
 TEST(CircularBuffer, EmptyAfterCreation)
@@ -49,6 +54,20 @@ TEST(CircularBuffer, EmptyAfterCreation)
 TEST(CircularBuffer, NotFullAfterCreation)
 {
   CHECK_FALSE(CircularBuffer_IsFull(buffer));
+}
+
+TEST(CircularBuffer, GetPutOneValue)
+{
+  u08 input = 123;
+  u08 output = 0;
+  s08 return_value = 1;
+
+  return_value = CircularBuffer_Put(buffer, &input);
+  LONGS_EQUAL(CIRCLARBUFFER_SUCCESS, return_value);
+
+  return_value = CircularBuffer_Get(buffer, &output);
+  LONGS_EQUAL(CIRCLARBUFFER_SUCCESS, return_value);
+  LONGS_EQUAL(123, output);
 }
 
 // TEST_GROUP(CircularBuffer)
@@ -96,12 +115,6 @@ TEST(CircularBuffer, NotFullAfterCreation)
 //   CHECK_FALSE(CircularBuffer_IsEmpty(buffer));
 //   CircularBuffer_Get(buffer);
 //   CHECK_TRUE(CircularBuffer_IsEmpty(buffer));
-// }
-
-// TEST(CircularBuffer, GetPutOneValue)
-// {
-//   CircularBuffer_Put(buffer, 4567);
-//   LONGS_EQUAL(4567, CircularBuffer_Get(buffer));
 // }
 
 // TEST(CircularBuffer, GetPutAFew)

@@ -96,6 +96,23 @@ BOOL CircularBuffer_IsFull(CircularBuffer self)
   return FALSE;//self->count == self->capacity;
 }
 
+s08 CircularBuffer_Put(CircularBuffer self, void * data)
+{
+  RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
+  RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
+  Array_Set(self->array, 0, data);  //TODO Pass up return code from here?
+  return CIRCLARBUFFER_SUCCESS;
+}
+
+s08 CircularBuffer_Get(CircularBuffer self, void * data)
+{
+  RETURN_VALUE_IF_NULL(self, CIRCULARBUFFER_NULL_POINTER);
+  RETURN_VALUE_IF_NULL(data, CIRCULARBUFFER_NULL_POINTER);
+  Array_Get(self->array, 0, data);
+  return CIRCLARBUFFER_SUCCESS;
+}
+
+
 // BOOL CircularBuffer_Put(CircularBuffer self, int16_t value)
 // {
 //   RETURN_VALUE_IF_NULL(self, FALSE);

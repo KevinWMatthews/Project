@@ -15,7 +15,12 @@ void CircularBuffer_Destroy(CircularBuffer * self);
 // int8_t CircularBuffer_Capacity(CircularBuffer self);
 BOOL CircularBuffer_IsEmpty(CircularBuffer self);
 BOOL CircularBuffer_IsFull(CircularBuffer self);
-// BOOL CircularBuffer_Put(CircularBuffer self, int16_t value);
-// int16_t CircularBuffer_Get(CircularBuffer self);
+enum
+{
+  CIRCULARBUFFER_NULL_POINTER = -1,
+  CIRCLARBUFFER_SUCCESS       = 0
+};
+s08 CircularBuffer_Put(CircularBuffer self, void * data);
+s08 CircularBuffer_Get(CircularBuffer self, void * data);
 
 #endif
