@@ -1,6 +1,7 @@
 extern "C"
 {
   #include "CircularBuffer.h"
+  #include "U08Array.h" //TODO replace with dummy or spy
 }
 
 //CppUTest includes should be after your and system includes
@@ -13,7 +14,7 @@ TEST_GROUP(CircularBuffer)
 
   void setup()
   {
-    buffer = CircularBuffer_Create(10);
+    buffer = CircularBuffer_Create(CIRCULARBUFFER_U08, 10);
   }
 
   void teardown()

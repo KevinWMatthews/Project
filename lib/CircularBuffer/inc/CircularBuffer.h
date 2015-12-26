@@ -5,7 +5,11 @@
 
 typedef struct CircularBufferStruct * CircularBuffer;
 
-CircularBuffer CircularBuffer_Create(s08 capacity);
+typedef enum
+{
+  CIRCULARBUFFER_U08
+} CircularBuffer_Type;
+CircularBuffer CircularBuffer_Create(CircularBuffer_Type array_type, s08 capacity);
 void CircularBuffer_Destroy(CircularBuffer * self);
 // BOOL CircularBuffer_VerifyIntegrity(CircularBuffer self);
 // int8_t CircularBuffer_Capacity(CircularBuffer self);

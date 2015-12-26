@@ -36,14 +36,21 @@ typedef struct CircularBufferStruct
 //****************************//
 //*** Function definitions ***//
 //****************************//
-CircularBuffer CircularBuffer_Create(s08 capacity)
+CircularBuffer CircularBuffer_Create(CircularBuffer_Type array_type, s08 capacity)
 {
   CircularBuffer self = calloc(1, sizeof(CircularBufferStruct));
   RETURN_VALUE_IF_NULL(self, NULL);
 
   //TODO this needs to be dynamic :/
   //TODO move the +1 within the Array.
-  self->array = U08Array_Create(capacity+1);
+  switch (array_type)
+  {
+  case (CIRCULARBUFFER_U08):
+    self->array = U08Array_Create(capacity+1);
+    break;
+  default:
+    return NULL;
+  }
   RETURN_VALUE_IF_NULL(self->array, NULL);
 
   self->capacity = capacity;
